@@ -1,2 +1,4 @@
-# specs
-OAXS standards specification
+# OAXS
+Welcome to the Open AI Accelerator Standard specification.
+
+TBD.
