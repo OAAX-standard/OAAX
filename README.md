@@ -59,6 +59,7 @@ flowchart LR;
     A[Sensor];
     B[Pre-processing];
     C[AI-model];
+    style C fill:#f9f,stroke:#333,stroke-width:4px
     D[Post-processing];
     E[Visulazation];
     A-->B
