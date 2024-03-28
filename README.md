@@ -55,7 +55,7 @@ Currently, OAXS focusses on privding a unified method of accelerating (i.e., (pa
 OAXS does **not** facilitate using the accelerator for application/vertical specific tasks such as decoding of a video stream or FFT of a vibration sensor; such operations might be performmed well by a specific accelerator but they do not fall into to initial OAXS specification.
 
 ```mermaid
-pipeline LR;
+flowchart LR;
     A[Sensor];
     B[Pre-processing];
     C[AI-model];
