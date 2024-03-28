@@ -1,6 +1,40 @@
-# OAXS
-Welcome to the Open AI Accelerator Standard specification. OAXS provides the first standardized method to deploy (edge) AI models to virtually any hardware accelerator.
+> The OAXS description is currently work in progress. Please join the conversation at [https://oaxs.org](https://oaxs.org).
 
-> The OAXS specificaiton is currenlty under construction. See the `dev` branch for a sneak preview of where we are going.
 
-Would you like to know more? Or contribute? Please leave your contact details at [https://oaxs.org](https://oaxs.org).
+# The Open AI Accelerator Standard (OAXS)
+
+## Overview
+
+* [About OAXS](#About-OAXS)
+	* The aims of OAXS
+	* The scope of OAXS
+	* OAXS High level implementation
+* Using OAXS
+	* Getting started from `c++`
+	* Getting started from `python`
+* OAXS developement
+	* Contributing to OAXS
+	* The OAXS steering group
+* OAXS documentation
+	* Toolchain documentation
+	* Runtime documentation
+* [OAXS impelementations](#OAXS-impelementations)
+	* The contributed accelerator repository   
+
+	
+	
+# About OAXS
+## The aims of OAXS
+## The scope of OAXS
+## OAXS High level implementation
+# Using OAXS
+## Getting started from `c++`
+## Getting started from `python`
+# OAXS developement
+## Contributing to OAXS
+## The OAXS steering group
+# OAXS documentation
+## Toolchain documentation
+## Runtime documentation
+# OAXS impelementations
+## The contributed accelerator repository   
