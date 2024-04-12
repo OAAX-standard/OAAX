@@ -24,44 +24,45 @@ This repository (and other linked repositories under the OAX-standard organizati
 	
 # About OAXS
 
-OAXS intends to provide a simple to use, easy to expand, *standardized* method of adopting specific (edge) AI accelerators (we will call them "XPUs") into edge AI applications. 
+The Open, AI, Accelerator Standard (OAXS) intends to provide a simple to use, easy to expand, *standardized* method of adopting specific (edge) AI accelerators such as NPUs, GPUs, FPUs or the like -- we will call them XPUs" throughout -- into edge AI applications. 
 
-The OAXS standard is designed to make it easy to take a *trained* AI model and execute it (i.e., generate inferences) on novel (edge) AI hardware. For AI solution developers the OAXS standard should make it easy to reap the benefits of the new chipsets that are becoming available without having to worry about the target hardware when setting up and testing their initial AI pipeline. For those designing and bringing to the market new chipsets (NPUs, FPUs, GPUs, etc.) OAXS is aimed to lower the barriers of usage of their products and it provides a unified way in which -- if adhered to -- any developer can easily access the advantages or the novel hardware. 
+The OAX standard is designed to make it easy to take a *trained* AI model and execute it (i.e., generate inferences from that model) on novel (edge) AI hardware. For AI solution developers the OAX standard should make it easy to reap the benefits of the new chipsets that are becoming available rapidly without having to worry about the target hardware when setting up and testing their initial AI pipeline. For those designing and bringing to the market new XPUs OAXS is aimed to lower the barriers of entry of the hardware by providing a unified way in which -- if adhered to -- any developer can easily utilize the advantages of the newly introduced XPU. 
 
-For our initial introduction to OAXS and its founding motivations, please see the [founding white-paper](https://www.networkoptix.com/blog/2024/03/05/introducing-the-open-ai-accelerator-standard).
+* For our initial introduction to OAXS and its founding motivations, please see the [founding white-paper](https://www.networkoptix.com/blog/2024/03/05/introducing-the-open-ai-accelerator-standard).
+
 
 
 ## The aims of OAXS
 
 For **AI solution developers**, OAXS aims to...
 
-* ...Prodivde a unified way of *converting* a trained AI/Ml model specified in a standardized generic format (we use [ONNX](https://onnx.ai) as our standard way of expressing a model) to a specific format that run on the supported target hardware.
-* ...Provide a unified way of *executing* the specific model on the target hardware. I.e., OAXS provides a standardized ABI/API to pass input data to an AI/ML model, run inference, and retreive the model out.
+* ...Provide a unified way of *converting* a trained AI/Ml model specified in a standardized generic format (we use [ONNX](https://onnx.ai) as our standard way of expressing a model) to a specific format that runs on the supported target hardware. 
+* ...Provide a unified way of *executing* the specific model on the target hardware. I.e., OAXS provides a standardized ABI/API to pass input data to an AI/ML model, run inference, and retreive the model output.
 
-Jointly, the above should allow AI solutions developers to easily move between different hardware targets and reap the fruits of new developments in accelerator design that benefit their use case.
+Jointly, the above should allow AI solution developers to easily move between different hardware targets and reap the fruits of new developments in accelerator design that benefit their use case.
 
 For **manufacturers of new (edge) AI hardware**, OAXS aims to ...
 
-* ...Provide a unified way of allowing "access" to their hardware. By adhering to OAXS there is a single point of entry for developers looking to embrace new hardware.
-* ...Reduce the need for ones own software ecosystem. By adhering to OAXS highger level software tools and ecosystems can easily incorporate new hardware without the need for the manufacturer of the accelerator to provide all the parts of a full AI/ML pipeline: accelerator manufacturers can simply focus on their hardware and the core software components needed to run an AI model on their hardware.
+* ...Provide a unified way of allowing "access" to their hardware. By adhering to the OAX standard there is a single point of entry for developers looking to test and embrace the new hardware.
+* ...Reduce the need to developed extensively one's own software ecosystem. By adhering to the OAX standard, highger level software tools and ecosystems can easily incorporate new hardware without the need for the manufacturer of the accelerator to provide all the parts of a full AI/ML pipeline: accelerator manufacturers can simply focus on their hardware and the core software components needed to run an AI model on their hardware.
 
-Note that OAXS is designed for maximum flexbility for the AI hardware manufacturer to adopt the trained AI model to their preferred format and to -- if desirable -- keep toolchains or other core bits of software that are deemed business valuable proprietary.
+Note that OAXS is designed for maximum flexbility for the XPU manufacturer to convert a trained AI model to their preferred format and to -- if desirable -- keep toolchains or other core bits of software that are deemed business valuable proprietary.
 
 
 ## The scope of OAXS
 
-Currently, OAXS focusses on privding a unified method of *accelerating* (i.e., (partly) moving to a NPU, GPU, FPU, XPU, ..) *AI/ML models*. Models in our context models are simply (mathematical) functions that are specified using [ONNX](https://onnx.ai). Note that at is core, ONNX is simply a standardized format used to express which computations (operations) need to be carried out in which order (the graph). We assume that AI/ML models have on or multiple (`n`) typed tensors as input, and  one or multiple (`m`) typed tensors as output. 
+Currently, OAXS focusses on providing a unified method of *accelerating* (i.e., (partly) moving the XPU) trained AI/ML models. *Models*, in our context, are simply (mathematical) functions that are specified using some hardware agnostic description standard (we adopt ONNX in our first implementation of OAXS, see [ONNX](https://onnx.ai)). At is core, ONNX is simply a standardized (file) format used to express which computations (or *operations*), on which data, need to be carried out in which order. ONNX describes the computation start to end by specifying a Directed Acyclic Graph (DAG), in which nodes represent operations, and edges represent tensors. Throughout we assume that AI/ML models have one or multiple (`I`) typed tensors as input, and  one or multiple (`O`) typed tensors as output. 
 
-OAXS does **not** facilitate using the accelerator for application/vertical specific tasks such as decoding of a video stream or FFT of a vibration sensor; such operations might be performmed well by a specific accelerator / XPU, but they do not fall into to initial OAXS specification. Also, OAXS does **not** concern model training: we assume the trained model is available.
+OAXS does **not** facilitate using the accelerator for application/vertical specific tasks such as decoding of a video stream or FFT of a vibration sensor; such operations might be performed well by a specific XPU, but they do not fall into the scope of the initial OAXS specification. Also, OAXS does **not** concern model training: we assume the trained model is available.
 
-The diagram below provides a high level abstraction of a common edge AI pipeline in which sensor data is pre-processed, fed to an AI or ML model for inference, its results are post-processed, and that final output is visualized. Within OAXS we assume the pipeline runs on a generic CPU (multiple architectures are supported), whereas the AI model (or inidivual operations within the AI model, depending on the accelerator manufactureres choice) are *accelerated* by the XPU using the OAXS standard.
+The diagram below provides a high level abstraction of a common edge AI pipeline found in many applications in which sensor data is pre-processed, fed to an AI/ML model for inference, its results are post-processed, and the final output is visualized. Within OAXS we assume the pipeline runs on a generic CPU (where multiple architectures are supported), whereas the AI model (or inidivual operations within the AI model, depending on the accelerator manufacturers choice) are *accelerated* on the XPU using the OAXS standard. Figure 1 below provides a simple overview of the initial scope of OAXS within the larger AI/ML pipeline.
 
 ```mermaid
 flowchart LR;
     A[Sensor];
     B[Pre-processing];
     C[AI/ML-model];
-    style C fill:#f9f,stroke:#333,stroke-width:4px
+    style C fill:#f9f,stroke:#FFF,stroke-width:4px
     D[Post-processing];
     E[Visulazation];
     A-->B
@@ -86,6 +87,8 @@ Given the availability of a standard -- OAXS -- for sharing both steps with the 
 
 Please note that for the toolchains we use pre-defined [docker containers](https://www.docker.com). Usage of Docker allows maximum flexibility for those contributing toolchains and by simply specifying the high level interactions with the container and resulting data we provide a unified method of model conversion while abstracting away any implementation details. For the runtimes we allow any format, as long as there is a unified runtime [ABI]() available such that the runtime can be integrated in `c++` code (we use shared libs as our preferred implementation; see below). 
 
+
+> **From this point onwards these docs are work in progress and contain first ideas, not yet working examples. Working examples can be found in the code examples.**
 
 # Using OAXS
 
