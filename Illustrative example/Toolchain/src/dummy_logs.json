@@ -1,0 +1,23 @@
+[
+  {
+    "Message": "Converting ONNX to OAX format"
+  },
+  {
+    "Message": "Starting conversion",
+    "Data": {
+      "Target Hardware": "OAX-2",
+      "Translation": "Done",
+      "Reading IO information": "Done",
+      "Optimizing Model": "Done",
+      "Compiling Model": "Done"
+    }
+  },
+  {
+    "Message": "Successful Conversion",
+    "Data": {
+      "MIME type": "application/x-oax; device=OAX-2",
+      "Output file name": "model.oax",
+      "Logs file name": "logs.json"
+    }
+  }
+]
