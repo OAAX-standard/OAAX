@@ -6,7 +6,7 @@
 This repository (and other linked repositories under the OAX-standard organization) contain documentation and reference
 implementations, as well as contributed implementations, of the Open AI Accelerators (OAX) Standard.
 
-# About OAXS
+# About OAX
 
 The Open AI Accelerator (OAX) Standard intends to provide a simple to use, easy to expand, *standardized* method of
 adopting specific (edge) AI accelerators such as NPUs, GPUs, FPUs or the like
