@@ -6,7 +6,7 @@
 This repository (and other linked repositories under the OAX-standard organization) contain documentation and reference
 implementations, as well as contributed implementations, of the Open AI Accelerators (OAX) Standard.
 
-# About OAXS
+# About OAX
 
 The Open AI Accelerator (OAX) Standard intends to provide a simple to use, easy to expand, *standardized* method of
 adopting specific (edge) AI accelerators such as NPUs, GPUs, FPUs or the like
@@ -25,7 +25,7 @@ of the newly introduced XPU.
   the [founding white-paper](https://www.networkoptix.com/blog/2024/03/05/introducing-the-open-ai-accelerator-standard).
 
 * For detailed information about the OAX Standard, including a high-level specification, please see
-  the [position paper](Position%20paper/oaxs-spec-white-paper.pdf).
+  the [position paper](Position%20paper/oax-paper.pdf).
 
 In summary, within the framework of OAX, the deployment process of an AI model is conceptualized as a two-stage
 pipeline.
@@ -50,12 +50,12 @@ an OAX-conforming AI pipeline: toolchain and runtime for **OAX contributors**, a
 For real-world applications showcasing how to use an OAX implementation,
 we are providing a set of examples in the [examples](https://github.com/oax-standard/examples) repository.
 
-# OAXS development
+# OAX standard development
 
-In this section of the OAX documentation, we describe the ways in which you can contribute to growing OAXS
+In this section of the OAX documentation, we describe the ways in which you can contribute to growing the OAX standard,
 or be involved in maturing the standard.
 
-## Contributing to OAXS
+## Contributing to OAX standard
 
 The first way to contribute is by creating examples, implementations, or XPU specific OAX toolchains or runtimes.
 
@@ -66,7 +66,7 @@ The first way to contribute is by creating examples, implementations, or XPU spe
 There are many places to get started:
 
 * If you are building example pipelines that utilize OAX that you would like to share with the larger community, please
-  start with the [Using OAXS](#using-oax) documentation.
+  start with the [Using OAX](#using-oax) documentation.
 * If you are looking whether a specific XPU supports OAX standard, please see
   the [contribution repository](https://github.com/oax-standard/contributions).
 * Ir you are contributing a novel XPU, please refer to the illustrative
@@ -75,15 +75,15 @@ There are many places to get started:
 * If you are looking to validate and test your implementation, please refer to the examples repository where you can
   find lots of application examples that can incorporate any OAX-compliant implementation.
 
-## The OAXS steering group
+## The OAX steering group
 
 OAX Standard was started by [Network Optix](https://www.networkoptix.com/) as an attempt to solve hardware / XPU
 incompatibility
-which was slowing market adoption of novel hardware breakthroughs. Thus, from its inception, OAXS has not been tied to
+which was slowing market adoption of novel hardware breakthroughs. Thus, from its inception, OAX has not been tied to
 individual hardware manufacturers: it is a user driven initiative trying to make adoption of *any* new accelerator
 designs into actual meaningful business applications as easy as possible.
 
-The following people are core to the development of OAXS:
+The following people are core to the development of OAX:
 
 * ...
 
