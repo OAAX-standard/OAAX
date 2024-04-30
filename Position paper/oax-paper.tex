@@ -97,14 +97,14 @@ Jointly, the above allows AI solution developers to easily move between differen
 For \emph{manufacturers} of XPUs, OAX aims to:
 \begin{itemize}
 \item Provide a unified way of allowing ``access'' to their hardware. By adopting OAX, there is a single point of entry for developers looking to test and embrace the new hardware. This lowers barriers of entrance to the market.
-\item Reduce the need to extensively develop one's own software ecosystem. By adopting OAX, higher level software tools and ecosystems can easily incorporate new hardware without the need for the manufacturer of the accelerator to provide all the parts of a full AI/ML pipeline: accelerator manufacturers can simply focus on their hardware and the core software components needed to run an AI model on their hardware.\footnote{At this moment in time, some individual XPU makers, provide an extensive software ecosystem which effectively locks in application developers by needlessly inflating development costs associated with switching hardware. In our view, in the long run, this hinders overall market growth and leads to suboptimal applications. OAXS is, in part, designed to be a fully open -- both in terms of code and in terms of governance -- response to undesirable lock in.} This increases the overal market size.
+\item Reduce the need to extensively develop one's own software ecosystem. By adopting OAX, higher level software tools and ecosystems can easily incorporate new hardware without the need for the manufacturer of the accelerator to provide all the parts of a full AI/ML pipeline: accelerator manufacturers can simply focus on their hardware and the core software components needed to run an AI model on their hardware.\footnote{At this moment in time, some individual XPU makers, provide an extensive software ecosystem which effectively locks in application developers by needlessly inflating development costs associated with switching hardware. In our view, in the long run, this hinders overall market growth and leads to suboptimal applications. OAX is, in part, designed to be a fully open -- both in terms of code and in terms of governance -- response to undesirable lock in.} This increases the overal market size.
 \end{itemize}
 
 Note that OAX should be designed for maximum flexibility for the XPU manufacturer to convert a trained AI model to their preferred format and to -- if desirable -- keep toolchains, or other core bits of software that are deemed business valuable, proprietary by simply providing compiled versions or version that are accessible in the cloud.
 
 \subsection{The scope of OAX}
 
-Currently, OAX focusses on providing a unified method of \emph{accelerating} (i.e., (partly) moving to the XPU) trained AI/ML models. \emph{Models}, in our context, are simply (mathematical) functions that are specified using some hardware agnostic description standard: we adopt ONNX \cite{ONNX} for this purpose in our first implementation of OAX.\footnote{In recent years ONNX has grown to include not just the implementation agnostic model specification, but also a set of model optimization tools and even model runtimes, we discuss relationships of OAXS to these extended initiatives in the related work section of this position paper. At this point in the text we treat ONNX simply as a standardized file format to encode a set of computations.}. At its core, ONNX is simply a standardized (file) format used to express which computations (or ``operations''), on which data, need to be carried out in which order. ONNX describes the computations start-to-end by specifying a Directed Acyclic Graph (DAG), in which nodes represent operations, and edges represent tensors ``flowing'' from one computation to the other. Throughout we assume that AI/ML models have one or multiple typed tensors as input ($I$), and  one or multiple typed tensors as output ($O$) . 
+Currently, OAX focusses on providing a unified method of \emph{accelerating} (i.e., (partly) moving to the XPU) trained AI/ML models. \emph{Models}, in our context, are simply (mathematical) functions that are specified using some hardware agnostic description standard: we adopt ONNX \cite{ONNX} for this purpose in our first implementation of OAX.\footnote{In recent years ONNX has grown to include not just the implementation agnostic model specification, but also a set of model optimization tools and even model runtimes, we discuss relationships of OAX to these extended initiatives in the related work section of this position paper. At this point in the text we treat ONNX simply as a standardized file format to encode a set of computations.}. At its core, ONNX is simply a standardized (file) format used to express which computations (or ``operations''), on which data, need to be carried out in which order. ONNX describes the computations start-to-end by specifying a Directed Acyclic Graph (DAG), in which nodes represent operations, and edges represent tensors ``flowing'' from one computation to the other. Throughout we assume that AI/ML models have one or multiple typed tensors as input ($I$), and  one or multiple typed tensors as output ($O$) . 
 
 OAX does \emph{not} facilitate using the accelerator for application/vertical specific tasks such as decoding of a video stream or fast Fourier transform of a vibration sensor; such operations might be performed well by a specific XPU, but they do not fall into the scope of the initial  specification which is meant to be application agnostic. Also, OAX does \emph{not} concern model training: we assume the trained model is available in ONNX format.\footnote{Our specification of OAX toolchains does allow individual XPU makers to include training or validation data into the conversion process from generic to specific model specification as is often needed for (e.g.,) effective quantization.}
 
@@ -131,7 +131,7 @@ At a very high level, the envisioned specification of OAX is surprisingly simple
 
 \begin{enumerate}
 \item \emph{Conversion} of the model's generic ONNX model specification to a format that can run on the accelerator. Note that the result might itself be in ONNX format (for example when operations are accelerated one-by-one by the runtime, see below), or the result might be a totally proprietary binary. The core insight is that there is a "conversion" step necessary from generic model description to a model description that is specific and can be (partly) accelerated using the XPU of interest. For the conversion step OAX merely provides a unified way of going from ONNX to the target's specification (whatever this might be) including standardized error handling and formatting. We call the conversion process the \textbf{OAX toolchain} and formally the process itself is simply a function that maps the generic model specification into an XPU specific one: $f \colon \mathcal{M} \to \mathcal{M}_{xpu}$. 
-\item \emph{Running} the specific model specification, i.e., generating inferences. Once a specific model specification is available---after conversion---we simply need a unified way to, from a process running on the CPU, pass data to the model, execute its computation, and return the results. We call this the \textbf{OAXS runtime.} Note that the OAX runtime itself is a process running on the host CPU that is responsible for all interactions with the XPU. Abstractly, the runtime computes $O = \mathcal{M}_{xpu}(I)$.
+\item \emph{Running} the specific model specification, i.e., generating inferences. Once a specific model specification is available---after conversion---we simply need a unified way to, from a process running on the CPU, pass data to the model, execute its computation, and return the results. We call this the \textbf{OAX runtime.} Note that the OAX runtime itself is a process running on the host CPU that is responsible for all interactions with the XPU. Abstractly, the runtime computes $O = \mathcal{M}_{xpu}(I)$.
 \end{enumerate}
 
 The above are deliberately---and contrary to some other attempts in this space---two separate steps: The first of the two steps can be executed anywhere: the conversion of a generic AI model to the target specific model can be done in the cloud, on your local machine, or (in the future) using some hosted conversion service. It is often done only once per (edge) AI target. The second step is executed, repeatedly, on the (fleet of) edge device(s) that runs the AI/ML pipeline (see \ref{fig-pipeline}). Thus, conversion and running are often two separate processes, carried out on physically separate devices.
@@ -142,7 +142,7 @@ Given the availability of a standardized method---OAX---for sharing both steps w
 \item ``Swaps'' the \textbf{OAX runtime} in the larger application pipeline to match the selected hardware. Given a single interface for each and every runtime,\footnote{Including runtimes that run on CPUs, and hence allow for easy local evaluation if no XPUs are readily available.} this step eliminates any re-engineering necessary to adopt the new XPU.
 \end{enumerate}
 
-As a first implementation of OAX we make a number of specific technical choices. For the \textbf{OAX toolchain} we use pre-defined Docker containers. Usage of Docker containers to implement the  \textbf{OAX toolchain} allows maximum flexibility for those contributing toolchains to use whatever conversion tools and dependencies they need inside the container. By simply standardizing the high level interactions with the container, we provide a unified method of model conversion while abstracting away any implementation details. On top of this, Docker containers are easily managed and distributed and can be executed cross platform. For the  \textbf{OAX runtime} we allow any (compiled) format, as long as there is a unified runtime ABI (shared library) available such that the runtime can be integrated in \texttt{C++} code. This should allow any low level application developer to utilize the OAX runtime (and will allow for higher level (e.g., \texttt{Python} tools to be built on top of the lower-level runtime(s).
+As a first implementation of OAX we make a number of specific technical choices. For the \textbf{OAX toolchain} we use pre-defined Docker images. Usage of Docker images to implement the  \textbf{OAX toolchain} allows maximum flexibility for those contributing toolchains to use whatever conversion tools and dependencies they need inside the image. By simply standardizing the high level interactions with the container, we provide a unified method of model conversion while abstracting away any implementation details. On top of this, Docker images are easily managed and distributed and can be executed cross platform. For the  \textbf{OAX runtime} we allow any (compiled) format, as long as there is a unified runtime ABI (shared library) available such that the runtime can be integrated in \texttt{C++} code. This should allow any low level application developer to utilize the OAX runtime (and will allow for higher level (e.g., \texttt{Python} tools to be built on top of the lower-level runtime(s).
 
 \subsection{Organization of this position paper}
 
@@ -150,23 +150,21 @@ The remainder of this position paper is organized as follows; first, we detail t
 
 \section{OAX from a user / developer perspective}
 
-Here we provide a few simple and self-contained\footnote{In the body text we focus on the core lines of code that illustrate the utility of OAX, working code examples our found on the OAX github pages, \oaxgit.} examples of how to use the OAXS standard to switch from a CPU\footnote{We obviously provide a CPU only implementation of the OAX Runtime as a CPU is a member of the set of XPUs.} only implementation of a (simplified) AI pipeline to one in which the model is accelerated using a Hailo Accelerator (using an initial implementation of OAX to move over to this XPU). %For the sake of example, we use a simple pre-trained YoloV5 vision model in ONNX format (see \oaxgit for details).
+Here we provide a few simple and self-contained\footnote{In the body text we focus on the core lines of code that illustrate the utility of OAX, working code examples our found on the OAX github pages, \oaxgit.} examples of how to use the OAX standard to switch from a CPU\footnote{We obviously provide a CPU only implementation of the OAX Runtime as a CPU is a member of the set of XPUs.} only implementation of a (simplified) AI pipeline to one in which the model is accelerated using a Hailo Accelerator (using an initial implementation of OAX to move over to this XPU). %For the sake of example, we use a simple pre-trained YoloV5 vision model in ONNX format (see \oaxgit for details).
 
 \subsection{Getting started from \texttt{C++}}
 
-We start our example by assuming there is a hardware agnostic model file, \texttt{model-generic.onnx}, available to the user. We first show how to use the OAX toolchain container to convert the hardware agnostic model to a XPU specific model, \texttt{model-xpu.oax}. Subsequently we show how to load the associated OAX XPU runtime using \texttt{C++} and use it to generate inferences.
+We start our example by assuming there is a hardware agnostic model file, \texttt{model-generic.onnx}, available to the user. We first show how to use the OAX toolchain image to convert the hardware-agnostic model to a XPU specific model, \texttt{model-xpu.oax}. Subsequently we show how to load the associated OAX XPU runtime using \texttt{C++} and use it to generate inferences.
 
 \subsubsection{Model Conversion}
 
 In this section we show how to, from the command line, run the OAX toolchain to transform the generic \texttt{model-generic.onnx} into a specific version of this model that can be run on the targeted accelerator. Given that the docker image has been downloaded to the local machine by the user, it suffices to run the following command:
 
-\todo{Ayoub: Check if this works / correct syntax.}
-
 \begin{lstlisting}
 > ls
 model-generic.onnx
 
-> docker run -v \$PWD:/root/model onnx-to-hailo-toolchain /root/model/model.onnx /root/model/model-xpu.oax
+> docker run -v $pwd:/root/model  oax-xpu-toolchain:latest /root/model/model-generic.onnx /root/model/
 > ls
 model-generic.onnx
 model-xpu.oax
@@ -175,7 +173,7 @@ conversion-log.json
 
 The workhorse of the above is clearly the \texttt{docker run} call which runs the (content of) the container once. We provide the following arguments:
 \begin{itemize}
-\item \texttt{-v \$PWD:/root/model} The \texttt{-v} flag for Docker run sets up a shared files system between the docker and the host in the pre-specified location and thus allows for the model file to be accessed from the container and for the output to be written to the local file system.
+\item \texttt{-v \$pwd:/root/model} The \texttt{-v} flag for Docker run sets up a shared files system between the docker and the host in the pre-specified location and thus allows for the model file to be accessed from the container and for the output to be written to the local file system.
 \item \texttt{/root/model/model.onnx} The path to the input file. Note that, depending on the XPU manufacturers specification, this can simply be a \texttt{.onnx} file, or it can be a \texttt{.zip} file containing the generic model description in ONNX and additional files for model conversion (i.e., validation examples used when quantizing the model).
 \item \texttt{/root/model/model-xpu.oax} The location and name of the output file. Users are free to choose the naming convention of the specific model file that is created.
 \end{itemize}
@@ -184,54 +182,85 @@ The container should always produce the document \texttt{conversion-log.json}; t
 
 \subsubsection{Loading the OAX runtime}
 
-\todo{Ayoub / Josef: Check if this works / correct syntax.}
-
-When interacting with the OAX runtime using \texttt{C++} on an edge device  the application developer will need to load the XPU specific runtime into their project by including the correct shared library file:
+When interacting with the OAX runtime using \texttt{C/C++} on an edge device the application developer will need to load the XPU specific runtime into their project by including the correct shared library file:
 
 \begin{lstlisting}
+// Load the runtime library
 handle = dlopen("./libRuntimeLibrary.so", RTLD_NOW);
+
+// Load each runtime function one at a time
+runtime_initialization_t runtime_initialization = (runtime_initialization_t)dlsym(handle, "runtime_initialization");
+// ...
+runtime_inference_execution_t runtime_inference_execution = (runtime_inference_execution_t) dlsym(handle, "runtime_inference_execution");
+runtime_destruction_t runtime_destruction = (runtime_destruction_t) dlsym(handle, "runtime_destruction");
+\end{lstlisting}
+
+\subsubsection{Initializing the runtime}
+
+Before starting to use XPU runtime for inference, the runtime needs to connect to the XPU, allocate resources, load the optimized model, etc.
+That's achieved by calling the two functions below:
+
+\begin{lstlisting}
+// initialize runtime environment
+if (runtime_initialization()) {
+    print_error_message(runtime_error_message());
+    dlclose(handle);
+    return 1;
+}
+
+// load model
+const char *file_path = model_path;
+if (runtime_model_loading(file_path)) {
+    print_error_message(runtime_error_message());
+    dlclose(handle);
+    return 1;
+}
 \end{lstlisting}
 
 \subsubsection{Generating inferences}
 
-Once the model specific file is available (the result from the toolchain), and the correct shared library file has been loaded, the core code necessary to run inferences while benefitting form the XPU is is follows:
-
-\todo{Ayoub / Josef: Check if this works / correct syntax.}
+Once the model file is available (the result from the toolchain), and the correct shared library file has been loaded, the core code necessary to run inferences while benefiting form the XPU is follows:
 
 \begin{lstlisting}
-/**
-* Load the runtime
-*/
-int runtime_core_runtime_init(int acceleration, int runtime_count) {
-    printf("Notice: RUNTIME - Initializing Runtime I\n");
-    ....
-/**
-*  Load the model
-*/
-int runtime_core_model_read(const char *file_path) {
-   ...
-   
-/**
-* Run an inference
-*/
-runtime_core_exec()
-...
+// The input_tensors and output_tensors will contain the model input and output values.
+tensors_struct input_tensors, output_tensors;
+while(1){
+    // Start inference on the input tensors
+    if (runtime_inference_execution(&input_tensors, &output_tensors)) {
+        print_error_message(runtime_error_message());
+        break;
+    }
+    // here, you can use the model output tensors
+    // ...
+
+    // instruct the runtime to cleanup any intermediate results after we're done with the output tensors.
+    if (runtime_inference_cleanup()) {
+        print_error_message(runtime_error_message());
+        break;
+    }
+}
+
+// finalize runtime environment
+if (runtime_destruction()) {
+    print_error_message(runtime_error_message());
+    dlclose(handle);
+    return 1;
+}
 \end{lstlisting}
 
-A complete and executable example of the above can be found int the OAXS github: \oaxgit. 
+A complete and executable example of the above can be found int the OAX github: \oaxgit.
 
+\newpage
 \section{An outline of OAX}
 \label{sec:oax-outline}
 
 \remark{The current discussion of OAX reflects our current, first, example implementation. We are currently actively looking to seek the community to refine the specification in a number of focus groups planned summer 2024.}
 
-In this section we provide a first, rough, outline of OAX, including details regarding the I/O of the toolchain and the signature of the Runtime (i.e., the functions it needs to expose).
+In this section we provide a first, rough, outline of OAX, including details regarding the I/O of the toolchain and the signature of the Runtime (i.e., the functions it needs to expose for its users).
 
 \subsection{OAX Toolchains}
 
-We start by detailing the input and output to the \textbf{OAX Toolchain}. As demonstrated before, the toolchain is implemented as an easy to distribute Docker container; at the end of this section we provide an example of core parts of the Docker file needed to create the container. However, the overall design philosophy for the toolchain container is to impose as little restrictions as possible: it is up to the developer implementing the toolchain container to choose its external structure, its permitted input files, and the resulting output file format(s).
-
-\todo{Ayoub: Please check / improve upon descriptions in this section}
+We start by detailing the input and output to the \textbf{OAX Toolchain}. As demonstrated before, the toolchain is implemented as an easy to distribute Docker image; at the end of this section we provide an example of core parts of the Dockerfile needed to create the image. However, the overall design philosophy for the toolchain image is to impose as little restrictions as possible: it is up to the developer implementing the toolchain container to choose its external structure, its permitted input files, and the resulting output file format(s).
 
 \subsubsection{Input to the Docker Container}
 
@@ -250,9 +279,25 @@ The Docker container effectively writes out two files:
 	\end{itemize}
 \end{enumerate}
 
+\subsubsection{Example of a Dockerfile}
+As mentioned before, the conversion toolchain expects two parameters: the path of the input model, and the output directory where it can save the results artifacts. Therefore, it's sensible to define a script as an entrypoint of the Docker image that can trigger the rest of the conversion as illustrated in the Dockerfile below:
+\begin{lstlisting}
+ARG DEBIAN_FRONTEND=noninteractive
+FROM ubuntu:22.04
+
+WORKDIR /app
+
+# You can for example install any dependencies the toolchain needs here
+RUN #apt-get update -qq -y --fix-missing
+
+COPY src/ /app/src/
+
+ENTRYPOINT ["bash", "/app/src/run-toolchain.sh"]
+\end{lstlisting}
+
 \subsubsection{Contributing OAX Toolchains}
 
-We have collected a first implementation of an OAX Toolchain for the Hailo accelerator in our github pages (see \oaxgit). Copying this container should serve as a template for developers wishing to contribute their own XPU conversion toolchains.
+We have collected a first implementation of an OAX Toolchain for the Hailo accelerator in our github pages (see \oaxgit). Copying this image should serve as a template for developers wishing to contribute their own XPU conversion toolchains.
 
 \subsection{OAX Runtimes}
 
@@ -287,17 +332,17 @@ The runtime should provide an implementation of all functions listed below, whic
 \begin{itemize}
 	\item Core functionality functions:
 	\begin{itemize}
-		\item \texttt{runtime\_core\_runtime\_init}: This stage involves the initialization of the runtime, ensuring all necessary components are properly set up and ready for operation.
-		\item \texttt{runtime\_core\_model\_read}: During this stage, the runtime loads the model from storage or memory, preparing it for inference tasks.
-		\item \texttt{runtime\_core\_exec}: In this stage, the runtime executes the inference process, utilizing the loaded model to process input data and generate output predictions.
+		\item \texttt{runtime\_initialization}: This stage involves the initialization of the runtime, ensuring all necessary components are properly set up and ready for operation.
+		\item \texttt{runtime\_model\_loading}: During this stage, the runtime loads the model from storage or memory, preparing it for inference tasks.
+		\item \texttt{runtime\_inference\_execution}: In this stage, the runtime executes the inference process, utilizing the loaded model to process input data and generate output predictions.
+            \item \texttt{runtime\_destruction}: This stage marks the finalization of the runtime process, where any remaining resources are released, and the runtime environment is shut down gracefully.
 	\end{itemize}
-	\item Auxiliary functions:
+	\item Utility functions:
 	\begin{itemize}
+            \item \texttt{runtime\_inference\_cleanup}: After completing the inference tasks, the runtime performs cleanup operations, releasing any allocated resources and preparing for subsequent executions.
 		\item \texttt{runtime\_name}: denotes the name of the runtime, serving as a useful identifier to distinguish it from other runtimes within the system.
 		\item \texttt{runtime\_version}: This parameter signifies the version of the runtime, providing valuable information for tracking and ensuring compatibility with other components or systems.
 		\item \texttt{runtime\_error\_message}: is utilized to retrieve the error message in case of a failure during any of the five stages of the runtime process. It serves as a valuable tool for diagnosing issues and troubleshooting problems encountered during runtime execution.
-		\item \texttt{runtime\_core\_free}: After completing the inference tasks, the runtime performs cleanup operations, releasing any allocated resources and preparing for subsequent executions.
-		\item \texttt{runtime\_core\_finalize}: This stage marks the finalization of the runtime process, where any remaining resources are released, and the runtime environment is shut down gracefully.
 	\end{itemize}
 \end{itemize}
 
@@ -321,7 +366,7 @@ We want to ensure that contributing OAX toolchains and runtime, both by XPU manu
 
 \subsection{Utility toolchains}
 
-Interestingly, OAXS ``ONNX-to-XPU'' toolchains can easily become part of a larger ecosystem of toolchains. For example, a simple container implementation of a toolchain which validates an ONNX graph and potentially changes its version would be well-sought after (and useful for model developers also outside of OAX). Conversion toolchain containers from other model formats to ONNX, i.e., conversion from PyTorch of from TensorFlow to ONNX, would also provide a valuable contribution to OAX (and to the edge AI community as a whole). Such model conversion from one-format-to-the-other is currently also supported by MMdnn \cite{MMdnn}. 
+Interestingly, OAX ``ONNX-to-XPU'' toolchains can easily become part of a larger ecosystem of toolchains. For example, a simple container implementation of a toolchain which validates an ONNX graph and potentially changes its version would be well-sought after (and useful for model developers also outside of OAX). Conversion toolchain containers from other model formats to ONNX, i.e., conversion from PyTorch of from TensorFlow to ONNX, would also provide a valuable contribution to OAX (and to the edge AI community as a whole). Such model conversion from one-format-to-the-other is currently also supported by MMdnn \cite{MMdnn}. 
 
 \subsection{OAX testing and profiling tools}
 
