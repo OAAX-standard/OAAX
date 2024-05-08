@@ -1,5 +1,5 @@
 > The OAX Standard initiative is currently work in progress. Please join the conversation and help democratize edge AI
-> at [https://oaxs.org](https://oaxs.org).
+> at [https://oax-standard.org](https://oax-standard.org).
 
 # The Open AI Accelerator (OAX) Standard
 
@@ -123,5 +123,5 @@ designs into actual meaningful business applications as easy as possible.
 
 We are currently actively seeking for member of the OAX steering committee to further advance the specification of the
 standard in a number of focus groups (planned summer 2024). Please leave your contact details
-at [oax.org](https://oaxs.org) if you want to join the upcoming community efforts. 
+at [oax-standard.org](https://oax-standard.org) if you want to join the upcoming community efforts. 
 
