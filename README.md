@@ -11,10 +11,16 @@ implementations, as well as contributed implementations, of the **Open AI Accele
 
 The Open AI Accelerator (OAX) Standard intends to provide a easy-to-use, easy-to-expand, *standardized* method of
 adopting (edge) AI accelerators such as NPUs, GPUs, FPUs or the like
--- we will call them XPUs" throughout -- into edge AI applications.
+-- we will call them XPUs" throughout -- into edge AI applications. An AI application or pipeline
+consists of several operations that take one specific form of data as input, and transform this data into a more
+meaningful format.
 
-The OAX standard is designed to make it easy to take a *trained* AI model and use it to run inference on novel (edge) AI
-hardware.
+<img src="https://www.networkoptix.com/hs-fs/hubfs/fig%201@4x.png?width=1024&height=352&name=fig%201@4x.png" width="500px"/>
+
+The OAX standard is designed to make it easy to take a *trained* AI model and use it to run inference on any novel (
+edge) AI accelerator instead of running it on a CPU, as demonstrated in the figure below.
+<img src="https://www.networkoptix.com/hs-fs/hubfs/fig%202@4x.png?width=1024&height=556&name=fig%202@4x.png" width="500px"/>
+
 For *AI solution developers* the OAX standard should make it easy to reap the benefits of the new chipsets that are
 becoming available rapidly without having to worry about the target hardware when setting up and testing their initial
 AI pipeline.   
@@ -22,13 +28,7 @@ For *those designing and bringing to the market new XPUs*, OAX Standard is aimed
 the hardware by providing a unified way in which -- when adhered to -- any developer can easily utilize the advantages
 of the newly introduced XPU.
 
-* For our initial introduction to OAX Standard and its founding motivations, please see
-  the [founding white-paper](https://www.networkoptix.com/blog/2024/03/05/introducing-the-open-ai-accelerator-standard).
-
-* For a more detailed information about the OAX Standard, including a high-level specification, please see
-  the [position paper](Position%20paper/oax-paper.pdf).
-
-In summary, within the framework of OAX, the deployment process of an AI model is conceptualized as a two-stage
+At a high-level, within the framework of OAX, the deployment process of an AI model is conceptualized as a two-stage
 pipeline.
 
 1. The initial stage encompasses a series of steps and procedures necessary for transforming a trained AI model into an
@@ -38,6 +38,20 @@ pipeline.
 2. The second stage entails the utilization of the produced XPU-specific model file, and executing it on a designated
    hardware XPU.   
    This step is carried out by an **OAX runtime**.
+
+The two components, the OAX toolchain and the OAX runtime, of the OAX standard shine when incorporated into a larger
+ecosystem where a user can easily manage the deployment of an AI model on any XPU; effectively making it super easy to
+swap two AI accelerators or combine two different AI accelerators in no time, by building a deployment pipeline that
+automatically convert a model to all available XPU model formats as shown in the figure below.   
+This is the main goal of the OAX standard.
+
+<img src="https://www.networkoptix.com/hs-fs/hubfs/fig%203%20-%20alt@4x.png?width=1024&height=631&name=fig%203%20-%20alt@4x.png" width="500px"/>
+
+* For our initial introduction to OAX Standard and its founding motivations, please see
+  the [founding white-paper](https://www.networkoptix.com/blog/2024/03/05/introducing-the-open-ai-accelerator-standard).
+
+* For a more detailed information about the OAX Standard, including a high-level specification, please see
+  the [position paper](Position%20paper/oax-paper.pdf).
 
 # Using OAX
 
