@@ -12,4 +12,4 @@ make
 echo "Build complete."
 echo "Simulating inference using the runtime library:"
 cd ..
-./build/main ./artifacts/libRuntimeLibrary.so ./artifacts/build/model.oax
+./build/main ./artifacts/libRuntimeLibrary.so ./artifacts/build/model.oaax
