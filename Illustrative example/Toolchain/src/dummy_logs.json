@@ -5,7 +5,7 @@
   {
     "Message": "Starting conversion",
     "Data": {
-      "Target Hardware": "OAX-2",
+      "Target Hardware": "OAX",
       "Translation": "Done",
       "Reading IO information": "Done",
       "Optimizing Model": "Done",
@@ -15,7 +15,7 @@
   {
     "Message": "Successful Conversion",
     "Data": {
-      "MIME type": "application/x-oax; device=OAX-2",
+      "MIME type": "application/x-oax; device=OAX",
       "Output file name": "model.oax",
       "Logs file name": "logs.json"
     }

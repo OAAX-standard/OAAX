@@ -77,7 +77,7 @@ bash Usage/scripts/simulate-conversion.sh
 This command will load the docker image that's saved in the ".tar" file:
 
 ```bash
-docker load -i "./artifacts/oax-toolchain-latest.tar"
+docker load -i "./artifacts/oaax-toolchain-latest.tar"
 ```
 
 and run the conversion process on the ONNX file:
