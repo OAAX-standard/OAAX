@@ -1,13 +1,13 @@
+> The OAAX Standard initiative is currently work in progress. Please join the conversation and help democratize edge AI
+> at [https://oaax.org](https://oaax.org).
+
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" width="50%" srcset="https://raw.githubusercontent.com/OAAX-standard/OAAX/74de2ec57606be7886acaf8dd11cc54a07add5c8/media/logo%20-%20white.png">
-  <source media="(prefers-color-scheme: light)" width="50%" srcset="https://raw.githubusercontent.com/OAAX-standard/OAAX/_media/media/logo%20-%20black.png">
+  <source media="(prefers-color-scheme: dark)" width="60%" srcset="https://raw.githubusercontent.com/OAAX-standard/OAAX/74de2ec57606be7886acaf8dd11cc54a07add5c8/media/logo%20-%20white.png">
+  <source media="(prefers-color-scheme: light)" width="60%" srcset="https://raw.githubusercontent.com/OAAX-standard/OAAX/_media/media/logo%20-%20black.png">
   <img alt="Open AI Accelerator eXchange (OAAX)" src="https://raw.githubusercontent.com/OAAX-standard/OAAX/_media/media/logo%20-%20black.png">
 </picture>
 </p>
-
-> The OAAX Standard initiative is currently work in progress. Please join the conversation and help democratize edge AI
-> at [https://oaax.org](https://oaax.org).
 
 # The Open AI Accelerator eXchange (OAAX) Standard
 
