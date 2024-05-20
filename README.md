@@ -1,15 +1,23 @@
 > The OAAX Standard initiative is currently work in progress. Please join the conversation and help democratize edge AI
 > at [https://oaax.org](https://oaax.org).
 
-# The Open Ai Accelerator eXchange (OAAX) Standard
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" width="60%" srcset="https://raw.githubusercontent.com/OAAX-standard/OAAX/74de2ec57606be7886acaf8dd11cc54a07add5c8/media/logo%20-%20white.png">
+  <source media="(prefers-color-scheme: light)" width="60%" srcset="https://raw.githubusercontent.com/OAAX-standard/OAAX/_media/media/logo%20-%20black.png">
+  <img alt="Open AI Accelerator eXchange (OAAX)" src="https://raw.githubusercontent.com/OAAX-standard/OAAX/_media/media/logo%20-%20black.png">
+</picture>
+</p>
+
+# The Open AI Accelerator eXchange (OAAX) Standard
 
 This repository, and other linked repositories under the [OAAX-standard organization](https://github.com/oaax-standard),
 contain documentation and reference
-implementations, as well as contributed implementations, of the **Open Ai Accelerator eXchange (OAAX) Standard**.
+implementations, as well as contributed implementations, of the **Open AI Accelerator eXchange (OAAX) Standard**.
 
 # About OAAX
 
-The Open Ai Accelerator eXchange (OAAX) Standard intends to provide a easy-to-use, easy-to-expand, *standardized* method of
+The Open AI Accelerator eXchange (OAAX) Standard intends to provide a easy-to-use, easy-to-expand, *standardized* method of
 adopting (edge) AI accelerators such as NPUs, GPUs, FPUs or the like
 -- we will call them XPUs" throughout -- into edge AI applications. An AI application or pipeline
 consists of several operations that take one specific form of data as input, and transform this data into a more
