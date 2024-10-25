@@ -16,6 +16,6 @@ mkdir -p "$output_directory" || true
 sleep 3
 
 # Copy same model to output directory under a different name
-cp "$model_path" "$output_directory/model.oax"
+cp "$model_path" "$output_directory/model.oaax"
 # Copy the dummy logs file
 cp ./dummy_logs.json "$output_directory/logs.json"

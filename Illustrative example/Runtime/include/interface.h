@@ -2,6 +2,8 @@
 #define INTERFACE_H
 
 #include <stddef.h>
+#include <stdio.h>
+#include <unistd.h>
 
 typedef enum tensor_data_type {
     DATA_TYPE_FLOAT = 1,
@@ -20,7 +22,7 @@ typedef enum tensor_data_type {
 
 typedef struct tensors_struct {
     size_t num_tensors;                 // Number of tensors
-    const char** names;                 // Names of the tensors
+    char** names;                       // Names of the tensors
     tensor_data_type* data_types;       // Data types of the tensors
     size_t* ranks;                      // Ranks of the tensors
     size_t** shapes;                    // Shapes of the tensors
@@ -35,6 +37,20 @@ typedef struct tensors_struct {
 int runtime_initialization();
 
 /**
+ * @brief This function is called to initialize the runtime environment with arguments.
+ * 
+ * @note If this function is used to initialize the runtime, the runtime_initialization() function should not be called.
+ * 
+ * @note If an unknown key is passed, the runtime should ignore it.
+ *
+ * @param length The number of arguments.
+ * @param keys The keys of the arguments.
+ * @param values The values of the arguments.
+ * @return 0 if the initialization is successful, and non-zero otherwise.
+ */
+int runtime_initialization_with_args( int length, const char **keys, const void **values );
+
+/**
  * @brief This function is called to load the model from the file path.
  *
  * @param file_path The path to the model file.
@@ -43,20 +59,29 @@ int runtime_initialization();
 int runtime_model_loading(const char *file_path);
 
 /**
- * @brief This function is called to execute the model on the input tensors.
+ * @brief This function is called to store the input tensors to be processed by the runtime when it's ready.
+ * 
+ * @note This function copies the reference of the input tensors, not the tensors themselves. 
+ * The runtime will free the memory of the input tensors after its processed.
+ * 
+ * @warning If this function returns a non-zero value, the caller is expected to free the memory of the input tensors.
  *
- * @param input_tensors The input tensors to feed to the model. Note that the input tensors are completely managed by the caller (both allocation and freeing).
- * @param output_tensors The output tensors computed during inference. Note that the output tensors are completely managed by this function (both allocation and freeing).
- * @return 0 if the execution is successful, and non-zero otherwise.
+ * @param tensors The input tensors for the inference processing. 
+ * 
+ * @return 0 if the input tensors are stored successfully, and non-zero otherwise.
  */
-int runtime_inference_execution(tensors_struct *input_tensors, tensors_struct *output_tensors);
+int send_input(tensors_struct *input_tensors);
 
 /**
- * @brief This function is called after each inference run to clean up the output tensors and any other resources if needed.
+ * @brief This function is called to retrieve any available output tensors after the inference process is done.
  *
- * @return 0 if the cleanup is successful, and non-zero otherwise.
+ * @note The caller is responsible for managing the memory of the output tensors.
+ * 
+ * @param output_tensors The output tensors of the inference process.
+ * 
+ * @return 0 if an output is available and returned, and non-zero otherwise.
  */
-int runtime_inference_cleanup();
+int receive_output(tensors_struct **output_tensors);
 
 /**
  * @brief This function is called to destroy the runtime environment after the inference process is stopped.
