@@ -1,9 +1,9 @@
 # Illustrative Example
 
-This illustrative example aims to provide a starting point for all parties involved in the OAX initiative,
+This illustrative example aims to provide a starting point for all parties involved in the OAAX initiative:
 contributors and users.
 It details the essential components that a runtime, and a conversion toolchain should have. 
-However, this example is not meant to run real-world models.
+However, this code doesn't run real-world models, it's used for illustrative purposes only.
 
 > This example is meant to be run on a Ubuntu 20.04+ machine on a x86_64 architecture.
 
@@ -11,14 +11,14 @@ However, this example is not meant to run real-world models.
 
 The example is split into two main parts:
 
-- The first part provides a simple implementation of an OAX runtime and an OAX conversion toolchain.
-  It mainly sets the common ground for the OAX initiative and provides a reference implementation for the OAX runtime
+- The first part provides a simple implementation of an OAAX runtime and an OAAX conversion toolchain.
+  It mainly sets the common ground for the OAAX initiative and provides a skeleton implementation for the OAAX runtime
   and conversion toolchain.
-- The second part shows how to use any prebuilt OAX toolchain and runtime to convert a simple model and then run it.
+- The second part shows how to use any prebuilt OAAX toolchain and runtime to convert a simple model and then run it.
 
 ## Part 1: Reference Implementation
 
-### OAX Conversion Toolchain
+### OAAX Conversion Toolchain
 
 The conversion toolchain is expected to convert a platform-agnostic model to a platform-specific model format.
 Hence, the toolchain, which is in practice a docker image, is expected to have an entrypoint that takes two parameters:
@@ -44,12 +44,12 @@ bash Toolchain/build-toolchain.sh
 
 This will build the docker image, and save it in the `Toolchain/build/` directory.
 
-### OAX Runtime
+### OAAX Runtime
 
-[Runtime](Runtime/src/library.c) provides a simple implementation of the OAX runtime.
-The runtime is expected to "load" the platform-specific model and run it on.
+[Runtime](Runtime/src/library.c) provides a simple implementation of the OAAX runtime.
+The runtime is expected to "load" the platform-specific model and run it asynchronously.
 
-The full interface that the OAX runtime is expected to adhere to is provided is
+The full interface that the OAAX runtime is expected to adhere to is provided is
 this [header](Runtime/include/interface.h) file.
 
 To build the runtime, run the following command (cmake and a C compiler are required):
@@ -60,7 +60,7 @@ bash Runtime/build-runtime.sh
 
 ## Part 2: Usage Example
 
-This part shows how to use the prebuilt OAX toolchain and runtime to demonstrate the conversion of a simple model and
+This part shows how to use the prebuilt OAAX toolchain and runtime to demonstrate the conversion of a simple model and
 running it.
 
 ### Convert a model
@@ -83,7 +83,7 @@ docker load -i "./artifacts/oaax-toolchain-latest.tar"
 and run the conversion process on the ONNX file:
 
 ```bash
-docker run -v "./artifacts:/app/run" oax-toolchain "/app/run/model.onnx" "/app/run/build"
+docker run -v "./artifacts:/app/run" oaax-toolchain "/app/run/model.onnx" "/app/run/build"
 ```
 
 The resulting model file will be saved in the `Usage/artifacts/build/` directory, along with a logs file that contains
@@ -92,7 +92,7 @@ the conversion process logs.
 ### Run the model
 
 After converting the model (available at: `Usage/artifacts/build/`),
-the next step is to run it using the example OAX runtime.
+the next step is to run it using the example OAAX runtime.
 To simulate the inference process, run the following command:
 
 ```bash
@@ -107,8 +107,8 @@ cmake ..
 make
 ```
 
-and run the pre-converted model (`model.oax`) using the pre-built runtime library (`libRuntimeLibrary.so`):
+and run the pre-converted model (`model.oaax`) using the pre-built runtime library (`libRuntimeLibrary.so`):
 
 ```bash
-./build/main ./artifacts/libRuntimeLibrary.so ./artifacts/build/model.oax
+./build/main ./artifacts/libRuntimeLibrary.so ./artifacts/build/model.oaax
 ```

@@ -85,26 +85,27 @@ Docker images) to convert the model from [ONNX](https://onnx.ai) format to a for
 docker run --name $toolchain_container_name -v "$output_directory:/app/run" oaax-toolchain "/app/run/model.onnx" "/app/run/build"
 ````
 
-(look [here](https://github.com/oaax-standard/OAAX/blob/main/Illustrative%20example/Usage/scripts/simulate-conversion.sh)
+(look [here](Illustrative%20example/Usage/scripts/simulate-conversion.sh)
 for a working example including context).
 
 The conversion results in a file that is executable on the XPU. Next the user uses the (contributed) runtime to run the
-artifact (i.e., to generate inferences). Runtimes are implemented as shared library files with the core
+artifact (i.e., to perform inference). Runtimes are implemented as shared library files with the core
 inference execution call being:
 
 ````
-// Signature of the "run inference" function:
-int runtime_inference_execution(tensors_struct *input_tensors, tensors_struct *output_tensors);
+// Function for sending input tensors to the XPU
+int send_input(tensors_struct *input_tensors);
+// Function for receiving output tensors from the XPU after inference
+int receive_output(tensors_struct **output_tensors);
 ````
 
-(look [here](https://github.com/oaax-standard/OAAX/blob/main/Illustrative%20example/Usage/artifacts/interface.h) for a
-working example including context).
+(look [here](Illustrative%20example/Usage/artifacts/interface.h) for a working example including context).
 
 ### OAAX contributor example
 
 We provide a number of code examples that allow contributors to contribute OAAX toolchains and runtimes. A "getting
 started" description can be
-found [here](https://github.com/oaax-standard/OAAX/tree/main/Illustrative%20example#part-1-reference-implementation),
+found [here](Illustrative%20example/README.md#part-1-reference-implementation),
 whereas reference implementations can be found [here](https://github.com/oaax-standard/reference-implementation).
 
 ## Advanced examples and use cases

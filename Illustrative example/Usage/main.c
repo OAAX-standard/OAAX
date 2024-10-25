@@ -4,17 +4,17 @@
 #include "interface.h"
 
 typedef int (*runtime_initialization_t)();
+typedef int (*runtime_initialization_with_args_t)(int, const char *, const void **);
 typedef int (*runtime_model_loading_t)(const char *);
-typedef int (*runtime_inference_execution_t)(tensors_struct *, tensors_struct *);
-typedef int (*runtime_inference_cleanup_t)();
+typedef int (*send_input_t)(tensors_struct *);
+typedef int (*receive_output_t)(tensors_struct **);
 typedef int (*runtime_destruction_t)();
 typedef const char *(*runtime_error_message_t)();
 typedef const char *(*runtime_version_t)();
 typedef const char *(*runtime_name_t)();
 
-void print_error_message(const char *error_message) {
-    fprintf(stderr, "Error: %s\n", error_message);
-}
+static void free_tensors_struct(tensors_struct *tensors);
+void print_error_message(const char *error_message);
 
 int main(int argc, char **argv) {
     if (argc != 3){
@@ -34,15 +34,16 @@ int main(int argc, char **argv) {
     printf("Runtime library loaded successfully\n");
 
     runtime_initialization_t runtime_initialization = (runtime_initialization_t)dlsym(handle, "runtime_initialization");
+    runtime_initialization_with_args_t runtime_initialization_with_args = (runtime_initialization_with_args_t)dlsym(handle, "runtime_initialization_with_args");
     runtime_model_loading_t runtime_model_loading = (runtime_model_loading_t)dlsym(handle, "runtime_model_loading");
-    runtime_inference_execution_t runtime_inference_execution = (runtime_inference_execution_t)dlsym(handle, "runtime_inference_execution");
-    runtime_inference_cleanup_t runtime_inference_cleanup = (runtime_inference_cleanup_t)dlsym(handle, "runtime_inference_cleanup");
+    send_input_t send_input = (send_input_t)dlsym(handle, "send_input");
+    receive_output_t receive_output = (receive_output_t)dlsym(handle, "receive_output");
     runtime_destruction_t runtime_destruction = (runtime_destruction_t)dlsym(handle, "runtime_destruction");
     runtime_error_message_t runtime_error_message = (runtime_error_message_t)dlsym(handle, "runtime_error_message");
     runtime_version_t runtime_version = (runtime_version_t)dlsym(handle, "runtime_version");
     runtime_name_t runtime_name = (runtime_name_t)dlsym(handle, "runtime_name");
 
-    if (!runtime_initialization || !runtime_model_loading || !runtime_inference_execution || !runtime_inference_cleanup || !runtime_destruction || !runtime_error_message || !runtime_version || !runtime_name) {
+    if (!runtime_initialization || !runtime_model_loading || !send_input || !receive_output || !runtime_destruction || !runtime_error_message || !runtime_version || !runtime_name) {
         print_error_message(dlerror());
         dlclose(handle);
         return 1;
@@ -69,26 +70,26 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    // execute model
-    tensors_struct input_tensors, output_tensors;
-    while(1){
-        printf("\n");
-
-        input_tensors.num_tensors = 1;
-        if (runtime_inference_execution(&input_tensors, &output_tensors)) {
+    // send inputs
+    for(int i=0; i<10; i++) {
+        tensors_struct *tensors = malloc(sizeof(tensors_struct));
+        memset(tensors, 0, sizeof(tensors_struct));
+        tensors->num_tensors = 0; // empty input
+        if (send_input(tensors)) {
             print_error_message(runtime_error_message());
-            break;
+            free_tensors_struct(tensors);
+            continue;
         }
-
-        sleep(1); // Simulate the inference process
-
-        printf("Number of output tensors: %ld\n", output_tensors.num_tensors);
-
-        // free output message
-        if (runtime_inference_cleanup()) {
+    }
+    // receive outputs
+    for(int i=0; i<10; i++) {
+        tensors_struct *output_tensors = NULL;
+        if (receive_output(&output_tensors)) {
             print_error_message(runtime_error_message());
-            break;
+            continue;
         }
+        printf("Received output tensors\n");
+        free_tensors_struct(output_tensors);
     }
 
     // finalize runtime environment
@@ -102,4 +103,49 @@ int main(int argc, char **argv) {
     dlclose(handle);
 
     return 0;
+}
+
+static void free_tensors_struct(tensors_struct *tensors) {
+  if (tensors->data_types != NULL) {
+    free(tensors->data_types);
+    tensors->data_types = NULL;
+  }
+
+  if (tensors->ranks != NULL) {
+    free(tensors->ranks);
+    tensors->ranks = NULL;
+  }
+
+  if (tensors->data != NULL) {
+    for (size_t i = 0; i < tensors->num_tensors; i++) {
+      if (tensors->data[i] != NULL)
+        free(tensors->data[i]);
+    }
+    free(tensors->data);
+    tensors->data = NULL;
+  }
+
+  if (tensors->shapes != NULL) {
+    for (size_t i = 0; i < tensors->num_tensors; i++) {
+      if (tensors->shapes[i] != NULL)
+        free(tensors->shapes[i]);
+    }
+    free(tensors->shapes);
+    tensors->shapes = NULL;
+  }
+
+  if (tensors->names != NULL) {
+    for (size_t i = 0; i < tensors->num_tensors; i++) {
+      if (tensors->names[i] != NULL)
+        free(tensors->names[i]);
+    }
+    free(tensors->names);
+    tensors->names = NULL;
+  }
+
+  free(tensors);
+}
+
+void print_error_message(const char *error_message) {
+    fprintf(stderr, "Error: %s\n", error_message);
 }
