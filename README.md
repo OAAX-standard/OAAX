@@ -9,6 +9,8 @@
 </picture>
 </p>
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10352/badge)](https://www.bestpractices.dev/projects/10352)
+
 # The Open AI Accelerator eXchange (OAAX) Standard
 
 This repository, and other linked repositories under the [OAAX-standard organization](https://github.com/oaax-standard),
