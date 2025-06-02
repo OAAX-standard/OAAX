@@ -2,3 +2,43 @@ site_name: OAAX
 site_url: https://oaax.org
 theme:
   name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - content.tabs.link
+    - content.tooltips
+  logo: https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png       # optional
+  favicon: https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png # optional
+repo_url: https://github.com/OAAX-standard/OAAX
+repo_name: GitHub
+edit_uri: edit/main/docs/     # Enable "Edit on GitHub" links
+
+nav:
+  - Home: 
+    - OAAX: index.md
+    - Getting Started: getting-started.md
+  - User Guide:
+    - Basic Usage: user-guide.md
+  - Contributor Guide:
+    - Contributing: contributor-guide.md
+  - OAAX Specification:
+    - Standard: oaax-specification.md
+  
