@@ -107,9 +107,6 @@ No, the runtime runs natively. However, you can deploy it inside containers, iso
 **How often does the standard change?**
 OAAX aims for **stable, versioned releases**. Breaking changes are minimized to maintain compatibility.
 
-**How can I join the steering group?**
-Active contributors or organizations using OAAX in production may request to join the steering committee. See [Governance](../community/governance.md) for details.
-
 ---
 
 ### 🧾 Licensing & Legal
