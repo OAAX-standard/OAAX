@@ -34,11 +34,11 @@ edit_uri: edit/main/docs/     # Enable "Edit on GitHub" links
 nav:
   - Home: 
     - OAAX: index.md
-    - Getting Started: getting-started.md
-  - User Guide:
-    - Basic Usage: user-guide.md
-  - Contributor Guide:
-    - Contributing: contributor-guide.md
-  - OAAX Specification:
-    - Standard: oaax-specification.md
-  
+    - Getting Started: Getting Started.md
+    - OAAX Specification: Specification.md
+    - FAQ: FAQ.md
+    - Contributing: Contributing.md
+  - CPU: CPU.md
+  - Intel: Intel.md
+  - Nvidia: Nvidia.md
+  - DEEPX: DEEPX.md
