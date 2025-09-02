@@ -35,9 +35,9 @@ nav:
   - Home: 
     - OAAX: index.md
     - Getting Started: Getting Started.md
+    - Compliant AI Accelerators: Compliant XPU.md
     - OAAX Specification: Specification.md
     - FAQ: FAQ.md
-    - Contributing: Contributing.md
   - CPU: CPU.md
   - Intel: Intel.md
   - Nvidia: Nvidia.md

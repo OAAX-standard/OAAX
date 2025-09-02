@@ -1,34 +1,56 @@
 # Getting Started with OAAX
 
-OAAX (Open AI Accelerator eXchange) is a standard designed to facilitate the deployment of AI models across various hardware accelerators, such as GPUs, TPUs, and specialized AI chips, as depicted in the image below:
+To deploy an AI model on an OAAX-compliant AI Accelerator, the first step is to ensure that the model is compatible with the AI accelerator. That can be achieved by checking their documentation or attempting to convert the model using their conversion toolchain. If the conversion is successful, the next step is to ensure that the runtime-host machine is properly set up with the necessary software and dependencies. Refer to the documentation of the XPU to validate the setup.
 
-<img src="./media/ONNX-OAAX.jpeg" width="70%" alt="OAAX - ONNX" />
+To illustrate the OAAX workflow, let's consider an example of running the nano YOLOv8 model from Ultralytics on Intel CPU, NVIDIA GPU, and DEEPX.
 
-OAAX achieves this by providing a unified conversion and runtime interface, enabling developers to convert ONNX models into hardware-specific formats and run them seamlessly across different platforms using a standardized API.
+## Requirements
 
-## Terminology
+- An x86_64 machine where the model conversion will take place.
+- A machine (or machines) with the AI accelerators installed.
 
-Before delving into the OAAX standard, it's important to understand some key terms that are frequently used:
+## Yolov8n deployment steps
 
-- **OAAX**: Open AI Accelerator eXchange, a standard for deploying AI models across different hardware accelerators.
-- **XPU**, **AI accelerator** or **AI hardware**: Any processing unit that can execute AI models, such as GPUs, TPUs, or specialized AI accelerators.
-- **Compile** or **Convert**: The process of converting an ONNX model into a format optimized for a specific XPU.
-- **Runtime**: The library that provides the necessary functions to interact with the XPU.
-- **Conversion Toolchain**: The software that compiles ONNX models.
-- **Input/Output Tensors**: Data structures that hold the input and output data for the model.
-- **Host**: The software that interacts with runtime to offload computation to the AI hardware.
+1. Export the model from PyTorch to ONNX.
+2. Download the conversion toolchain for the target XPUs: Intel, NVIDIA, DEEPX.
+3. Convert the model using the conversion toolchain for each XPU.
+4. Set up the runtime-host machines by installing the necessary OAAX runtime libraries and dependencies.
+5. Run the model on each XPU using the appropriate OAAX runtime.
 
-## Example Workflow
 
-Typically, a user would follow these steps to use OAAX to run an AI model on an OAAX-compliant XPU:
+### Exporting the model to ONNX
+- Optionally, create a separate Python virtual environment for this process.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+- Install the [Ultralytics](https://github.com/ultralytics/ultralytics) using:
+```bash
+pip install ultralytics
+```
+- Install the ONNX package
+```bash
+pip install onnx==1.15.0
+```
+- Export the model to ONNX format using the following command:
+```bash
+yolo export model=yolov8n.pt format=onnx
+```
 
-1. User runs the conversion toolchain on an ONNX model to generate an XPU-specific OAAX bundle.
-2. Host application loads a runtime library (`libRuntimeLibrary.so`).
-3. Host calls `runtime_initialization()` to initialize the runtime.
-4. Host calls `runtime_model_loading("model.oaax")`.
-5. Host sends inputs using `send_input(input_tensors)` and retrieves outputs using `receive_output(output_tensors_holder)` asynchronously.
-6. Host destroys runtime with `runtime_destruction()`.
+This process will generate a file named `yolov8n.onnx` that we'll later use as a source model for the conversion toolchains.
 
-## Object Detection Example
+### Download the conversion toolchain
 
-To illustrate the OAAX workflow, let's consider an example of running the YOLO v11 model on an OAAX-compliant XPU:
+Please refer to the documentation of each XPU to download their conversion toolchain.
+
+### Convert the model
+
+Please refer to the documentation of each XPU for instructions on how to convert the ONNX model to their specific format.
+
+### Set up the runtime-host machines
+
+Please refer to the documentation of each XPU to validate the setup of the runtime-host machines.
+
+### Run the model
+
+Please use the example in the examples repository.

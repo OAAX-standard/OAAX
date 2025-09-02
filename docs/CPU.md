@@ -2,12 +2,25 @@
 
 OAAX provides a runtime and conversion toolchain for running ONNX models on CPUs on both **Ubuntu** and **Windows**.
 
-# Usage 
+# Requirements
+
+## Hardware
+
+- x86_64 or aarch64 CPU
+- AVX2 instruction set support (for x86_64)
+
+## Software
+
+- Debian 11 or higher 
+- Ubuntu 20.04 or higher
+- Windows 10, 11 (for x86_64)
+
+# Usage
 
 ## Runtime Library
 
 The runtime library implements the OAAX's runtime interface for initializing, loading, running inference and destroying the runtime.
-The initialization in particular can be done without providing a configuration by calling "int runtime_initialization();" directly or by providing these parameters:
+The initialization in particular can be done without providing a configuration by calling `int runtime_initialization();` directly or by providing these parameters to `int runtime_initialization_with_args(int length, char **keys, void **values);`:
 
 - `n_duplicates`: Number of duplicates of the model to create. This is useful for running multiple inferences asynchronously. Default value is 1.
 - `n_threads_per_duplicate`: Number of threads to use per duplicate. This helps control the amount of CPU resources to dedicate to the inference. Default value is 4.
@@ -18,16 +31,12 @@ The initialization in particular can be done without providing a configuration b
 
 ## Conversion Toolchain
 
-The conversion toolchain is used to validate, optimize and simplify the ONNX models.
+The conversion toolchain is used to validate, optimize and simplify the ONNX models. At the end of the process it produces a simplified ONNX model.
 
 It can be used as follows:
 ```bash
 docker run -v /path/to/model-directory:/model  oaax-cpu-toolchain:latest /model/model.onnx /model/output
 ```
-
-# Known limitations
-
-- The runtime is implemented to run on AVX2 instruction set and above for x86_64. It is not compatible with older CPUs that do not support it.
 
 # Download links and compatibility matrix
 

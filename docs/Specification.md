@@ -6,10 +6,12 @@ This document outlines the official specification for OAAX (Open AI Accelerator 
 
 OAAX consists of two core components:
 
-| Component          | Description                                                                                                   |
-| ------------------ | ------------------------------------------------------------------------------------------------------------- |
-| **OAAX Toolchain** | Docker-based conversion pipeline that takes an ONNX model and outputs a bundle targeting a specific XPU       |
-| **OAAX Runtime**   | A shared library (.so or .dll) that implements the OAAX runtime API and executes the bundle of a specific XPU |
+| Component          | Description                                                                                                   | Specification                          |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| **OAAX Toolchain** | Docker-based conversion pipeline that takes an ONNX model and outputs a binary targeting a specific XPU       | [Specs](#oaax-toolchain-specification) |
+| **OAAX Runtime**   | A shared library (.so or .dll) that implements the OAAX runtime API and executes the binary of a specific XPU | [Specs](#oaax-runtime-specification)   |
+
+
 
 ## OAAX Toolchain Specification
 

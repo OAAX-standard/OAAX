@@ -1,6 +1,7 @@
 # ❓ OAAX Frequently Asked Questions (FAQ)
 
-Welcome to the OAAX FAQ. Below are answers to common questions about the OAAX standard, its goals, usage, and community.
+Welcome to the OAAX FAQ.  
+Below are answers to common questions about the OAAX standard, its goals, usage, and community.
 
 ---
 
