@@ -6,9 +6,8 @@
 
 OAAX serves as a bridge between popular AI frameworks and diverse hardware accelerators. Models developed in frameworks such as TensorFlow, PyTorch, Hugging Face, and others are first exported to the ONNX format, a widely adopted standard for interoperability. OAAX then connects ONNX models to a variety of hardware backends—including CPUs, Intel, NVIDIA, DEEPX, EdgeCortix, Hailo, and more—enabling seamless deployment across heterogeneous compute platforms without requiring framework- or vendor-specific integration.
 
-This is achieved by providing a unified conversion and runtime interfaces, enabling developers to convert ONNX models into hardware-specific formats and run them seamlessly across different platforms using a standardized API.
-
-<img src="./media/ONNX-OAAX.svg" width="100%" alt="ONNX - OAAX" />
+This is achieved by providing a unified conversion and runtime interfaces, enabling developers to convert ONNX models into hardware-specific formats and run them seamlessly across different platforms using a standardized API.  
+In practice, OAAX enables models from frameworks like TensorFlow, PyTorch, Hugging Face, and others—exported via ONNX—to run seamlessly across diverse hardware accelerators such as CPUs, Intel, NVIDIA, DEEPX, EdgeCortix, and Hailo.
 
 ## Terminology
 
@@ -21,6 +20,7 @@ Before delving into the OAAX standard, it's important to understand some key ter
 - **Conversion Toolchain**: The software that compiles ONNX models.
 - **Input/Output Tensors**: Data structures that hold the input and output data for the model.
 - **Host** or **Runtime host**: The software that interacts with runtime to offload model computation to the AI hardware.
+- **OAAX-compliant XPU**: Refers to any AI accelerator that has an implementation of the OAAX standard, including both the conversion toolchain and the runtime library.
 
 ## Usage workflow
 

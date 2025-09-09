@@ -1,7 +1,7 @@
 # Compliant AI Accelerators
 
-This page provides an overview of the AI accelerators compliant with OAAX.  
-For more details, please refer to their respective documentation.
+This page provides an overview of the AI accelerators that have an OAAX-compliant implementations.  
+For more details about deploying on an AI accelerator, please refer to its respective documentation page.
 
 ## CPU
 
