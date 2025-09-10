@@ -33,9 +33,6 @@ theme:
 repo_url: https://github.com/OAAX-standard/OAAX
 repo_name: GitHub
 edit_uri: edit/main/docs/     # Enable "Edit on GitHub" links
-plugins:
-  - search
-  - open-in-new-tab
 
 markdown_extensions:
   - attr_list
