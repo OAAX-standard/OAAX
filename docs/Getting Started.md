@@ -1,4 +1,4 @@
-# Getting Started with OAAX
+## Getting Started with OAAX
 
 To deploy an AI model on an OAAX-compliant AI Accelerator, the first step is to ensure that the model is compatible with the AI accelerator. That can be achieved by checking their documentation or attempting to convert the model using their conversion toolchain. If the conversion is successful, the next step is to ensure that the runtime-hosting machine is properly set up with the necessary software and dependencies. Refer to the documentation of the XPU to validate the setup.
 
@@ -43,7 +43,7 @@ This process will generate a file named `yolov8n.onnx` that we'll later use as a
 
 ### Download the conversion toolchain
 
-You can download the conversion toolchain for each XPU from their respective repositories or using the links below:
+You can download the conversion toolchain for each XPU from their respective documentation page or using the links below:
 
 - [Intel toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/INTEL/oaax-intel-toolchain.tar)
 - [NVIDIA toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/NVIDIA/oaax-nvidia-toolchain.tar)
@@ -51,9 +51,9 @@ You can download the conversion toolchain for each XPU from their respective rep
 
 To download them on Linux, you can use the following commands:
 ```bash
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/NVIDIA/oaax-nvidia-toolchain.tar
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.0.0/DEEPX/oaax-deepx-toolchain.tar
+wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/INTEL/oaax-intel-toolchain.tar
+wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/NVIDIA/oaax-nvidia-toolchain.tar
+wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/DEEPX/oaax-deepx-toolchain.tar
 ```
 
 Now, you can load them into Docker using the following commands:
@@ -72,26 +72,125 @@ You can use the following commands to perform the conversion for each XPU:
 
 #### Intel
 
+The conversion can be initiated using the following command:
 ```bash
-docker run --rm -v ./model:/tmp/run oaax-intel-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/output/
+docker run --rm -v ./model:/tmp/run oaax-intel-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/intel-output/
 ```
 
-The output ONNX will be located in the `./model/output/` directory.
+The output ONNX will be located in the `./model/intel-output/yolov8n-simplified.onnx` directory.
 
 #### NVIDIA
 
+The conversion can be initiated using the following command:
 ```bash
-docker run --rm -v ./model:/tmp/run oaax-nvidia-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/output/
+docker run --rm -v ./model:/tmp/run oaax-nvidia-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/nvidia-output/
 ```
+The output ONNX will be located in the `./model/output/yolov8n-simplified.onnx` directory.
 
 #### DEEPX
 
+To prepare the zip archive, we'll need to use the following JSON configuration file. Save it as `deepx-config.json` in the `./model` directory.
+<details> 
+<summary>deepx-config.json</summary>
+```json
+{
+  "inputs": {
+    "images": [
+      1,
+      3,
+      640,
+      640
+    ]
+  },
+  "calibration_num": 100,
+  "calibration_method": "ema",
+  "train_batchsize": 32,
+  "num_samples": 1024,
+  "default_loader": {
+    "dataset_path": "/app/dataset",
+    "file_extensions": [
+      "jpeg",
+      "jpg",
+      "png",
+      "JPEG"
+    ],
+    "preprocessings": [
+      {
+        "resize": {
+          "mode": "pad",
+          "size": 640,
+          "pad_location": "edge",
+          "pad_value": [
+            114,
+            114,
+            114
+          ]
+        }
+      },
+      {
+        "div": {
+          "x": 255
+        }
+      },
+      {
+        "convertColor": {
+          "form": "BGR2RGB"
+        }
+      },
+      {
+        "transpose": {
+          "axis": [
+            2,
+            0,
+            1
+          ]
+        }
+      },
+      {
+        "expandDim": {
+          "axis": 0
+        }
+      }
+    ]
+  }
+}
+```
+</details>
 
+In addition, you'll need to prepare a dataset of images for calibration. Save the images in a directory named `dataset` inside the `./model` directory.
+
+Now, you can create the zip archive using the following command:
+```bash
+cd model
+zip -r deepx-yolov8n.zip yolov8n.onnx deepx-config.json dataset
+```
+
+The next step is to download the DX COM SDK from DEEPX developer portal, since it's not included by default in the conversion toolchain. You can download it from [here](https://developer.deepx.ai/).
+Once it is downloaded and unpacked next to the `./model` directory, you can run the conversion using the following command:
+```bash
+docker run --rm -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:latest /app/artifacts/deepx-yolov8n.zip /app/artifacts/deepx-output/
+```
+
+The compiled model will be located at `./model/deepx-output/yolov8n.dxnn`.
+
+#### Summary
+At this point, you should have the following files inside the `./model` directory:
+
+- `yolov8n.onnx`: The original ONNX model exported from Ultralytics framework.
+- `intel-output/yolov8n-simplified.onnx`: The optimized ONNX model for Intel CPUs.
+- `nvidia-output/yolov8n-simplified.onnx`: The optimized ONNX model for NVIDIA GPUs.
+- `deepx-output/yolov8n.dxnn`: The compiled model for DEEPX AI accelerator.
 
 ### Set up the runtime-hosting machines
 
-Please refer to the documentation of each XPU to validate the setup of the runtime-hosting machines.
+This step involves installing the necessary driver and SDK libraries for each AI accelerator on the respective runtime-hosting machines. Please refer to the official documentation of each XPU for detailed instructions on how to set up the environment.
+
+> Note: Ensure you have hardware that is supported by the respective XPU, and that you install the supported versions of the drivers and SDKs.
 
 ### Run the model
 
-Please use the example in the examples repository.
+Finally, the last step is to run the model on each XPU using the appropriate runtime. Please consult each XPU's page for the appropriate runtime library to use based on your hardware and software environment:
+
+- [Intel runtime](./Intel.md#download-links-and-compatibility-matrix){:target="_blank"}
+- [NVIDIA runtime](./NVIDIA.md#download-links-and-compatibility-matrix){:target="_blank"}
+- [DEEPX runtime](./DEEPX.md#download-links-and-compatibility-matrix){:target="_blank"}

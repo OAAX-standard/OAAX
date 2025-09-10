@@ -20,6 +20,9 @@ theme:
     - navigation.tabs
     - navigation.sections
     - navigation.top
+    - toc.integrate
+    - toc.follow      # Highlight current section
+    - toc.sticky      # Keeps it fixed while scrolling
     - content.code.copy
     - content.action.edit
     - content.action.view
@@ -30,15 +33,20 @@ theme:
 repo_url: https://github.com/OAAX-standard/OAAX
 repo_name: GitHub
 edit_uri: edit/main/docs/     # Enable "Edit on GitHub" links
+plugins:
+  - search
+  - open-in-new-tab
 
+markdown_extensions:
+  - attr_list
 nav:
   - Home: 
     - OAAX: index.md
-    - Getting Started: Getting Started.md
+    - Hello World Example: Getting Started.md
     - Compliant AI Accelerators: Compliant XPU.md
     - OAAX Specification: Specification.md
     - FAQ: FAQ.md
   - CPU: CPU.md
   - Intel: Intel.md
-  - Nvidia: Nvidia.md
+  - NVIDIA: NVIDIA.md
   - DEEPX: DEEPX.md
