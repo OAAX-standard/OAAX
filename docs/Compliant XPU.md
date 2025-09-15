@@ -28,7 +28,3 @@ For more details about deploying on an AI accelerator, please refer to its respe
 
 - Hailo-8
 - Hailo-8L
-
-## Edge Cortix
-
-- Sakura-II

@@ -93,6 +93,8 @@ This command assumes that the model archive is located at `./model/model.zip` an
 
 ## Download links and compatibility matrix
 
+> Please make sure that you're using DXRT v2.9.5 version on the host-running machine.
+
 | OAAX versions | OS            | Version  | CPU architecture | Runtime library                                                                                                            | Conversion toolchain                                                                                            |
 | ------------- | ------------- | -------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 1.0.0         | Ubuntu/Debian | 20.04/11 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v2.9.5.tar.gz) | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/DEEPX/oaax-deepx-toolchain.tar) |
