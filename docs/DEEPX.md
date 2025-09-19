@@ -1,6 +1,11 @@
 ## Overview
 
-DEEPX is a leading on-device AI semiconductor company specializing in Neural Processing Units (NPUs), headquartered in South Korea. They offer two types of NPUs: **DX-M1** and **DX-H1**, designed for efficient AI inference in edge devices, where the latter is the high-performance variant.   
+DEEPX is a leading on-device AI semiconductor company specializing in Neural Processing Units (NPUs), headquartered in South Korea. They offer two types of NPUs: **DX-M1** and **DX-H1**, designed for efficient AI inference in edge devices, where the latter is the high-performance variant. 
+
+<div align="center">
+    <img src="../media/logo-deepx.png" alt="DX-M1 Module" width="70%"/>
+</div>
+
 For more information, please visit [DEEPX's official website](https://www.deepx.ai){:target="_blank"}.
 
 
@@ -29,7 +34,7 @@ After installing the module, install the following components from the DEEPX SDK
 - [NPU Driver](https://github.com/DEEPX-AI/dx_rt_npu_linux_driver){:target="_blank"}
 - [Firmware (FW)](https://github.com/DEEPX-AI/dx_fw){:target="_blank"}
 
-> Make sure to install DXRT v2.9.5 version.
+> Make sure to install DXRT v3.0.0 version.
 
 After installation, run the following command to verify proper setup:
 ```bash
@@ -39,24 +44,23 @@ Make sure the versions of the runtime, driver, and firmware are displayed correc
 You should see output similar to the following:
 
 ```bash
-DXRT v3.0.0  
-=======================================================  
-* Device 0: M1, Accelerator type  
---------------------- Version ---------------------  
-* RT Driver version : v1.7.1  
-* PCIe Driver version : v1.4.1  
--------------------------------------------------------  
-* FW version : v2.1.0  
---------------------- Device Info ---------------------  
-* Memory : LPDDR5 6000 MHz, 3.92GiB  
-* Board : M.2, Rev 1.5  
-* Chip Offset : 0  
-* PCIe : Gen3 X4 [08:00:00]  
+DXRT v3.0.0
+=======================================================
+ * Device 0: M1, Accelerator type
+---------------------   Version   ---------------------
+ * RT Driver version   : v1.7.1
+ * PCIe Driver version : v1.4.1
+-------------------------------------------------------
+ * FW version          : v2.1.4
+--------------------- Device Info ---------------------
+ * Memory : LPDDR5 6000 Mbps, 3.92GiB
+ * Board  : M.2, Rev 1.5
+ * Chip Offset : 0
+ * PCIe   : Gen3 X4 [08:00:00]
 
-NPU 0: voltage 750 mV, clock 1000 MHz, temperature 38'C  
-NPU 1: voltage 750 mV, clock 1000 MHz, temperature 38'C  
-NPU 2: voltage 750 mV, clock 1000 MHz, temperature 38'C  
-dvfs Disabled  
+NPU 0: voltage 750 mV, clock 1000 MHz, temperature 39'C
+NPU 1: voltage 750 mV, clock 1000 MHz, temperature 39'C
+NPU 2: voltage 750 mV, clock 1000 MHz, temperature 39'C
 =======================================================
 ```
 
@@ -77,6 +81,8 @@ The runtime implements the [standard OAAX interface](https://github.com/OAAX-sta
 The DEEPX conversion toolchain doesn't come with DX COM by default, it needs to be manually downloaded and unpacked on the machine where the conversion will be performed.  
 You can find details about the process in the [DEEPX conversion toolchain GitHub repository](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#step-1-download-deepxs-dx-com){:target="_blank"}.
 
+> Make sure to download DX COM 2.0.0 version which is compatible with DXRT v3.0.0
+
 To convert models for use with DEEPX Accelerators, models must be packaged as a ZIP archive.  
 For instructions on preparing the archive, refer to this GitHub guide: [Prepare Your Model](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#step-2-prepare-your-model){:target="_blank"}.
 For guidance on JSON configuration files and supported ONNX operators, refer to the following
@@ -93,13 +99,13 @@ This command assumes that the model archive is located at `./model/model.zip` an
 
 ## Download links and compatibility matrix
 
-> Please make sure that you're using DXRT v2.9.5 version on the host-running machine.
+> Please make sure that you're using DXRT v3.0.0 version on the host-running machine.
 
-| OAAX versions | OS            | Version  | CPU architecture | Runtime library                                                                                                            | Conversion toolchain                                                                                            |
-| ------------- | ------------- | -------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 1.0.0         | Ubuntu/Debian | 20.04/11 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v2.9.5.tar.gz) | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/DEEPX/oaax-deepx-toolchain.tar) |
-| 1.0.0         | Ubuntu/Debian | 20.04/11 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v2.9.5.tar.gz) | ⬆️                                                                                                               |
-| 1.0.0         | Ubuntu/Debian | 22.04/12 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/x86_64/Ubuntu/22.04/library-dxrt-v2.9.5.tar.gz)  | ⬆️                                                                                                               |
-| 1.0.0         | Ubuntu/Debian | 22.04/12 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/aarch64/Ubuntu/22.04/library-dxrt-v2.9.5.tar.gz) | ⬆️                                                                                                               |
-| 1.0.0         | Ubuntu/Debian | 24.04/13 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/x86_64/Ubuntu/24.04/library-dxrt-v2.9.5.tar.gz)  | ⬆️                                                                                                               |
-| 1.0.0         | Ubuntu/Debian | 24.04/13 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/latest/DEEPX/aarch64/Ubuntu/24.04/library-dxrt-v2.9.5.tar.gz) | ⬆️                                                                                                               |
+| OAAX versions | OS            | Version  | CPU architecture | Runtime library                                                                                                           | Conversion toolchain                                                                                           |
+| ------------- | ------------- | -------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 1.1.0         | Ubuntu/Debian | 20.04/11 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v3.0.0.tar.gz) | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar) |
+| 1.1.0         | Ubuntu/Debian | 20.04/11 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v3.0.0.tar.gz) | ⬆️                                                                                                              |
+| 1.1.0         | Ubuntu/Debian | 22.04/12 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/x86_64/Ubuntu/22.04/library-dxrt-v3.0.0.tar.gz)  | ⬆️                                                                                                              |
+| 1.1.0         | Ubuntu/Debian | 22.04/12 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/22.04/library-dxrt-v3.0.0.tar.gz) | ⬆️                                                                                                              |
+| 1.1.0         | Ubuntu/Debian | 24.04/13 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/x86_64/Ubuntu/24.04/library-dxrt-v3.0.0.tar.gz)  | ⬆️                                                                                                              |
+| 1.1.0         | Ubuntu/Debian | 24.04/13 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/24.04/library-dxrt-v3.0.0.tar.gz) | ⬆️                                                                                                              |
