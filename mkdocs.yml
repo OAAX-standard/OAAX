@@ -1,0 +1,49 @@
+site_name: OAAX
+site_url: https://oaax.org
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - toc.integrate
+    - toc.follow      # Highlight current section
+    - toc.sticky      # Keeps it fixed while scrolling
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - content.tabs.link
+    - content.tooltips
+  logo: https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png       # optional
+  favicon: https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png # optional
+repo_url: https://github.com/OAAX-standard/OAAX
+repo_name: GitHub
+edit_uri: edit/main/docs/     # Enable "Edit on GitHub" links
+
+markdown_extensions:
+  - attr_list
+nav:
+  - Home: 
+    - OAAX: index.md
+    - Hello World Example: Getting Started.md
+    - Compliant AI Accelerators: Compliant XPU.md
+    - OAAX Specification: Specification.md
+    - FAQ: FAQ.md
+  - CPU: CPU.md
+  - Intel: Intel.md
+  - NVIDIA: NVIDIA.md
+  - DEEPX: DEEPX.md
