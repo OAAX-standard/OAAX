@@ -1,3 +1,6 @@
+> **📦 Implementation details**  
+> You can find the implementation of the DEEPX NPUs runtime & toolchain in the [Github repository](https://github.com/OAAX-standard/deepx-acceleration){:target="_blank"}.
+
 ## Overview
 
 DEEPX is a leading on-device AI semiconductor company specializing in Neural Processing Units (NPUs), headquartered in South Korea. They offer two types of NPUs: **DX-M1** and **DX-H1**, designed for efficient AI inference in edge devices, where the latter is the high-performance variant. 

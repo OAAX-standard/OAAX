@@ -1,9 +1,13 @@
+> **📦 Implementation details**  
+> You can find the implementation of the CPU runtime & toolchain in the [Github repository](https://github.com/OAAX-standard/reference-implementation){:target="_blank"}.
+
 ## Overview
 
 The CPU reference implementation is the baseline OAAX runtime and toolchain.
 It demonstrates the OAAX standard in practice and provides a portable way to run ONNX models on x86_64 and aarch64 CPUs across Linux and Windows.
 
 This page explains how to convert a model with the CPU toolchain and run it with the CPU runtime.
+
 
 ## Requirements
 

@@ -1,7 +1,7 @@
 # Welcome to OAAX
 <picture>
    <source srcset="./media/logo - white text.png" media="(prefers-color-scheme: dark)" />
-   <img src="./media/logo - black text.png" width="100%" alt="ONNX - OAAX" />
+   <img src="./media/logo - white text.png" width="100%" alt="ONNX - OAAX" />
 </picture>
 
 OAAX serves as a bridge between popular AI frameworks and diverse hardware accelerators. Models developed in frameworks such as TensorFlow, PyTorch, Hugging Face, and others are first exported to the ONNX format, a widely adopted standard for interoperability. OAAX then connects ONNX models to a variety of hardware backends—including CPUs, Intel, NVIDIA, DEEPX, EdgeCortix, Hailo, and more—enabling seamless deployment across heterogeneous compute platforms without requiring framework- or vendor-specific integration.

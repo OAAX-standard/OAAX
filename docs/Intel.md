@@ -1,3 +1,6 @@
+> **📦 Implementation details**  
+> You can find the implementation of the Intel CPUs, GPUs and NPUs runtime & toolchain in the [Github repository](https://github.com/OAAX-standard/intel-acceleration){:target="_blank"}.
+
 ## Overview
 
 OAAX provides a runtime and conversion toolchain for running ONNX models on Intel CPUs, GPUs and NPUs on both **Ubuntu** and **Windows**.
