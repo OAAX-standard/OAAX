@@ -199,6 +199,9 @@ RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors);
  * the models array from runtime_load_models).
  * @param output_tensors Output parameter to receive the output tensors of the
  * inference process. Must not be NULL.
+ * @param timeout_ms Maximum time to wait for output in milliseconds. If zero,
+ * the function returns immediately if no output is available. If negative,
+ * the function waits indefinitely until output is available.
  * @return RuntimeStatus indicating success or failure. Returns
  * RUNTIME_STATUS_NO_OUTPUT_AVAILABLE if no output is ready.
  *
@@ -226,7 +229,7 @@ RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors);
  * - Must return appropriate error status codes on failures.
  * - Must not modify or free the output_tensors after returning it to the caller.
  */
-RuntimeStatus runtime_retrieve_output(int *model_id, Tensors **output_tensors);
+RuntimeStatus runtime_retrieve_output(int *model_id, Tensors **output_tensors, int timeout_ms);
 
 /**
  * @brief Clean up all resources and shutdown the runtime environment.
