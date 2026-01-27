@@ -95,11 +95,15 @@ typedef struct Config {
 /**
  * @brief Configuration structure for a model.
  *
- * Contains the model file path and its configuration arguments.
+ * Contains information on how to load the model and its specific configuration.
+ *
+ * Either file_path or model_data/model_size must be provided to load the model.
  */
 typedef struct ModelConfig {
-  const char *file_path; // Path to the model file
-  Config config;         // Configuration of the model
+  const char *file_path;           // Path to the model file (optional)
+  const unsigned char *model_data; // Pointer to model data in memory (optional)
+  int model_size; // Size of the model data in memory (optional)
+  Config config;  // Configuration of the model
 } ModelConfig;
 
 /**
