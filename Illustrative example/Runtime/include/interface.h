@@ -193,9 +193,9 @@ RuntimeStatus runtime_load_models(int num_models,
 RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors);
 
 /**
- * @brief Retrieve output tensors from a specific model after inference.
+ * @brief Retrieve output tensors from any model inference.
  *
- * @param model_id The identifier of the model to retrieve output from (index in
+ * @param model_id Output parameter to receive the model identifier of the output (index in
  * the models array from runtime_load_models).
  * @param output_tensors Output parameter to receive the output tensors of the
  * inference process. Must not be NULL.
@@ -226,7 +226,7 @@ RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors);
  * - Must return appropriate error status codes on failures.
  * - Must not modify or free the output_tensors after returning it to the caller.
  */
-RuntimeStatus runtime_retrieve_output(int model_id, Tensors **output_tensors);
+RuntimeStatus runtime_retrieve_output(int *model_id, Tensors **output_tensors);
 
 /**
  * @brief Clean up all resources and shutdown the runtime environment.
