@@ -71,7 +71,26 @@ typedef enum TensorElementType {
 } TensorElementType;
 
 /**
- * @brief Structure to hold the tensors.
+ * @brief Descriptor for a single tensor, holding all its metadata and data pointer.
+ *
+ * All fields for one tensor are co-located in this struct, fitting within a single
+ * cache line (~40 bytes on 64-bit), so reading any field for tensor[i] does not
+ * incur additional cache misses for the other fields.
+ *
+ * Ownership of `name`, `shape`, and `data` follows the same rules as the enclosing
+ * Tensors struct (see Tensors documentation).
+ */
+typedef struct TensorDescriptor {
+  char              *name;      // Null-terminated tensor name
+  TensorElementType  data_type; // Element type of the tensor
+  int                rank;      // Number of dimensions
+  int               *shape;     // Array of `rank` dimension sizes
+  size_t             data_size; // Size of `data` in bytes; avoids recomputing from type+shape
+  void              *data;      // Tensor data buffer
+} TensorDescriptor;
+
+/**
+ * @brief Structure holding a set of tensors for one inference request.
  *
  * @note The `id` field is a caller-assigned request identifier used to correlate
  * inputs with their corresponding outputs:
@@ -80,15 +99,16 @@ typedef enum TensorElementType {
  * - This allows callers to match output results to the originating request when multiple
  *   requests are in-flight concurrently (e.g. in multi-threaded or pipelined scenarios).
  * - The runtime must NOT modify or interpret `id`; it is opaque to the runtime.
+ *
+ * @note Memory layout:
+ * - `tensors` is a single allocation of `num_tensors * sizeof(TensorDescriptor)`.
+ * - Each descriptor's `name`, `shape`, and `data` are separately allocated.
+ * - To deep-free: for each descriptor free `name`, `shape`, and `data`; then free `tensors`; then free the Tensors struct itself.
  */
 typedef struct Tensors {
-  int id;                        // Caller-assigned request ID; echoed on output for correlation
-  int num_tensors;               // Number of tensors
-  char **names;                  // Names of the tensors
-  TensorElementType *data_types; // Data types of the tensors
-  int *ranks;                    // Ranks of the tensors
-  int **shapes;                  // Shapes of the tensors
-  void **data;                   // Data of the tensors
+  int               id;          // Caller-assigned request ID; echoed on output for correlation
+  int               num_tensors; // Number of tensors
+  TensorDescriptor *tensors;     // Array of num_tensors descriptors
 } Tensors;
 
 /**
