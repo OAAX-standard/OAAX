@@ -320,6 +320,43 @@ const char *runtime_get_version(void);
  */
 const char *runtime_get_name(void);
 
+/**
+ * @brief Get a JSON string describing the current runtime state and diagnostics.
+ *
+ * @return A null-terminated JSON string with runtime information, or NULL if the
+ * runtime is not initialized.
+ *
+ * The returned JSON object may include any fields the runtime considers useful.
+ * Callers should treat all fields as optional and must not rely on the presence
+ * of any specific key. Suggested fields include:
+ * @code
+ * {
+ *   "active_device":       "CPU",           // device currently used for inference
+ *   "loaded_models":       2,               // number of models currently loaded
+ *   "requests_in_flight":  3,               // inference requests not yet retrieved
+ *   "pool_size":           8,               // output buffer pool size (if applicable)
+ *   "backend_version":     "2024.3.0",      // underlying inference engine version
+ *   "usage":               20,              // Usage percentage of the chip
+ *   "extra":               { ... }          // any additional implementation-specific info
+ * }
+ * @endcode
+ *
+ * @note Caller responsibility:
+ * - Must only call this function after runtime_init() has returned RUNTIME_STATUS_SUCCESS.
+ * - Must not modify or free the returned string.
+ * - Must not store the pointer beyond the next runtime function call or runtime_cleanup().
+ * - Must treat all JSON fields as optional; unknown fields must be ignored.
+ *
+ * @note Runtime responsibility:
+ * - Must return NULL if the runtime is not initialized.
+ * - Must return a valid null-terminated JSON object string when initialized.
+ * - Must ensure the returned string remains valid until the next runtime function call
+ *   or until runtime_cleanup(), whichever comes first.
+ * - Must update the returned information to reflect the current runtime state on each call.
+ * - Must free all memory associated with the info string during runtime_cleanup().
+ */
+const char *runtime_get_info(void);
+
 #ifdef __cplusplus
 }
 #endif
