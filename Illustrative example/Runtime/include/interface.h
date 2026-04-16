@@ -1,6 +1,8 @@
 #ifndef OAAX_RUNTIME_INTERFACE_H
 #define OAAX_RUNTIME_INTERFACE_H
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -70,9 +72,17 @@ typedef enum TensorElementType {
 
 /**
  * @brief Structure to hold the tensors.
+ *
+ * @note The `id` field is a caller-assigned request identifier used to correlate
+ * inputs with their corresponding outputs:
+ * - Caller MUST set `id` to a unique value on each input Tensors passed to runtime_enqueue_input().
+ * - Runtime MUST copy that same `id` value onto the output Tensors returned by runtime_retrieve_output().
+ * - This allows callers to match output results to the originating request when multiple
+ *   requests are in-flight concurrently (e.g. in multi-threaded or pipelined scenarios).
+ * - The runtime must NOT modify or interpret `id`; it is opaque to the runtime.
  */
 typedef struct Tensors {
-  int id;                        // ID of the tensor
+  int id;                        // Caller-assigned request ID; echoed on output for correlation
   int num_tensors;               // Number of tensors
   char **names;                  // Names of the tensors
   TensorElementType *data_types; // Data types of the tensors
@@ -102,7 +112,7 @@ typedef struct Config {
 typedef struct ModelConfig {
   const char *file_path;           // Path to the model file (optional)
   const unsigned char *model_data; // Pointer to model data in memory (optional)
-  int model_size; // Size of the model data in memory (optional)
+  size_t model_size; // Size of the model data in memory (optional)
   Config config;  // Configuration of the model
 } ModelConfig;
 
