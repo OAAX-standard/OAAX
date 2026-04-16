@@ -117,9 +117,9 @@ typedef struct Tensors {
  * Used for both runtime initialization and model-specific configuration.
  */
 typedef struct Config {
-  int length;          // Number of configuration arguments
+  int          length; // Number of configuration arguments
   const char **keys;   // Keys of the configuration arguments
-  const void **values; // Values of the configuration arguments
+  const char **values; // Values of the configuration arguments (always null-terminated strings)
 } Config;
 
 /**
@@ -145,6 +145,7 @@ typedef struct ModelConfig {
  * @note Caller responsibility:
  * - Must provide a valid Config structure with properly allocated keys and values arrays.
  * - Must ensure config.keys and config.values arrays are valid and have length matching config.length.
+ * - Must ensure all values are null-terminated strings (e.g. "2", "latency", "/tmp/cache").
  * - Must not call this function more than once without calling runtime_cleanup() first.
  * - Must handle initialization failures appropriately.
  *
