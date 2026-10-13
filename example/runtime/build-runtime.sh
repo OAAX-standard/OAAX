@@ -1,12 +1,9 @@
-set -e
-
+#!/usr/bin/env bash
+# Builds the example runtime into runtime/build/libRuntimeLibrary.so
+set -euo pipefail
 cd "$(dirname "$0")"
 
-rm -rf build || true
-mkdir build
-cd build
-cmake ..
-make
+cmake -S . -B build
+cmake --build build
 
-echo "Build complete. The runtime library is located at '$(pwd)':"
-ls -l *.so
+echo "Build complete: $(pwd)/build/libRuntimeLibrary.so"

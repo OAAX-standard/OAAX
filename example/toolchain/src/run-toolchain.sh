@@ -1,21 +1,27 @@
-set -e
-cd "$(dirname "$0")"
+#!/usr/bin/env bash
+# Usage: run-toolchain.sh <input-path> <output-directory>
+set -euo pipefail
 
-# Usage: run-toolchain.sh <path-to-model> <output-directory>
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 if [ "$#" -ne 2 ]; then
-    echo "Usage: run-toolchain <path-to-model> <output-directory>"
+    echo "Usage: run-toolchain.sh <input-path> <output-directory>" >&2
     exit 1
 fi
 
 model_path=$1
 output_directory=$2
 
-mkdir -p "$output_directory" || true
+mkdir -p "$output_directory"
 
-# Simulate conversion time by sleeping for 3 seconds
-sleep 3
+if [ ! -f "$model_path" ]; then
+    echo "File not found: $model_path" >&2
+    exit 1
+fi
 
-# Copy same model to output directory under a different name
+# Simulate conversion time
+sleep 1
+
+# A real toolchain would convert the model here. We just copy it under a different name.
 cp "$model_path" "$output_directory/model.oaax"
-# Copy the dummy logs file
-cp ./dummy_logs.json "$output_directory/logs.json"
+cp "$SCRIPT_DIR/dummy_logs.json" "$output_directory/logs.json"
