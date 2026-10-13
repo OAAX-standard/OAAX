@@ -1,5 +1,7 @@
-# Folders
-build
-cmake-build-debug
-.idea
-env
+# Build outputs
+build/
+cmake-build-*/
+site/
+
+# IDEs
+.idea/
