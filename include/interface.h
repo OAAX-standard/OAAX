@@ -8,12 +8,7 @@ extern "C" {
 #endif
 
 /**
- * @brief Status of the runtime.
- *
- * @note The data types of the tensors are borrowed from the ONNX data type
- * enum.
- * @see
- * https://onnx.ai/ir-py/api/generated/onnx_ir.DataType.html#onnx_ir.DataType.UNDEFINED
+ * @brief Status code returned by every runtime function (except the getters).
  */
 typedef enum RuntimeStatus {
   RUNTIME_STATUS_SUCCESS = 0,
@@ -39,6 +34,10 @@ typedef enum RuntimeStatus {
 
 /**
  * @brief Data type of the tensor elements.
+ *
+ * @note The values are borrowed from the ONNX data type enum.
+ * @see
+ * https://onnx.ai/ir-py/api/generated/onnx_ir.DataType.html#onnx_ir.DataType.UNDEFINED
  */
 typedef enum TensorElementType {
   DATA_TYPE_UNDEFINED = 0,
@@ -147,14 +146,16 @@ typedef struct ModelConfig {
  * - Must ensure config.keys and config.values arrays are valid and have length matching config.length.
  * - Must ensure all values are null-terminated strings (e.g. "2", "latency", "/tmp/cache").
  * - Must not call this function more than once without calling runtime_cleanup() first.
- * - Must handle initialization failures appropriately.
+ * - Must handle initialization failures appropriately. After a failure, the caller may retry.
  *
  * @note Runtime responsibility:
  * - Must initialize all runtime resources and prepare the environment for model loading.
  * - Must ignore unknown configuration keys without error.
  * - Must return RUNTIME_STATUS_SUCCESS on successful initialization.
  * - Must return appropriate error status codes on failure.
- * - Must be robust to multiple initialization calls.
+ * - Must return RUNTIME_STATUS_ALREADY_INITIALIZED, and leave the existing state untouched,
+ *   if called again without an intervening runtime_cleanup().
+ * - Must leave the runtime uninitialized (and free everything it allocated) if initialization fails.
  */
 RuntimeStatus runtime_init(Config config);
 
@@ -162,8 +163,8 @@ RuntimeStatus runtime_init(Config config);
  * @brief Load multiple models with their configurations.
  *
  * @param num_models The number of models to load.
- * @param model_configs Array of model configurations. Each config contains the
- * file path and model-specific configuration.
+ * @param model_configs Array of model configurations. Each config contains either
+ * a file path or an in-memory model buffer, plus model-specific configuration.
  * @return RuntimeStatus indicating success or failure.
  *
  * @note Models are identified by their index in the array (0, 1, 2, ...) when
@@ -172,7 +173,8 @@ RuntimeStatus runtime_init(Config config);
  * @note Caller responsibility:
  * - Must ensure runtime_init() has been called successfully before calling this function.
  * - Must provide a valid array of ModelConfig structures with num_models elements.
- * - Must ensure each ModelConfig.file_path points to a valid, accessible model file.
+ * - Must ensure each ModelConfig provides either a file_path that points to a valid, accessible
+ *   model file, or a model_data/model_size pair describing a valid in-memory model.
  * - Must ensure each ModelConfig.config has valid keys and values arrays if length > 0.
  * - Must ensure that config list is accessible and valid while the function is executing.
  * - If a model fails to load, the caller can retry loading another config of models without having to re-call the runtime_init function.
@@ -184,7 +186,8 @@ RuntimeStatus runtime_init(Config config);
  * - Must maintain loaded models until runtime_cleanup() is called.
  * - Must validate model files and configurations before loading.
  * - Must free all resources allocated during the call if any model fails to load.
- * - Mustn't assume that the model_configs array is accessible and valid after the call.
+ * - Mustn't assume that the model_configs array, or any buffer it points to (file_path, model_data,
+ *   config keys/values), is accessible and valid after the call. Anything it needs later must be copied.
  */
 RuntimeStatus runtime_load_models(int num_models,
                                  const ModelConfig *model_configs);
@@ -203,8 +206,9 @@ RuntimeStatus runtime_load_models(int num_models,
  * @note Caller responsibility:
  * - Must ensure the model_id corresponds to a successfully loaded model.
  * - Must provide a valid Tensors structure with all fields properly initialized.
- * - Must ensure all arrays (names, data_types, ranks, shapes, data) are valid and match num_tensors.
- * - Must ensure tensor data matches the specified data_types and shapes.
+ * - Must ensure `tensors` holds num_tensors valid descriptors (name, shape, data allocated separately, see Tensors).
+ * - Must ensure each descriptor's data_type, rank, shape and data_size are consistent with its data buffer.
+ * - Must set a unique `id` on the Tensors structure.
  * - Must transfer ownership of the input_tensors structure to the runtime.
  * - If this function fails for any reason, the caller is responsible for freeing the input_tensors structure.
  *
@@ -237,24 +241,18 @@ RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors);
  * RUNTIME_STATUS_NO_OUTPUT_AVAILABLE if no output is ready.
  *
  * @note Caller responsibility:
- * - Must ensure the model_id corresponds to a successfully loaded model.
- * - Must provide a valid pointer to Tensors** (output_tensors must be a valid pointer to a Tensors structure).
+ * - Must provide valid, non-NULL pointers for model_id and output_tensors.
  * - Upon successful return (RUNTIME_STATUS_SUCCESS), caller owns all memory in the returned Tensors structure.
- * - Must free all memory associated with output_tensors after use, including:
- *   - All arrays (names, data_types, ranks, shapes, data)
- *   - All string data in names array
- *   - All tensor data in data array
- *   - The Tensors structure itself
+ * - Must free all memory associated with output_tensors after use, including, for each descriptor,
+ *   its `name`, `shape` and `data`, then the `tensors` array, then the Tensors structure itself.
  * - Must handle RUNTIME_STATUS_NO_OUTPUT_AVAILABLE by retrying later or checking inference status.
  *
  * @note Runtime responsibility:
- * - Must validate model_id is within valid range and corresponds to a loaded model.
- * - Must check if output is available for the specified model.
+ * - Must write the model that produced the output to *model_id.
  * - Must return RUNTIME_STATUS_NO_OUTPUT_AVAILABLE if no output is ready yet.
- * - Must allocate and populate a new Tensors structure with output data on success.
- * - Must allocate all arrays (names, data_types, ranks, shapes, data) and their contents.
- * - Must allocate memory for all string data in names array.
- * - Must allocate memory for all tensor data in data array.
+ * - Must allocate and populate a new Tensors structure with output data on success, copying the `id`
+ *   of the input Tensors that produced it.
+ * - Must allocate the `tensors` array and every descriptor's `name`, `shape` and `data`.
  * - Must set output_tensors to point to the newly allocated Tensors structure.
  * - Must return RUNTIME_STATUS_SUCCESS when output is successfully retrieved.
  * - Must return appropriate error status codes on failures.
@@ -336,7 +334,7 @@ const char *runtime_get_version(void);
  * - Must return a valid null-terminated name string identifying the runtime implementation.
  * - Must never return NULL.
  * - Must allocate the name string statically or maintain it for the runtime lifetime.
- * - Must ensure the returned string remains valid until runtime_cleanup() is called.
+ * - Must ensure the returned string is valid for the entire lifetime of the runtime.
  * - Should return a unique identifier for the runtime backend (e.g., "OAAX-CUDA", "OAAX-ROCm").
  */
 const char *runtime_get_name(void);
