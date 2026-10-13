@@ -19,9 +19,9 @@ implementations, as well as contributed implementations, of the **Open AI Accele
 
 # About OAAX
 
-The Open AI Accelerator eXchange (OAAX) Standard intends to provide a easy-to-use, easy-to-expand, *standardized* method of
+The Open AI Accelerator eXchange (OAAX) Standard intends to provide an easy-to-use, easy-to-expand, *standardized* method of
 adopting (edge) AI accelerators such as NPUs, GPUs, FPUs or the like
--- we will call them XPUs" throughout -- into edge AI applications. An AI application or pipeline
+-- we will call them "XPUs" throughout -- into edge AI applications. An AI application or pipeline
 consists of several operations that take one specific form of data as input, and transform this data into a more
 meaningful format.
 
@@ -61,7 +61,7 @@ This is the main goal of the OAAX standard.
   the [founding white-paper](https://www.networkoptix.com/blog/2024/03/05/introducing-the-open-ai-accelerator-standard).
 
 * For a more detailed information about the OAAX Standard, including a high-level specification, please see
-  the [position paper](Position%20paper/oaax-paper.pdf).
+  the [position paper](paper/oaax-paper.pdf) (written for the 1.x API; the current API is described in the [specification](https://oaax.org/Specification/)).
 
 # Using OAAX
 
@@ -75,8 +75,8 @@ runtimes, reference implementations, or other tools useful within the OAAX ecosy
 
 ### OAAX user example
 
-> Note that the code example below illustrative and not stand-alone: The full source code of the working example can be
-> found in the [Illustrative example](Illustrative%20example) folder and it's associated README.
+> Note that the code example below is illustrative and not stand-alone: the full source code of the working example can be
+> found in the [example](example) folder and its associated README.
 
 At a high level, from the perspective of trying to move a model from one target to another, the OAAX machinery consists
 of two steps. First, one uses one of the (contributed) model conversion toolchains (which are distributed as stand alone
@@ -84,30 +84,35 @@ Docker images) to convert the model from [ONNX](https://onnx.ai) format to a for
 
 ````
 # Docker run example of an OAAX conversion toolchain
-docker run --name $toolchain_container_name -v "$output_directory:/app/run" oaax-toolchain "/app/run/model.onnx" "/app/run/build"
+docker run --rm -v "$PWD/model:/app/run" oaax-toolchain "/app/run/model.onnx" "/app/run/build"
 ````
 
-(look [here](Illustrative%20example/Usage/scripts/simulate-conversion.sh)
-for a working example including context).
+(look [here](example/run-example.sh) for a working example including context).
 
 The conversion results in a file that is executable on the XPU. Next the user uses the (contributed) runtime to run the
 artifact (i.e., to perform inference). Runtimes are implemented as shared library files with the core
 inference execution call being:
 
 ````
-// Function for sending input tensors to the XPU
-int send_input(tensors_struct *input_tensors);
-// Function for receiving output tensors from the XPU after inference
-int receive_output(tensors_struct **output_tensors);
+// Initialize the runtime, then load one or more models (model_id = index in the array)
+RuntimeStatus runtime_init(Config config);
+RuntimeStatus runtime_load_models(int num_models, const ModelConfig *model_configs);
+// Send input tensors to the XPU (asynchronous; the runtime takes ownership on success)
+RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors);
+// Receive output tensors from the XPU after inference (blocks up to timeout_ms)
+RuntimeStatus runtime_retrieve_output(int *model_id, Tensors **output_tensors, int timeout_ms);
+// Release everything
+RuntimeStatus runtime_cleanup(void);
 ````
 
-(look [here](Illustrative%20example/Usage/artifacts/interface.h) for a working example including context).
+(the full interface is in [include/interface.h](include/interface.h), and
+[example/host/main.c](example/host/main.c) shows how to call it).
 
 ### OAAX contributor example
 
 We provide a number of code examples that allow contributors to contribute OAAX toolchains and runtimes. A "getting
 started" description can be
-found [here](Illustrative%20example/README.md#part-1-reference-implementation),
+found [here](example/README.md),
 whereas reference implementations can be found [here](https://github.com/oaax-standard/reference-implementation).
 
 ## Advanced examples and use cases
@@ -125,7 +130,7 @@ or be involved in maturing the standard.
 The first way to contribute is by creating examples, implementations, or XPU specific OAAX toolchains or runtimes.
 
 > If you are an XPU manufacturer and are looking to add your XPU to OAAX, please refer to the illustrative
-> example [above](#illustrative-implementation-example),
+> example [above](#illustrative-example),
 > or the [reference implementation](https://github.com/oaax-standard/reference-implementation).
 
 There are many places to get started:
@@ -146,7 +151,11 @@ which was slowing market adoption of novel hardware breakthroughs. Thus, from it
 individual hardware manufacturers: it is a user driven initiative trying to make adoption of *any* new accelerator
 designs into actual meaningful business applications as easy as possible.
 
-We are currently actively seeking for member of the OAAX steering committee to further advance the specification of the
-standard in a number of focus groups (planned summer 2024). Please leave your contact details
-at [oaax.org](https://oaax.org) if you want to join the upcoming community efforts. 
+We are seeking members for the OAAX steering committee to further advance the specification of the
+standard in a number of focus groups. Please leave your contact details
+at [oaax.org](https://oaax.org) if you want to join the community efforts.
 
+
+## License
+
+OAAX is licensed under the [Apache 2.0 License](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute.

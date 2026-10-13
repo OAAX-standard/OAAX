@@ -1,7 +1,7 @@
 # Contributing to OAAX
 
 > This is a work in progress. The content of this document is subject to change as the project evolves. Please check back regularly for updates.   
-> Last updated: 2025-04-09 (YYYY-MM-DD)
+> Last updated: 2026-10-13 (YYYY-MM-DD)
 
 Thank you for your interest in contributing to the Open AI Accelerator eXchange (OAAX) project! OAAX is an open standard that aims to simplify and standardize the deployment of AI models across diverse hardware accelerators. By contributing, you're helping us move closer to our mission of democratizing edge AI.
 
@@ -52,6 +52,8 @@ Contribute code to OAAX toolchains and runtimes. This could involve:
 - Improving the performance and robustness of existing implementations.
 
 Refer to the `README.md` of the specific implementation repository for build and contribution instructions.
+
+The runtime API every implementation must follow is defined in [`include/interface.h`](include/interface.h), and the [`example/`](example) folder contains a minimal, runnable toolchain, runtime and host to start from (`bash example/run-example.sh`).
 
 ### Proposing changes to the standard
 
