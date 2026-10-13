@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, oaax-2.0]
 
+permissions:
+  contents: read
+
 jobs:
   example:
     runs-on: ubuntu-latest
