@@ -1,4 +1,4 @@
-# 📜 OAAX Specification (version 1.0)
+# 📜 OAAX Specification (version 2.0)
 
 This document outlines the official specification for OAAX (Open AI Accelerator eXchange). It describes the structure, components, and interfaces that constitute a valid OAAX implementation, including the toolchain and runtime.
 
@@ -9,7 +9,7 @@ OAAX consists of two core components:
 | Component          | Description                                                                                                   | Specification                          |
 | ------------------ | ------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | **OAAX Toolchain** | Docker-based conversion pipeline that takes an ONNX model and outputs a binary targeting a specific XPU       | [Specs](#oaax-toolchain-specification) |
-| **OAAX Runtime**   | A shared library (.so or .dll) that implements the OAAX runtime API and executes the binary of a specific XPU | [Specs](#oaax-runtime-specification)   |
+| **OAAX Runtime**   | A shared library (.so or .dll) that implements the OAAX runtime C API and executes the binary of a specific XPU | [Specs](#oaax-runtime-specification)   |
 
 
 
@@ -209,226 +209,162 @@ Toolchain developers should validate their implementation using:
 
 ## OAAX Runtime Specification
 
-This section defines the **Application Program Interface (API)** and the structural expectations for OAAX-compliant runtime libraries. All OAAX runtimes **must conform** to this interface to ensure interoperability with tooling and host-side components.
+This section defines the **C API** that OAAX-compliant runtime libraries must implement. The header [`interface.h`](https://github.com/OAAX-standard/OAAX/blob/main/include/interface.h) is **normative**: it carries the full caller/runtime contract of every function, and this page only summarizes it. If the two ever disagree, the header wins.
 
 ---
 
-#### 1. Overview
+### 1. Overview
 
-The OAAX runtime interface is defined as a **pure C API**, facilitating dynamic linking and cross-language compatibility. Runtimes are expected to expose a predefined set of functions for:
+A runtime is a shared library (`.so` or `.dll`) exposing a **pure C API**. The host loads it dynamically (`dlopen`/`dlsym` on POSIX, `LoadLibrary`/`GetProcAddress` on Windows).
 
-* Runtime initialization and destruction
-* Model loading
-* Inference input/output
-* Error and version reporting
-
-The runtime is loaded dynamically by the host using mechanisms such as `dlopen`/`dlsym` (POSIX) or `LoadLibrary`/`GetProcAddress` (Windows).
+The API is asynchronous: inputs are enqueued without blocking, and outputs are retrieved separately. One runtime can hold **several models**, each addressed by its index (`model_id`) in the array passed to `runtime_load_models`.
 
 ---
 
-### 2. Header Definition
+### 2. Lifecycle
 
-The interface is defined in the following header file: [interface.h](https://github.com/OAAX-standard/OAAX/blob/main/Illustrative%20example/Runtime/include/interface.h)
-
-This file contains all required definitions. No additional symbols may be exposed by the runtime unless explicitly allowed by future revisions.
-
----
-
-### 3. Data Types
-
-#### 3.1 `tensor_data_type`
-
-The following enumeration defines the supported tensor element types:
-
-```c
-typedef enum tensor_data_type {
-    DATA_TYPE_FLOAT   = 1,
-    DATA_TYPE_UINT8   = 2,
-    DATA_TYPE_INT8    = 3,
-    DATA_TYPE_UINT16  = 4,
-    DATA_TYPE_INT16   = 5,
-    DATA_TYPE_INT32   = 6,
-    DATA_TYPE_INT64   = 7,
-    DATA_TYPE_STRING  = 8,
-    DATA_TYPE_BOOL    = 9,
-    DATA_TYPE_DOUBLE  = 11,
-    DATA_TYPE_UINT32  = 12,
-    DATA_TYPE_UINT64  = 13
-} tensor_data_type;
+```
+runtime_init → runtime_load_models → runtime_enqueue_input / runtime_retrieve_output → runtime_cleanup
 ```
 
+1. `runtime_init(Config)`: prepares the runtime. Must not be called twice without `runtime_cleanup()` in between.
+2. `runtime_load_models(n, configs)`: loads `n` models, from a file path or from memory.
+3. Any number of `runtime_enqueue_input` and `runtime_retrieve_output` calls.
+4. `runtime_cleanup()`: drops pending inputs/outputs, unloads the models and frees everything. `runtime_init` can be called again afterwards.
+
+`runtime_get_version` and `runtime_get_name` can be called at any time, even before `runtime_init`. `runtime_get_error` can be called after any function returned a non-success status. `runtime_get_info` requires an initialized runtime.
+
 ---
 
-#### 3.2 `tensors_struct`
+### 3. Data types
 
-A structure representing a collection of tensors, either for input or output.
+#### 3.1 `RuntimeStatus`
+
+Returned by every function except the getters. `RUNTIME_STATUS_SUCCESS` is `0`.
+
+| Value | Name                                   | Value | Name                                |
+| ----- | -------------------------------------- | ----- | ----------------------------------- |
+| 0     | `RUNTIME_STATUS_SUCCESS`               | 10    | `RUNTIME_STATUS_TENSOR_SHAPE_MISMATCH` |
+| 1     | `RUNTIME_STATUS_ERROR`                 | 11    | `RUNTIME_STATUS_TENSOR_TYPE_MISMATCH`  |
+| 2     | `RUNTIME_STATUS_NOT_INITIALIZED`       | 12    | `RUNTIME_STATUS_NO_OUTPUT_AVAILABLE`   |
+| 3     | `RUNTIME_STATUS_ALREADY_INITIALIZED`   | 13    | `RUNTIME_STATUS_INFERENCE_ERROR`       |
+| 4     | `RUNTIME_STATUS_MODEL_NOT_LOADED`      | 14    | `RUNTIME_STATUS_NOT_IMPLEMENTED`       |
+| 5     | `RUNTIME_STATUS_INVALID_ARGUMENT`      | 15    | `RUNTIME_STATUS_TIMEOUT`               |
+| 6     | `RUNTIME_STATUS_INVALID_MODEL`         | 16    | `RUNTIME_STATUS_DEVICE_ERROR`          |
+| 7     | `RUNTIME_STATUS_FILE_NOT_FOUND`        | 17    | `RUNTIME_STATUS_UNKNOWN_ERROR`         |
+| 8     | `RUNTIME_STATUS_OUT_OF_MEMORY`         | 18    | `RUNTIME_STATUS_INVALID_MODEL_ID`      |
+| 9     | `RUNTIME_STATUS_INVALID_TENSOR`        |       |                                     |
+
+The header gives explicit semantics for `ALREADY_INITIALIZED` (second `runtime_init` without cleanup) and `NO_OUTPUT_AVAILABLE` (no output ready). After any non-success status, `runtime_get_error()` returns a human-readable message.
+
+#### 3.2 `TensorElementType`
+
+Element type of a tensor. The values are the **ONNX data type enum** (`DATA_TYPE_UNDEFINED = 0`, `DATA_TYPE_FLOAT = 1`, `DATA_TYPE_UINT8 = 2`, ..., `DATA_TYPE_INT2 = 26`); see the header for the full list.
+
+#### 3.3 `TensorDescriptor` and `Tensors`
 
 ```c
-typedef struct tensors_struct {
-    size_t num_tensors;           // Number of tensors
-    char** names;                 // Tensor names
-    tensor_data_type* data_types;// Data types
-    size_t* ranks;                // Number of dimensions per tensor
-    size_t** shapes;             // Shapes (dimensionality)
-    void** data;                 // Pointers to raw tensor data
-} tensors_struct;
+typedef struct TensorDescriptor {
+  char              *name;      // Null-terminated tensor name
+  TensorElementType  data_type; // Element type
+  int                rank;      // Number of dimensions
+  int               *shape;     // Array of `rank` dimension sizes
+  size_t             data_size; // Size of `data` in bytes
+  void              *data;      // Tensor data buffer
+} TensorDescriptor;
+
+typedef struct Tensors {
+  int               id;          // Caller-assigned request ID, echoed on the output
+  int               num_tensors; // Number of tensors
+  TensorDescriptor *tensors;     // Array of num_tensors descriptors
+} Tensors;
 ```
 
-* Each field must be properly allocated and consistent in length across all arrays.
-* Tensor shape arrays (`shapes[i]`) must contain exactly `ranks[i]` elements.
-* Tensor names are UTF-8 encoded C-strings and must be **unique** within the list.
+* `tensors` is a single allocation of `num_tensors` descriptors. Each descriptor's `name`, `shape` and `data` are allocated separately.
+* `id` identifies a request. The caller sets it on each input; the runtime copies it unchanged onto the matching output and never interprets it. This is how the host matches outputs to requests when several are in flight.
+
+#### 3.4 `Config` and `ModelConfig`
+
+```c
+typedef struct Config {
+  int          length; // Number of key/value pairs
+  const char **keys;
+  const char **values; // Always null-terminated strings
+} Config;
+
+typedef struct ModelConfig {
+  const char          *file_path;  // Path to the model file (optional)
+  const unsigned char *model_data; // Model in memory (optional)
+  size_t               model_size; // Size of model_data (optional)
+  Config               config;     // Model-specific configuration
+} ModelConfig;
+```
+
+Each `ModelConfig` provides either `file_path` or `model_data` + `model_size`. All configuration values are strings (e.g. `"2"`, `"latency"`, `"/tmp/cache"`). The keys a runtime understands are vendor-specific, and unknown keys must be ignored.
 
 ---
 
-### 4. Runtime Interface Functions
+### 4. Functions
 
-Each runtime must implement the following functions:
+| Function | Summary |
+| -------- | ------- |
+| `RuntimeStatus runtime_init(Config config)` | Initializes the runtime. Unknown config keys are ignored. Returns `ALREADY_INITIALIZED` (state untouched) if already initialized. On failure the runtime stays uninitialized and the caller may retry. |
+| `RuntimeStatus runtime_load_models(int num_models, const ModelConfig *model_configs)` | Loads all models; model `i` gets `model_id = i`. Requires a successful `runtime_init`. If any model fails, everything allocated by the call is freed and the caller may retry with another set of models. Nothing passed in (array, paths, buffers, config) may be assumed valid after the call returns: the runtime copies what it needs. |
+| `RuntimeStatus runtime_enqueue_input(int model_id, Tensors *input_tensors)` | Enqueues one inference request for a model. Asynchronous: must not block the caller. Validates `model_id`, the tensors, and that shapes and types match the model's inputs. |
+| `RuntimeStatus runtime_retrieve_output(int *model_id, Tensors **output_tensors, int timeout_ms)` | Retrieves the output of any model's inference. `*model_id` receives the model it belongs to, `*output_tensors` the newly allocated result. Both pointers must be non-`NULL`. |
+| `RuntimeStatus runtime_cleanup(void)` | Shuts the runtime down (see [Lifecycle](#2-lifecycle)). Idempotent. |
+| `const char *runtime_get_error(void)` | Message of the last error, or `NULL` if none. Valid until the next runtime call or `runtime_cleanup()`. |
+| `const char *runtime_get_version(void)` | SemVer version string of the runtime. Never `NULL`. Callable before `runtime_init`. |
+| `const char *runtime_get_name(void)` | Name identifying the runtime backend (e.g. `"OAAX-CUDA"`). Never `NULL`. Callable before `runtime_init`. |
+| `const char *runtime_get_info(void)` | JSON object describing the runtime state (e.g. `active_device`, `loaded_models`, `requests_in_flight`). Returns `NULL` if the runtime is not initialized. All fields are optional and the caller must ignore unknown ones. Valid until the next runtime call or `runtime_cleanup()`. |
 
-#### 4.1 `int runtime_initialization(void);`
+#### 4.1 `runtime_retrieve_output` timeout
 
-Initializes the runtime. Must be called exactly once prior to any other function, unless `runtime_initialization_with_args` is used instead.
+* `timeout_ms == 0`: returns immediately if no output is available.
+* `timeout_ms < 0`: waits indefinitely until an output is available.
+* `timeout_ms > 0`: waits up to that many milliseconds.
 
-**Returns:**
-
-* `0` on success
-* Non-zero value on failure
-
----
-
-#### 4.2 `int runtime_initialization_with_args(int length, const char **keys, const void **values);`
-
-Initializes the runtime with key-value arguments.
-
-**Semantics:**
-
-* If this function is used, `runtime_initialization()` must not be called.
-* Unknown keys must be silently ignored.
-* All arguments must remain valid for the duration of this call.
-
-**Returns:**
-
-* `0` on success
-* Non-zero value on failure
+`RUNTIME_STATUS_NO_OUTPUT_AVAILABLE` is returned if no output is ready.
 
 ---
 
-#### 4.3 `int runtime_model_loading(const char *file_path);`
+### 5. Memory ownership
 
-Loads a compiled OAAX model from the specified file path.
+| Memory | Allocated by | Freed by |
+| ------ | ------------ | -------- |
+| Input `Tensors` passed to `runtime_enqueue_input` | Host | **Runtime** after inference completes, if the call returned `SUCCESS`. **Host** if the call failed. |
+| Output `Tensors` from `runtime_retrieve_output` | Runtime | **Host**, after a `SUCCESS` return. |
+| Strings returned by getters | Runtime | Nobody: the host must not modify or free them. |
+| `Config`, `ModelConfig` and what they point to | Host | Host (the runtime only borrows them for the duration of the call). |
 
-**Constraints:**
-
-* The path must point to a valid model file.
-* Only one model may be loaded per runtime instance.
-
-**Returns:**
-
-* `0` on success
-* Non-zero value on failure
+To deep-free a `Tensors`: free each descriptor's `name`, `shape` and `data`, then `tensors`, then the `Tensors` struct itself.
 
 ---
 
-#### 4.4 `int send_input(tensors_struct *input_tensors);`
+### 6. Concurrency
 
-Transfers input tensors to the runtime for inference.  
-The runtime must support receiving multiple input tensors sequentially without requiring the output of the previous inference to be retrieved first. This design enables efficient asynchronous processing by allowing the host to queue multiple inputs for inference, thereby maximizing throughput and minimizing idle time.
-
-**Semantics:**
-
-* The runtime takes ownership of the `input_tensors` structure and its internal memory.
-* The runtime is responsible for freeing all memory related to the inputs.
-* **If this function fails, the caller is responsible for memory cleanup.**
-* The caller must ensure that the `input_tensors` structure is valid, pre-processed and properly populated before calling this function.
-
-**Returns:**
-
-* `0` on success
-* Non-zero value on failure
+* `runtime_enqueue_input` is **thread-safe**: it may be called from several threads, for the same model or different ones.
+* Several requests may be in flight at once. The host does not have to retrieve an output before enqueuing the next input.
+* Outputs from all models are retrieved through the same `runtime_retrieve_output` call; use `*model_id` and `Tensors.id` to route them.
 
 ---
 
-#### 4.5 `int receive_output(tensors_struct **output_tensors);`
+### 7. Responsibilities
 
-Used to retrieve output tensors from the runtime after inference if there are any.
+**Host**
 
-**Semantics:**
+* Call `runtime_init` first, and `runtime_load_models` before enqueuing inputs.
+* Set a unique `Tensors.id` on every input, and provide tensors whose data matches the declared types and shapes.
+* Free every output received, and free inputs that were rejected.
+* Call `runtime_cleanup` when done. No other runtime function may be called afterwards, until `runtime_init` is called again.
 
-* The runtime allocates and returns a `tensors_struct` via the provided pointer.
-* The caller is responsible for freeing all memory associated with the output.
+**Runtime**
 
-**Returns:**
+* Validate `model_id`, tensors and configuration, and report problems with the appropriate `RuntimeStatus` and error message.
+* Process inference asynchronously and never block `runtime_enqueue_input`.
+* Echo `Tensors.id` on outputs, and allocate outputs entirely (struct, descriptors, names, shapes, data).
+* Free everything it allocated on failure, and on `runtime_cleanup`.
 
-* `0` if output was successfully retrieved
-* Non-zero if no output is available or an error occurred
-
----
-
-#### 4.6 `int runtime_destruction(void);`
-
-Finalizes and releases all internal runtime resources.
-
-**Returns:**
-
-* `0` on success
-* Non-zero value on failure
-
----
-
-#### 4.7 `const char *runtime_error_message(void);`
-
-Returns a pointer to a human-readable error string describing the last error.
-
-**Ownership:**
-
-* The returned string must be owned and freed (if necessary) by the runtime.
-
----
-
-#### 4.8 `const char *runtime_version(void);`
-
-Returns a static or heap-allocated string indicating the version of the runtime.
-
----
-
-#### 4.9 `const char *runtime_name(void);`
-
-Returns a static or heap-allocated string indicating the name of the runtime.
-
----
-
-### 5. Memory Management Rules
-
-* The host is responsible for freeing:
-
-  * Any `tensors_struct*` returned by `receive_output`.
-* The runtime is responsible for freeing:
-
-  * All memory associated with input tensors passed to `send_input`, except when the function fails.
-  * All memory internally allocated by the runtime during initialization, model loading, and inference.
-
----
-
-### 6. Host Responsibilities
-
-* Load the runtime shared library.
-* Call one initialization function.
-* Load the model before inference.
-* Prepare and pass valid `tensors_struct` input via `send_input`.
-* Retrieve and free outputs from `receive_output`.
-* Finalize the runtime with `runtime_destruction`.
-
----
-
-### 7. Runtime Responsibilities
-
-* Properly allocate and free internal resources.
-* Validate and store input tensors.
-* Produce valid outputs and expose them via `receive_output`.
-* Clean up upon destruction.
-* Provide informative error and version strings.
-* Maintain API compatibility as defined in this document.
-
- 
 ---
 
 ## Change Process
