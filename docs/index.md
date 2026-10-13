@@ -17,7 +17,7 @@ Before delving into the OAAX standard, it's important to understand some key ter
 - **Compile** or **Convert**: The process of converting an ONNX model into a format optimized and supported for a specific XPU.
 - **Runtime**: The shared library (.so or .dll) that implements the OAAX runtime interface to interact with an XPU.
 - **Conversion Toolchain**: The software that compiles ONNX models.
-- **Input/Output Tensors**: Data structures that hold the input and output data for the model.
+- **Input/Output Tensors**: Data structures (`Tensors`) that hold the input and output data for the model.
 - **Host** or **Runtime host**: The software that interacts with runtime to offload model computation to the AI hardware.
 - **OAAX-compliant XPU**: Refers to any AI accelerator that has an implementation of the OAAX standard, including both the conversion toolchain and the runtime library.
 
@@ -27,12 +27,14 @@ To run an AI model on an OAAX-compliant XPU, a typical workflow looks like this:
 
 1. Convert the ONNX model into an XPU-specific OAAX bundle/binary using the provided toolchain.
 2. In the host application, load the OAAX runtime appropriate to the XPU.
-3. Initialize the runtime by calling `runtime_initialization()`.
-4. Load the model with `runtime_model_loading("./model.oaax")`.
+3. Initialize the runtime by calling `runtime_init(config)`.
+4. Load the model(s) with `runtime_load_models(num_models, model_configs)`. A model is referred to by its index in `model_configs` (its `model_id`).
 5. Exchange data asynchronously:
-   a. Send inputs with `send_input(input_tensors)`.
-   b. Retrieve outputs with `receive_output(output_tensors_holder)`.
-6. When finished, clean up resources by calling `runtime_destruction()`.
+   a. Enqueue inputs with `runtime_enqueue_input(model_id, input_tensors)`, setting a unique `id` on each `Tensors`.
+   b. Retrieve outputs with `runtime_retrieve_output(&model_id, &output_tensors, timeout_ms)`. The output carries the `id` of the input it answers.
+6. When finished, clean up resources by calling `runtime_cleanup()`.
+
+See the [specification](./Specification.md#oaax-runtime-specification) for details, and the [interface header](https://github.com/OAAX-standard/OAAX/blob/main/include/interface.h) for the full API.
 
 ## Outline
 

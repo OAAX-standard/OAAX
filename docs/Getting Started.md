@@ -43,17 +43,17 @@ This process will generate a file named `yolov8n.onnx` that we'll later use as a
 
 ### Download the conversion toolchain
 
-You can download the conversion toolchain for each XPU from their respective documentation page or using the links below:
+You can download the conversion toolchain for each XPU from their respective documentation page or using the links below (pinned versions, so that the Docker image tags used later match):
 
-- [Intel toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/INTEL/oaax-intel-toolchain.tar)
-- [NVIDIA toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/NVIDIA/oaax-nvidia-toolchain.tar)
-- [DEEPX toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/DEEPX/oaax-deepx-toolchain.tar)
+- [Intel toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar)
+- [NVIDIA toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/NVIDIA/oaax-nvidia-toolchain.tar)
+- [DEEPX toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar)
 
 To download them on Linux, you can use the following commands:
 ```bash
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/INTEL/oaax-intel-toolchain.tar
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/NVIDIA/oaax-nvidia-toolchain.tar
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/latest/DEEPX/oaax-deepx-toolchain.tar
+wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar
+wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/NVIDIA/oaax-nvidia-toolchain.tar
+wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar
 ```
 
 Now, you can load them into Docker using the following commands:
@@ -66,7 +66,7 @@ docker load -i oaax-deepx-toolchain.tar
 
 Both NVIDIA and Intel toolchains can take in the ONNX model as input directly. However, the DEEPX toolchain requires the input to be an archive (.zip) containing the ONNX model, a JSON configuration file, and calibration images to perform quantization.
 
-> Make sure the ONNX model is an directory named "model" containing the `yolov8n.onnx` file.
+> Make sure the ONNX model is in a directory named "model" containing the `yolov8n.onnx` file.
 
 You can use the following commands to perform the conversion for each XPU:
 
@@ -77,7 +77,7 @@ The conversion can be initiated using the following command:
 docker run --rm -v ./model:/tmp/run oaax-intel-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/intel-output/
 ```
 
-The output ONNX will be located in the `./model/intel-output/yolov8n-simplified.onnx` directory.
+The output ONNX will be located at `./model/intel-output/yolov8n-simplified.onnx`.
 
 #### NVIDIA
 
@@ -85,7 +85,7 @@ The conversion can be initiated using the following command:
 ```bash
 docker run --rm -v ./model:/tmp/run oaax-nvidia-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/nvidia-output/
 ```
-The output ONNX will be located in the `./model/output/yolov8n-simplified.onnx` directory.
+The output ONNX will be located at `./model/nvidia-output/yolov8n-simplified.onnx`.
 
 #### DEEPX
 
@@ -168,7 +168,7 @@ zip -r deepx-yolov8n.zip yolov8n.onnx deepx-config.json dataset
 The next step is to download the DX COM SDK from DEEPX developer portal, since it's not included by default in the conversion toolchain. You can download it from [here](https://developer.deepx.ai/).
 Once it is downloaded and unpacked next to the `./model` directory, you can run the conversion using the following command:
 ```bash
-docker run --rm -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:latest /app/artifacts/deepx-yolov8n.zip /app/artifacts/deepx-output/
+docker run --rm -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:1.1.0 /app/artifacts/deepx-yolov8n.zip /app/artifacts/deepx-output/
 ```
 
 The compiled model will be located at `./model/deepx-output/yolov8n.dxnn`.
@@ -195,86 +195,6 @@ Finally, the last step is to run the model on each XPU using the appropriate run
 - [NVIDIA runtime](./NVIDIA.md#download-links-and-compatibility-matrix){:target="_blank"}
 - [DEEPX runtime](./DEEPX.md#download-links-and-compatibility-matrix){:target="_blank"}
 
-After downloading the appropriate runtime, you can use the [YOLOv8 inference example]([../examples/yolov8-inference/README.md](https://github.com/OAAX-standard/examples/tree/main/yolov8-inference)){:target="_blank"} to run the model on each XPU. Make sure to update the paths in the `build-and-run.sh` script accordingly.
+After downloading the appropriate runtime, use it from a host application through the [OAAX 2.0 runtime API](./Specification.md#oaax-runtime-specification). A minimal host that loads a runtime, loads a model, enqueues requests and checks the outputs is available in the [OAAX repository](https://github.com/OAAX-standard/OAAX/tree/main/example/host){:target="_blank"}.
 
-On a successful run, you should see an output similar to the following if you're using the NVIDIA runtime:
-```
-[2025-09-15 20:20:01.932] [OAAX] [info] Initializing OAAX inference engine with the following parameters:
-[2025-09-15 20:20:01.932] [OAAX] [info] Library Path: ./artifacts/libRuntimeLibrary.so
-[2025-09-15 20:20:01.932] [OAAX] [info] Model Path: ./model/nvidia-output/yolov8n-simplified.onnx
-[2025-09-15 20:20:01.932] [OAAX] [info] Input Path: ../artifacts/image.jpg
-[2025-09-15 20:20:01.932] [OAAX] [info] Configuration Path: ../model-configs/nvidia-model.json
-[2025-09-15 20:20:01.932] [OAAX] [info] Log File: app.log
-[2025-09-15 20:20:01.932] [OAAX] [info] Log Level: 2
-[2025-09-15 20:20:01.943] [OAAX] [info] Runtime Name: OAAX NVIDIA Runtime
-[2025-09-15 20:20:01.943] [OAAX] [info] Runtime Version: 1.1.1
-[2025-09-15 20:20:01.945] [OAAX NVIDIA Runtime] [info] Initializing the runtime
-[2025-09-15 20:20:02.032] [OAAX] [info] Runtime initialized successfully.
-[2025-09-15 20:20:02.032] [OAAX NVIDIA Runtime] [info] Inference thread started
-[2025-09-15 20:20:02.032] [OAAX NVIDIA Runtime] [info] Runtime arguments:
-[2025-09-15 20:20:02.032] [OAAX NVIDIA Runtime] [info]   log_level: 2
-[2025-09-15 20:20:02.032] [OAAX NVIDIA Runtime] [info]   log_file: runtime.log
-[2025-09-15 20:20:02.032] [OAAX NVIDIA Runtime] [info]   num_threads: 4
-[2025-09-15 20:20:02.032] [OAAX NVIDIA Runtime] [info] Loading model from: ./model/nvidia-output/yolov8n-simplified.onnx
-[2025-09-15 20:20:02.083] [OAAX] [info] Model loaded successfully: ./model/nvidia-output/yolov8n-simplified.onnx
-[2025-09-15 20:20:02.083] [OAAX] [info] Configuration: {
-    "model": {
-        "input_dtype": "float32",
-        "input_height": 640,
-        "input_name": "images",
-        "input_width": 640,
-        "mean": [
-            0,
-            0,
-            0
-        ],
-        "nchw": 1,
-        "std": [
-            255,
-            255,
-            255
-        ]
-    }
-}
-[2025-09-15 20:20:02.083] [OAAX] [info] Preprocessing image: ../artifacts/image.jpg
-[2025-09-15 20:20:02.087] [OAAX] [info] Mean: 0, 0, 0
-[2025-09-15 20:20:02.087] [OAAX] [info] Stddev: 255, 255, 255
-[2025-09-15 20:20:02.090] [OAAX] [info] Image min value: 0, max value: 1
-[2025-09-15 20:20:02.090] [OAAX] [info] Creating tensors for input image: images
-Number of tensors: 1
-Tensor id=0:
-  Name: 'images'
-  Data type: 1
-  Rank: 4
-  Shape: 1 3 640 640 
-  Data Pointer: 0x7f2b5574e010
-
-[2025-09-15 20:20:02.092] [OAAX] [info] Starting input sending and output receiving threads...
-[2025-09-15 20:20:02.092] [OAAX] [info] Sending input tensors to the runtime...
-[2025-09-15 20:20:02.092] [OAAX] [info] Waiting for threads to finish...
-[2025-09-15 20:20:02.093] [OAAX] [info] Sent input tensors: 1
-[2025-09-15 20:20:02.095] [OAAX] [info] Sent input tensors: 2
-[2025-09-15 20:20:02.096] [OAAX] [info] Sent input tensors: 3
-[2025-09-15 20:20:02.098] [OAAX] [info] Sent input tensors: 4
-[2025-09-15 20:20:02.100] [OAAX] [info] Sent input tensors: 5
-[2025-09-15 20:20:02.101] [OAAX] [info] Sent input tensors: 6
-[2025-09-15 20:20:02.103] [OAAX] [info] Sent input tensors: 7
-[2025-09-15 20:20:02.105] [OAAX] [info] Sent input tensors: 8
-[2025-09-15 20:20:02.107] [OAAX] [info] Sent input tensors: 9
-[2025-09-15 20:20:02.108] [OAAX] [info] Sent input tensors: 10
-[2025-09-15 20:20:02.108] [OAAX] [info] All input tensors sent successfully.
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 1
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 2
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 3
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 4
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 5
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 6
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 7
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 8
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 9
-[2025-09-15 20:20:03.093] [OAAX] [info] Terminating OAAX inference engine.
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received: 10
-[2025-09-15 20:20:03.093] [OAAX] [info] Output tensors received successfully.
-[2025-09-15 20:20:03.093] [OAAX] [info] Threads finished successfully.
-[2025-09-15 20:20:03.093] [OAAX NVIDIA Runtime] [info] Destroying runtime...
-```
+> The runtime builds listed on the XPU pages predate OAAX 2.0, and the [YOLOv8 inference example](https://github.com/OAAX-standard/examples/tree/main/yolov8-inference){:target="_blank"} still targets the 1.x API. 2.0 builds and an updated example will be linked once published.

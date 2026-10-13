@@ -22,12 +22,12 @@ To use the NVIDIA GPU acceleration, please ensure that you have the latest NVIDI
 
 ### Runtime Library
 
-The runtime library implements the OAAX's runtime interface for initializing, loading, running inference and destroying the runtime.
-The initialization in particular can be done without providing a configuration by calling `int runtime_initialization();` directly or by providing these parameters to `int runtime_initialization_with_args(int length, char **keys, void **values);`:
+The runtime library implements the OAAX's runtime interface for initializing, loading models, running inference and cleaning up the runtime.
+It is initialized by calling `RuntimeStatus runtime_init(Config config);`, with the following parameters passed as string key/value pairs in `Config`:
 
-- `log_level` (char *, default is "2"): The minimal log level for the runtime. This can be set to `0` for trace, `1` for debug, `2` for info, `3` for warnings, `4` for errors, `5` for critical and `6` to disable logging.
-- `log_file` (char *, default is "runtime.log"): The file to which the runtime logs will be written. If not specified, logs will be written to stdout.
-- `num_threads` (char *, default is "4"): The maximum number of threads that can be used by the runtime. The higher the number, the more CPU resources will be used, but the better the throughput.
+- `log_level` (string, default is "2"): The minimal log level for the runtime. This can be set to `0` for trace, `1` for debug, `2` for info, `3` for warnings, `4` for errors, `5` for critical and `6` to disable logging.
+- `log_file` (string, default is "runtime.log"): The file to which the runtime logs will be written.
+- `num_threads` (string, default is "4"): The maximum number of threads that can be used by the runtime. The higher the number, the more CPU resources will be used, but the better the throughput.
 
 > You can check out the examples repository for more details on how to use the runtime library: [OAAX Examples](https://github.com/OAAX-standard/examples).
 
@@ -44,6 +44,8 @@ After a succesful conversion, the generated model will be saved in the `./model/
 
 
 ## Download links and compatibility matrix
+
+> **Note:** the builds listed below predate OAAX 2.0 and implement the 1.x runtime API. 2.0 builds will be listed here once published.
 
 | OAAX versions | OS             | Version         | CPU architecture | Runtime library                                                                                                                                                                                                                      | Conversion toolchain                                                                                             |
 | ------------- | -------------- | --------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |

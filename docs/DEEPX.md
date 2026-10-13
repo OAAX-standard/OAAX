@@ -75,7 +75,7 @@ The DEEPX SDK includes an [Open Model Zoo](https://developer.deepx.ai/wp-content
 
 ### Runtime Library
 
-The runtime implements the [standard OAAX interface](https://github.com/OAAX-standard/OAAX/blob/main/Illustrative%20example/Runtime/include/interface.h){:target="_blank"}, without any initialization arguments. Therefore the `int runtime_initialization_with_args` function is not supported, and the `int runtime_initialization()` function should be used instead.
+The runtime implements the [standard OAAX interface](https://github.com/OAAX-standard/OAAX/blob/main/include/interface.h){:target="_blank"}. It does not use any initialization parameters: call `runtime_init` with a `Config` of `length = 0`.
 
 
 
@@ -96,7 +96,7 @@ documents:
 Once DX COM is downloaded and the model archive is prepared, you can run the conversion using the following command:
 
 ```bash
-docker run -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:latest /app/artifacts/model.zip /app/artifacts/output
+docker run -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:1.1.0 /app/artifacts/model.zip /app/artifacts/output
 ```
 This command assumes that the model archive is located at `./model/model.zip` and the DX COM directory is located at `./dx_com`. The converted model will be saved in the `./model/output` directory.
 
@@ -104,9 +104,11 @@ This command assumes that the model archive is located at `./model/model.zip` an
 
 > Please make sure that you're using DXRT v3.0.0 version on the host-running machine.
 
+> **Note:** the builds listed below predate OAAX 2.0 and implement the 1.x runtime API. 2.0 builds will be listed here once published.
+
 | OAAX versions | OS            | Version  | CPU architecture | Runtime library                                                                                                           | Conversion toolchain                                                                                           |
 | ------------- | ------------- | -------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| 1.1.0         | Ubuntu/Debian | 20.04/11 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v3.0.0.tar.gz) | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar) |
+| 1.1.0         | Ubuntu/Debian | 20.04/11 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/x86_64/Ubuntu/20.04/library-dxrt-v3.0.0.tar.gz) | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar) |
 | 1.1.0         | Ubuntu/Debian | 20.04/11 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v3.0.0.tar.gz) | ⬆️                                                                                                              |
 | 1.1.0         | Ubuntu/Debian | 22.04/12 | x86_64           | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/x86_64/Ubuntu/22.04/library-dxrt-v3.0.0.tar.gz)  | ⬆️                                                                                                              |
 | 1.1.0         | Ubuntu/Debian | 22.04/12 | ARM64            | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.0/DEEPX/aarch64/Ubuntu/22.04/library-dxrt-v3.0.0.tar.gz) | ⬆️                                                                                                              |

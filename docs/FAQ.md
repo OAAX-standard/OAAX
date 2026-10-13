@@ -27,7 +27,7 @@ OAAX is a project under the LF AI & Data Foundation. It is developed and maintai
 
 1. Convert your ONNX model using the OAAX Toolchain Docker image.
 2. Load the resulting OAAX bundle using the OAAX Runtime API.
-3. Send inputs and receive outputs through a standardized C API.
+3. Enqueue inputs and retrieve outputs through a standardized C API.
 
 See the **Getting Started** guide for full details.
 
@@ -42,13 +42,19 @@ Yes. OAAX currently targets **inference workloads only**. Training workloads are
 ### 💡 Technical Details
 
 **How does the runtime interface work?**
-OAAX defines a minimal C API with functions such as `runtime_initialization`, `runtime_model_loading`, `send_input`, and `receive_output`. Each hardware vendor implements this API to allow their device to run OAAX-converted models.
+OAAX defines a minimal C API: `runtime_init`, `runtime_load_models`, `runtime_enqueue_input`, `runtime_retrieve_output` and `runtime_cleanup`, plus getters for the error, version, name and runtime info. Each hardware vendor implements this API to allow their device to run OAAX-converted models. See the [specification](./Specification.md#oaax-runtime-specification).
+
+**Can one runtime run several models?**
+Yes. `runtime_load_models` takes an array of models (from files or from memory), and each one is addressed by its index (`model_id`) when enqueuing inputs and retrieving outputs.
+
+**How do I match an output to its input?**
+Set a unique `id` on each input `Tensors`. The runtime copies it onto the corresponding output.
 
 **Is the toolchain containerized?**
 Yes. The conversion toolchain is packaged as a Docker image to isolate dependencies and ensure reproducibility. This also abstracts away vendor-specific conversion scripts.
 
 **Can I run multiple OAAX runtimes together?**
-Yes. Because the runtime interface is standardized and stateless, you can instantiate multiple runtimes — each targeting a different accelerator — in a single application.
+Yes. Each runtime is a separate shared library with the same interface, so an application can load several of them — each targeting a different accelerator — and drive each one through its own `runtime_init` ... `runtime_cleanup` lifecycle. A runtime is not stateless: it must be initialized before use and cleaned up afterwards.
 
 **What platforms does OAAX support?**
 
@@ -57,7 +63,7 @@ Yes. Because the runtime interface is standardized and stateless, you can instan
 * **Languages**: C/C++ (runtime), Python bindings coming soon
 
 **Does OAAX support dynamic batching or streaming?**
-Support for batching is vendor-specific. The standard itself allows for single or batched inputs; runtime implementations may offer optimizations.
+The API is asynchronous: inputs are enqueued without blocking and outputs are retrieved separately, so several requests can be in flight. Support for batching is vendor-specific. The standard itself allows for single or batched inputs; runtime implementations may offer optimizations.
 
 ---
 
@@ -107,6 +113,9 @@ No, the runtime runs natively. However, you can deploy it inside containers, iso
 
 **How often does the standard change?**
 OAAX aims for **stable, versioned releases**. Breaking changes are minimized to maintain compatibility.
+
+**Are OAAX 2.0 runtimes compatible with 1.x hosts?**
+No. OAAX 2.0 replaces the 1.x C API, so hosts and runtimes must both implement the 2.0 [interface](https://github.com/OAAX-standard/OAAX/blob/main/include/interface.h).
 
 ---
 
