@@ -39,16 +39,29 @@ It is initialized by calling `RuntimeStatus runtime_init(Config config);`, with 
 
 The conversion toolchain is used to validate, optimize and simplify the ONNX models. At the end of the process it produces a simplified ONNX model.
 
-It can be used as follows:
+It can be used as follows (the container runs as a non-root user, so pass your own user to let it write to the mounted directory):
 ```bash
-docker run -v ./model:/model  oaax-cpu-toolchain:1.1.2 /model/model.onnx /model/output
+docker load -i oaax-cpu-toolchain.tar
+docker run --rm --user $(id -u):$(id -g) -v ./model:/model oaax-cpu-toolchain:2.0.0 /model/model.onnx /model/output
 ```
 The above command assumes that the model is located at `./model/model.onnx`.  
-After a succesful conversion, the generated model will be saved in the `./model/output` directory.
+After a successful conversion, the generated model (`model-simplified.onnx`) and a conversion log (`logs.json`) are saved in the `./model/output` directory.
 
 ## Download links and compatibility matrix
 
-> **Note:** the builds listed below predate OAAX 2.0 and implement the 1.x runtime API. 2.0 builds will be listed here once published.
+Runtime libraries are packaged as `library.tar.gz` and contain `libRuntimeLibrary.so` (`RuntimeLibrary.dll` and the Visual C++ runtime DLLs on Windows).
+
+### OAAX 2.0
+
+| OAAX version | OS name | OS version      | CPU architecture | Runtime library | Conversion toolchain |
+| ------------ | ------- | --------------- | ---------------- | --------------- | -------------------- |
+| 2.0.0        | Ubuntu  | 20.04 or higher | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/CPU/x86_64/Ubuntu/library.tar.gz) | [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/CPU/oaax-cpu-toolchain.tar) |
+| 2.0.0        | Ubuntu  | 20.04 or higher | aarch64          | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/CPU/aarch64/Ubuntu/library.tar.gz) | ⬆️ |
+| 2.0.0        | Windows | 10, 11          | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/CPU/x86_64/Windows/library.tar.gz) | ⬆️ |
+
+### OAAX 1.x (legacy)
+
+> **Note:** these builds implement the 1.x runtime API, which is not compatible with OAAX 2.0 hosts.
 
 | OAAX version | OS name | OS version      | CPU architecture | Runtime library                                                                                       | Conversion toolchain                                                                                       |
 | ------------ | ------- | --------------- | ---------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |

@@ -1,200 +1,75 @@
 # Hello World Example
 
-To deploy an AI model on an OAAX-compliant AI Accelerator, the first step is to ensure that the model is compatible with the AI accelerator. That can be achieved by checking their documentation or attempting to convert the model using their conversion toolchain. If the conversion is successful, the next step is to ensure that the runtime-hosting machine is properly set up with the necessary software and dependencies. Refer to the documentation of the XPU to validate the setup.
+This walkthrough takes a face detection model through the two OAAX stages on a CPU and on an Intel accelerator:
 
-That said, to illustrate the OAAX workflow, let's consider the example of running the YOLOv8 model from Ultralytics on Intel CPU, NVIDIA GPU, and DEEPX.
+1. **Convert** the ONNX model with the chip's conversion toolchain (a Docker image).
+2. **Run** the converted model with the chip's runtime library, through a small C host application.
+
+The same host application runs both, only the runtime library and the model file change. That is the point of OAAX.
+
+For other accelerators, follow the same steps with the toolchain and runtime listed on the accelerator's page ([NVIDIA](NVIDIA.md), [DEEPX](DEEPX.md), ...). Their OAAX 2.0 builds are listed there once published.
 
 ## Requirements
 
-- An x86_64 machine where the model conversion will take place.
-- A machine (or machines) with the AI accelerators installed.
+- A Linux x86_64 machine (Ubuntu 22.04 or higher) with `docker`, `git`, `zip`, `cmake`, a C compiler and libjpeg:
+  `sudo apt-get install cmake build-essential libjpeg-dev zip`
+- For Intel GPU or NPU inference, the Intel drivers (see the [Intel page](Intel.md#installation)).
 
-## Deployment steps
+## 1. Get the host application and the model
 
-The following steps outline the process of deploying the YOLOv8 model on Intel CPU, NVIDIA GPU, and DEEPX using OAAX:
+The [examples repository](https://github.com/OAAX-standard/examples) contains a C program that loads any OAAX 2.0 runtime, runs a model on an image and prints the detections, together with a face detection model and an image.
 
-1. Export the model from PyTorch to ONNX.
-2. Download the conversion toolchain for the target XPUs: Intel, NVIDIA, DEEPX.
-3. Convert the model using the conversion toolchain for each XPU.
-4. Set up the runtime-hosting machines by installing the necessary OAAX runtime libraries and dependencies.
-5. Run the model on each XPU using the appropriate OAAX runtime.
-
-
-### Exporting the model to ONNX
-- Optionally, create a separate Python virtual environment for this process.
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-- Install the [Ultralytics](https://github.com/ultralytics/ultralytics) using:
-```bash
-pip install ultralytics
-```
-- Install the ONNX package
-```bash
-pip install onnx==1.15.0
-```
-- Export the model to ONNX format using the following command:
-```bash
-yolo export model=yolov8n.pt format=onnx
+git clone https://github.com/OAAX-standard/examples.git
+cd examples/c-example
+mkdir build && (cd build && cmake .. && make)
+mkdir -p work/model && cp artifacts/model.onnx work/model/
+cd work
 ```
 
-This process will generate a file named `yolov8n.onnx` that we'll later use as a source model for the conversion toolchains.
+## 2. CPU
 
-### Download the conversion toolchain
+Download the [CPU toolchain and runtime](CPU.md#download-links-and-compatibility-matrix), then convert the model and run it:
 
-You can download the conversion toolchain for each XPU from their respective documentation page or using the links below (pinned versions, so that the Docker image tags used later match):
-
-- [Intel toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar)
-- [NVIDIA toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/NVIDIA/oaax-nvidia-toolchain.tar)
-- [DEEPX toolchain](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar)
-
-To download them on Linux, you can use the following commands:
 ```bash
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/NVIDIA/oaax-nvidia-toolchain.tar
-wget https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.0/DEEPX/oaax-deepx-toolchain.tar
+docker load -i oaax-cpu-toolchain.tar
+docker run --rm --user $(id -u):$(id -g) -v ./model:/model oaax-cpu-toolchain:2.0.0 /model/model.onnx /model/cpu-output
+
+mkdir cpu-runtime && tar xzf library.tar.gz -C cpu-runtime    # the CPU runtime archive
+../build/c_example cpu-runtime/libRuntimeLibrary.so model/cpu-output/model-simplified.onnx ../artifacts/image.jpg
 ```
 
-Now, you can load them into Docker using the following commands:
+## 3. Intel
+
+Download the [Intel toolchain and runtime](Intel.md#download-links-and-compatibility-matrix). The Intel toolchain takes a `.zip` bundle; the `config.json` keeps the model's FP32 inputs (by default the toolchain converts the model to FP16 and the runtime then expects FP16 input tensors):
+
 ```bash
 docker load -i oaax-intel-toolchain.tar
-docker load -i oaax-nvidia-toolchain.tar
-docker load -i oaax-deepx-toolchain.tar
-```
-### Convert the model
+mkdir -p intel-input intel-output
+cp model/model.onnx intel-input/
+echo '{ "optimization": { "fp16_compression": false } }' > intel-input/config.json
+(cd intel-input && zip model.zip model.onnx config.json)
+docker run --rm --user $(id -u):$(id -g) -v ./intel-input:/input -v ./intel-output:/output oaax-intel-toolchain:latest /input/model.zip /output
 
-Both NVIDIA and Intel toolchains can take in the ONNX model as input directly. However, the DEEPX toolchain requires the input to be an archive (.zip) containing the ONNX model, a JSON configuration file, and calibration images to perform quantization.
-
-> Make sure the ONNX model is in a directory named "model" containing the `yolov8n.onnx` file.
-
-You can use the following commands to perform the conversion for each XPU:
-
-#### Intel
-
-The conversion can be initiated using the following command:
-```bash
-docker run --rm -v ./model:/tmp/run oaax-intel-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/intel-output/
+mkdir intel-runtime && tar xzf library.tar.gz -C intel-runtime    # the Intel runtime archive
+../build/c_example intel-runtime/libRuntimeLibrary.so intel-output/model.zip ../artifacts/image.jpg
 ```
 
-The output ONNX will be located at `./model/intel-output/yolov8n-simplified.onnx`.
+(Extract the CPU and Intel runtime archives separately: both are named `library.tar.gz`.)
 
-#### NVIDIA
+## What you should see
 
-The conversion can be initiated using the following command:
-```bash
-docker run --rm -v ./model:/tmp/run oaax-nvidia-toolchain:1.1.1 /tmp/run/yolov8n.onnx /tmp/run/nvidia-output/
 ```
-The output ONNX will be located at `./model/nvidia-output/yolov8n-simplified.onnx`.
-
-#### DEEPX
-
-To prepare the zip archive, we'll need to use the following JSON configuration file. Save it as `deepx-config.json` in the `./model` directory.
-<details> 
-<summary>deepx-config.json</summary>
-```json
-{
-  "inputs": {
-    "images": [
-      1,
-      3,
-      640,
-      640
-    ]
-  },
-  "calibration_num": 100,
-  "calibration_method": "ema",
-  "train_batchsize": 32,
-  "num_samples": 1024,
-  "default_loader": {
-    "dataset_path": "/app/dataset",
-    "file_extensions": [
-      "jpeg",
-      "jpg",
-      "png",
-      "JPEG"
-    ],
-    "preprocessings": [
-      {
-        "resize": {
-          "mode": "pad",
-          "size": 640,
-          "pad_location": "edge",
-          "pad_value": [
-            114,
-            114,
-            114
-          ]
-        }
-      },
-      {
-        "div": {
-          "x": 255
-        }
-      },
-      {
-        "convertColor": {
-          "form": "BGR2RGB"
-        }
-      },
-      {
-        "transpose": {
-          "axis": [
-            2,
-            0,
-            1
-          ]
-        }
-      },
-      {
-        "expandDim": {
-          "axis": 0
-        }
-      }
-    ]
-  }
-}
-```
-</details>
-
-In addition, you'll need to prepare a dataset of images for calibration. Save the images in a directory named `dataset` inside the `./model` directory.
-
-Now, you can create the zip archive using the following command:
-```bash
-cd model
-zip -r deepx-yolov8n.zip yolov8n.onnx deepx-config.json dataset
+Runtime: OAAX CPU Runtime 2.0.0
+...
+  face 1.000 at (0.142, 0.421) - (0.253, 0.633)
+OK: 10/10 requests answered in 7.0 ms (0.7 ms per request)
 ```
 
-The next step is to download the DX COM SDK from DEEPX developer portal, since it's not included by default in the conversion toolchain. You can download it from [here](https://developer.deepx.ai/).
-Once it is downloaded and unpacked next to the `./model` directory, you can run the conversion using the following command:
-```bash
-docker run --rm -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:1.1.0 /app/artifacts/deepx-yolov8n.zip /app/artifacts/deepx-output/
-```
+The Intel run prints `Runtime: OAAX Intel 2.0.0` instead. The program exits with a non-zero code if a request fails, and the runtime writes `runtime.log` in the current directory.
 
-The compiled model will be located at `./model/deepx-output/yolov8n.dxnn`.
+## Next steps
 
-#### Summary
-At this point, you should have the following files inside the `./model` directory:
-
-- `yolov8n.onnx`: The original ONNX model exported from Ultralytics framework.
-- `intel-output/yolov8n-simplified.onnx`: The optimized ONNX model for Intel CPUs.
-- `nvidia-output/yolov8n-simplified.onnx`: The optimized ONNX model for NVIDIA GPUs.
-- `deepx-output/yolov8n.dxnn`: The compiled model for DEEPX AI accelerator.
-
-### Set up the runtime-hosting machines
-
-This step involves installing the necessary driver and SDK libraries for each AI accelerator on the respective runtime-hosting machines. Please refer to the official documentation of each XPU for detailed instructions on how to set up the environment.
-
-> Note: Ensure you have hardware that is supported by the respective XPU, and that you install the supported versions of the drivers and SDKs.
-
-### Run the model
-
-Finally, the last step is to run the model on each XPU using the appropriate runtime. Please consult each XPU's page for the appropriate runtime library to use based on your hardware and software environment:
-
-- [Intel runtime](./Intel.md#download-links-and-compatibility-matrix){:target="_blank"}
-- [NVIDIA runtime](./NVIDIA.md#download-links-and-compatibility-matrix){:target="_blank"}
-- [DEEPX runtime](./DEEPX.md#download-links-and-compatibility-matrix){:target="_blank"}
-
-After downloading the appropriate runtime, use it from a host application through the [OAAX 2.0 runtime API](./Specification.md#oaax-runtime-specification). A minimal host that loads a runtime, loads a model, enqueues requests and checks the outputs is available in the [OAAX repository](https://github.com/OAAX-standard/OAAX/tree/main/example/host){:target="_blank"}.
-
-> The runtime builds listed on the XPU pages predate OAAX 2.0, and the [YOLOv8 inference example](https://github.com/OAAX-standard/examples/tree/main/yolov8-inference){:target="_blank"} still targets the 1.x API. 2.0 builds and an updated example will be linked once published.
+- Read how the host talks to a runtime: the [c-example README](https://github.com/OAAX-standard/examples/tree/main/c-example) and the [runtime specification](Specification.md#oaax-runtime-specification).
+- Use your own model: export it to ONNX (for example `yolo export model=yolov8n.pt format=onnx` with [Ultralytics](https://github.com/ultralytics/ultralytics)), convert it with the toolchain, and adapt the pre- and post-processing in the host application.
+- Add your own accelerator: see the [specification](Specification.md) and the [reference implementation](https://github.com/OAAX-standard/reference-implementation).

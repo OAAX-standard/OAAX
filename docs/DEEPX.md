@@ -68,7 +68,7 @@ NPU 2: voltage 750 mV, clock 1000 MHz, temperature 39'C
 ```
 
 ## Supported Models
-The DEEPX SDK includes an [Open Model Zoo](https://developer.deepx.ai/wp-content/modelzoo/model_zoo_fin.html){:target="_blank"} that provides various pre-optimized neural network models for DEEPX NPUs.
+The DEEPX SDK includes an [Open Model Zoo](https://developer.deepx.ai/modelzoo/){:target="_blank"} that provides various pre-optimized neural network models for DEEPX NPUs.
 
 
 ## Usage

@@ -16,8 +16,8 @@ Please consult the [OpenVINO documentation](https://docs.openvino.ai/2025/about-
 
 ### Operating System
 
-- Debian 11 or higher
-- Ubuntu 20.04 or higher
+- Debian 12 or higher
+- Ubuntu 22.04 or higher
 - Windows 10, 11
 
 ## Installation
@@ -34,31 +34,54 @@ To be able to use the Intel GPU and NPU, please make sure to install the latest 
 The runtime library implements the OAAX's runtime interface for initializing, loading models, running inference and cleaning up the runtime.
 It is initialized by calling `RuntimeStatus runtime_init(Config config);`, with the following parameters passed as string key/value pairs in `Config`:
 
+- `device_type` (string, default is "CPU"): The device used for inference. This can be set to `CPU`, `GPU`, or `NPU`. `GPU` activates MULTI automatically when several GPUs are found.
+- `perf_hint` (string, default is "latency"): The OpenVINO performance mode. This can be set to `latency`, `throughput` or `cumulative_throughput`.
+- `cache_dir` (string, default is "."): The directory of the OpenVINO compiled-model cache, which avoids recompiling the models at every start. Set to an empty string to disable the cache.
 - `log_level` (string, default is "2"): The minimal log level for the runtime. This can be set to `0` for trace, `1` for debug, `2` for info, `3` for warnings, `4` for errors, `5` for critical and `6` to disable logging.
 - `log_file` (string, default is "runtime.log"): The file to which the runtime logs will be written.
-- `num_threads` (string, default is "8"): The maximum number of threads that can be used by the runtime. The higher the number, the more CPU resources will be used, but the better the throughput.
-- `device_type` (string, default is "CPU"): The type of device to use for inference. This can be set to `CPU`, `GPU`, or `NPU`. The default is `CPU`.
-- `precision` (string, default is "FP32"): The precision to use for inference. This can be set to `FP32`, `FP16`, or `ACCURACY`. The default is `FP32`.
+
+`device_type`, `perf_hint` and `cache_dir` can also be set per model in `ModelConfig.config`, which overrides the global value, e.g. to run two models on different devices. Models are loaded from the `.zip` file produced by the conversion toolchain.
 
 > You can check out the examples repository for more details on how to use the runtime library: [OAAX Examples](https://github.com/OAAX-standard/examples).
 
 ### Conversion Toolchain
 
-The conversion toolchain is used to validate, optimize and simplify the ONNX models. At the end of the process it produces a simplified ONNX model.
+The conversion toolchain converts an ONNX model to the OpenVINO IR format. By default, it compresses the weights to FP16.
 
-It can be used as follows:
+The input is a `.zip` bundle containing `model.onnx` and, optionally, a `config.json` and a `calibration/` directory of images. The container runs as a non-root user, so pass your own user to let it write to the mounted directories:
 ```bash
-docker run -v ./model:/model  oaax-intel-toolchain:1.1.1 /model/model.onnx /model/output
+docker load -i oaax-intel-toolchain.tar   # loads the image as oaax-intel-toolchain:latest
+mkdir -p input output
+zip input/model.zip model.onnx
+docker run --rm --user $(id -u):$(id -g) -v ./input:/input -v ./output:/output oaax-intel-toolchain:latest /input/model.zip /output
 ```
-The above command assumes that the model is located at `./model/model.onnx`.  
-After a succesful conversion, the generated model will be saved in the `./model/output` directory.
+After a successful conversion, the converted model (`model.zip`, containing `model.xml` and `model.bin`) and a conversion log (`logs.json`) are saved in the `./output` directory. Load `model.zip` with the runtime.
 
+With the default FP16 compression, the runtime expects FP16 input tensors. To keep the model's original input types (e.g. FP32), disable it with a `config.json` in the bundle:
+```json
+{ "optimization": { "fp16_compression": false } }
+```
+```bash
+zip input/model.zip model.onnx config.json
+```
+INT8 quantization is also available (`"quantization": {"enabled": true, "preset": "mixed", "subset_size": 300}`, with calibration images in `calibration/`); see the [toolchain README](https://github.com/OAAX-standard/intel-acceleration/blob/main/conversion-toolchain/README.md).
 
 ## Download links and compatibility matrix
 
-> **Note:** the builds listed below predate OAAX 2.0 and implement the 1.x runtime API. 2.0 builds will be listed here once published.
+Runtime libraries are packaged as `library.tar.gz`. Extract all the files into the same directory: the runtime finds the OpenVINO libraries next to itself.
 
-| OAAX versions | OS      | Version             | CPU architecture | Runtime library                                                                                         | Conversion toolchain                                                                                           |
+### OAAX 2.0
+
+| OAAX version | OS      | Version      | CPU architecture | Runtime library | Conversion toolchain |
+| ------------ | ------- | ------------ | ---------------- | --------------- | -------------------- |
+| 2.0.0        | Ubuntu  | 22.04 or higher | x86_64        | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/INTEL/x86_64/Ubuntu/library.tar.gz) | [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/INTEL/oaax-intel-toolchain.tar) |
+| 2.0.0        | Windows | 10, 11       | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/INTEL/x86_64/Windows/library.tar.gz) | ⬆️ |
+
+### OAAX 1.x (legacy)
+
+> **Note:** these builds implement the 1.x runtime API, which is not compatible with OAAX 2.0 hosts.
+
+| OAAX version | OS      | Version             | CPU architecture | Runtime library                                                                                         | Conversion toolchain                                                                                           |
 | ------------- | ------- | ------------------- | ---------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | 1.1.1         | Ubuntu  | 22.04, 24.04 | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/1.1.1/INTEL/x86_64/Ubuntu/library.tar.gz)  | [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar) |
 | 1.1.1         | Windows | 10, 11              | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/1.1.1/INTEL/x86_64/Windows/library.tar.gz) | [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/1.1.1/INTEL/oaax-intel-toolchain.tar) |
