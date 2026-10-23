@@ -119,14 +119,14 @@ Toolchains must ensure:
 * **File Integrity**: All output files are complete and valid
 * **Metadata Accuracy**: Log information correctly reflects actual conversion results
 
-#### 5.3 Bundle manifest (recommended in 2.0, required from 2.1)
+#### 5.3 Bundle manifest (new in 2.1)
 
-A toolchain **should** also write `oaax-manifest.json` next to the model file. It tells a host what the model takes and returns, so that hosts can use any runtime without vendor-specific code. It is machine-readable and separate from the human-oriented conversion log. The format is defined by the [JSON Schema](https://github.com/OAAX-standard/OAAX/blob/main/schema/oaax-manifest.schema.json); `schema/oaax_manifest.py` validates a manifest and derives the `onnx` part from an ONNX file, so toolchains that keep the ONNX tensors as they are can generate the whole file.
+A toolchain **must** also write `oaax-manifest.json` next to the model file. It tells a host what the model takes and returns, so that hosts can use any runtime without vendor-specific code. It is machine-readable and separate from the human-oriented conversion log. The format is defined by the [JSON Schema](https://github.com/OAAX-standard/OAAX/blob/main/schema/oaax-manifest.schema.json); `schema/oaax_manifest.py` validates a manifest and derives the `onnx` part from an ONNX file, so toolchains that keep the ONNX tensors as they are can generate the whole file.
 
 ```json
 {
   "schema": "oaax-manifest/1",
-  "oaax_version": "2.0",
+  "oaax_version": "2.1",
   "model_file": "model.bin",
   "precision": "INT8",
   "equivalent": true,
