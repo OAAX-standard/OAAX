@@ -1,0 +1,70 @@
+{
+  "schema": "oaax-manifest/1",
+  "oaax_version": "2.0",
+  "model_file": "model.onnx",
+  "precision": "FP32",
+  "equivalent": true,
+  "inputs": [
+    {
+      "name": "image-",
+      "onnx": {
+        "dtype": "FLOAT",
+        "shape": [
+          1,
+          3,
+          240,
+          320
+        ],
+        "layout": "NCHW"
+      },
+      "native": {
+        "dtype": "FLOAT",
+        "shape": [
+          1,
+          3,
+          240,
+          320
+        ],
+        "layout": "NCHW"
+      }
+    },
+    {
+      "name": "nms_sensitivity-",
+      "onnx": {
+        "dtype": "FLOAT",
+        "shape": [
+          1
+        ],
+        "layout": "X"
+      },
+      "native": {
+        "dtype": "STRING",
+        "shape": [
+          1
+        ],
+        "layout": "X"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bboxes-format:xyxysc;0:face",
+      "onnx": {
+        "dtype": "FLOAT",
+        "shape": [
+          20,
+          6
+        ],
+        "layout": "XX"
+      },
+      "native": {
+        "dtype": "FLOAT",
+        "shape": [
+          20,
+          6
+        ],
+        "layout": "XX"
+      }
+    }
+  ]
+}
