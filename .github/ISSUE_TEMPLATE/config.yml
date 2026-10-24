@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question or idea
+    url: https://github.com/OAAX-standard/OAAX/discussions
+    about: Questions and ideas that are not bugs belong in Discussions.
+  - name: Security vulnerability
+    url: https://github.com/OAAX-standard/OAAX/security/advisories/new
+    about: Report vulnerabilities privately, never in a public issue.
