@@ -86,7 +86,7 @@ OAAX is an evolving standard. If you see opportunities to extend or refine the s
 - **Feature Branches**: Create feature branches from `main` for new features or fixes. Use descriptive names, e.g., `feature/add-new-runtime-support`.
 - **Forks**: External contributors work from a fork of the repository; maintainers can push branches directly.
 - **Pull Requests**: Submit pull requests (PRs) against the `main` branch. Ensure your PR is based on the latest `main` branch. Keep each PR to one change and describe what it does and why.
-- **Review Process**: All PRs must be reviewed by at least one other contributor before merging. The reviewer should ensure that the code adheres to the coding standards and passes all tests.
+- **Review Process**: Maintainers review PRs and check that they follow the coding standards and passes all tests. There is no fixed review turnaround; if your PR is waiting, comment on it or raise it at the monthly [steering-committee meeting](https://github.com/OAAX-standard/steering-committee#how-it-works), which anyone may attend.
 - **Merging**: `main` is protected, so nothing is pushed to it directly. A PR can merge once its checks pass, including the DCO check, and the house style is a plain merge commit. Merging to `main` in this repository publishes the documentation site, so a merged docs change goes live.
 
 ### Before Opening a Pull Request
@@ -100,8 +100,12 @@ pip install "mkdocs<2" mkdocs-material && mkdocs build --strict   # anything und
 
 ### Coding Standards
 
-> A formal coding style guide will be published soon. Contributions aligning with consistent, readable, and idiomatic coding practices are welcome.
+There is no single OAAX style guide; each repository enforces its own. Follow the style of the code around your change, and where a repository has a `.pre-commit-config.yaml`, run `pre-commit run --all-files` before you push (ruff, clang-format, shellcheck and hadolint, as configured there). The conventions shared across the implementation repositories:
 
+- Small, focused functions and early returns over nested conditionals.
+- Type hints on all Python function signatures.
+- Comments only for the non-obvious *why*.
+- The public runtime interface stays a pure C API (`extern "C"`), as declared in [`include/interface.h`](include/interface.h).
 
 ### Commit Messages and DCO Sign-off
 
