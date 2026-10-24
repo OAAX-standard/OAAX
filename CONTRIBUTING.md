@@ -87,7 +87,7 @@ OAAX is an evolving standard. If you see opportunities to extend or refine the s
 - **Main Branch**: The `main` branch contains the latest stable code.
 - **Feature Branches**: Create feature branches from `main` for new features or fixes. Use descriptive names, e.g., `feature/add-new-runtime-support`.
 - **Forks**: External contributors work from a fork of the repository; maintainers can push branches directly.
-- **Pull Requests**: Submit pull requests (PRs) against the `main` branch. Ensure your PR is based on the latest `main` branch. Keep each PR to one change and describe what it does and why.
+- **Pull Requests**: Submit pull requests (PRs) against the `main` branch (the repository's default branch in the other repositories). Ensure your PR is based on the latest `main` branch. Keep each PR to one change and describe what it does and why.
 - **Review Process**: Maintainers review PRs and check that they follow the coding standards and pass all tests. There is no fixed review turnaround; if your PR is waiting, add a comment on it.
 - **Merging**: `main` is protected, so nothing is pushed to it directly. Branch protection requires the `DCO` check, and the other CI jobs should pass too; a job that needs repository secrets (for example an artifact upload in a vendor repository) can fail on a PR from a fork without your change being the cause. A maintainer merges the PR. Merging to `main` in this repository publishes the documentation site, so a merged docs change goes live.
 
@@ -100,7 +100,7 @@ CI runs the same checks, so run the ones that match your change first:
 bash example/run-example.sh        # runtime interface or example
 
 # anything under docs/ or mkdocs.yml, in a throwaway virtual environment
-python3 -m venv /tmp/oaax-docs-venv && . /tmp/oaax-docs-venv/bin/activate
+python3 -m venv /tmp/oaax-docs-venv && . /tmp/oaax-docs-venv/bin/activate   # Debian/Ubuntu: apt install python3-venv
 pip install "mkdocs<2" mkdocs-material && mkdocs build --strict
 ```
 
@@ -121,12 +121,12 @@ Clear and consistent commit messages help maintain project clarity and assist re
   ```
 
   This appends a `Signed-off-by: Your Name <you@example.com>` line. The name and email must match the commit's author (`git config user.name` / `user.email`).
-- If the DCO check fails on your PR, some commits lack a matching sign-off. Fix them all and update the branch (this also sets each commit's author to your current git identity):
+- If the DCO check fails on your PR, some commits lack a matching sign-off. Fix them all and update the branch (this also sets each commit's author to your current git identity; `<repository>` is the repository you contribute to and `<base>` the branch your PR targets, `main` unless its guide says otherwise):
 
   ```bash
   git config user.name "Your Name" && git config user.email "you@example.com"   # as on your GitHub account
-  git remote add upstream https://github.com/OAAX-standard/OAAX.git && git fetch upstream   # once, if you work from a fork
-  git rebase --exec 'git commit --amend --no-edit --reset-author -s' upstream/main   # use the PR's base branch
+  git remote add upstream https://github.com/OAAX-standard/<repository>.git && git fetch upstream   # once, if you work from a fork
+  git rebase --exec 'git commit --amend --no-edit --reset-author -s' upstream/<base>   # origin/<base> if you pushed your branch to the repository itself
   git push --force-with-lease origin HEAD
   ```
 
