@@ -1,0 +1,31 @@
+name: Bug report
+description: Something in the specification, documentation or example is wrong or does not work.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a bug in a runtime or toolchain, open the issue in that component's repository instead (see the [repository map](https://github.com/OAAX-standard/OAAX/blob/main/CONTRIBUTING.md#contributing-to-oaax-implementations)).
+  - type: textarea
+    id: what
+    attributes:
+      label: What is wrong, and how can we see it?
+      description: Steps to reproduce, or the page and sentence that is wrong, and what you expected instead.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OAAX version and component version
+      placeholder: "OAAX 2.0, or commit abc1234"
+  - type: input
+    id: environment
+    attributes:
+      label: Operating system, CPU architecture and accelerator
+      placeholder: "Ubuntu 22.04, arm64, none (CPU)"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Toolchain console output and conversion log, or the runtime's error output.
+      render: shell

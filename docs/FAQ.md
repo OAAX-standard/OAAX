@@ -74,7 +74,7 @@ Vendors can contribute:
 
 * A **toolchain Docker image** that consumes ONNX and produces a valid bundle that can be loaded by the OAAX runtime.
 * A **runtime implementation** of the OAAX C API
-  See the **Contributor Guide** for instructions.
+  See the [Contributing Guide](https://github.com/OAAX-standard/OAAX/blob/main/CONTRIBUTING.md) for instructions.
 
 **Can I propose changes to the OAAX spec?**
 Yes. OAAX is an open standard and encourages discussion via GitHub issues, pull requests, and mailing lists. Major changes go through the steering committee for review.
