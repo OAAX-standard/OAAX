@@ -1,30 +1,65 @@
-name: Deploy Documentation 
+name: Deploy Documentation
+# Versioned with mike (https://github.com/jimporter/mike); each version lives in its own folder on gh-pages.
+#   push to main          -> "dev" (unreleased)
+#   tag vMAJOR.MINOR      -> that version, aliased "latest" and set as the default
+#   manual run            -> any ref as any version (e.g. back-fill the last 1.x commit as 1.1)
 on:
   push:
     branches:
       - main
+    tags:
+      - 'v[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Commit, branch or tag to build
+        required: true
+      version:
+        description: Version label, for example 1.1
+        required: true
+      alias:
+        description: Alias to point at it, for example latest (leave empty for none)
+        required: false
 
 permissions:
   contents: write
 
+# Two deploys pushing gh-pages at once would clobber each other.
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      INPUT_VERSION: ${{ inputs.version }}
+      INPUT_ALIAS: ${{ inputs.alias }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          fetch-depth: 0   # mike needs the gh-pages branch
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
-      - uses: actions/cache@v4
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache 
-          restore-keys: |
-            mkdocs-material-
-      - run: pip install "mkdocs<2" mkdocs-material
-      - run: mkdocs gh-deploy --force
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      - name: Deploy
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            version=$INPUT_VERSION alias=$INPUT_ALIAS
+            # Old refs predate the version selector: add it to this build only.
+            grep -q 'provider: mike' mkdocs.yml || printf '\nextra:\n  version:\n    provider: mike\n    default: latest\n' >> mkdocs.yml
+          elif [ "$GITHUB_REF_TYPE" = tag ]; then
+            version=${GITHUB_REF_NAME#v} alias=latest
+          else
+            version=dev alias=
+          fi
+          echo "$version" | grep -Eq '^([0-9]+\.[0-9]+|dev)$' || { echo "bad version: $version"; exit 1; }
+          echo "$alias" | grep -Eq '^[a-z0-9.-]*$' || { echo "bad alias: $alias"; exit 1; }
+
+          mike() { uv run --no-project --with "mkdocs<2" --with mkdocs-material --with mike mike "$@"; }
+          # Redirect aliases: GitHub Pages is not guaranteed to follow the symlinks mike makes by default.
+          mike deploy --push --update-aliases --alias-type redirect "$version" $alias
+          if [ "$alias" = latest ]; then mike set-default --push latest; fi

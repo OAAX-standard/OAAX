@@ -99,10 +99,19 @@ CI runs the same checks, so run the ones that match your change first:
 # Linux with Docker, gcc and cmake (otherwise rely on CI)
 bash example/run-example.sh        # runtime interface or example
 
-# anything under docs/ or mkdocs.yml, in a throwaway virtual environment
-python3 -m venv /tmp/oaax-docs-venv && . /tmp/oaax-docs-venv/bin/activate   # Debian/Ubuntu: apt install python3-venv
-pip install "mkdocs<2" mkdocs-material && mkdocs build --strict
+# anything under docs/ or mkdocs.yml (needs uv: https://docs.astral.sh/uv/)
+uv run --no-project --with "mkdocs<2" --with mkdocs-material mkdocs build --strict
 ```
+
+### Documentation Versions
+
+The site is versioned with [mike](https://github.com/jimporter/mike), one folder per OAAX version (`docs.oaax.org/2.0/`, `/latest/`, `/dev/`). You do not deploy anything by hand:
+
+- A merge to `main` publishes the unreleased docs as `dev`.
+- A release is a tag `vMAJOR.MINOR` (for example `v2.1`): it publishes that version and makes it `latest`.
+- Old versions can be built from any commit with the *Deploy Documentation* workflow (Actions, *Run workflow*): give the commit, the version label and, if wanted, an alias.
+
+Version by specification `MAJOR.MINOR`. Runtime builds and their patch releases go in the download tables, not in a new docs version.
 
 ### Coding Standards
 

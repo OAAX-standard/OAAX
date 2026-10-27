@@ -19,8 +19,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - run: pip install "mkdocs<2" mkdocs-material
-      - run: mkdocs build --strict
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      - run: uv run --no-project --with "mkdocs<2" --with mkdocs-material mkdocs build --strict
