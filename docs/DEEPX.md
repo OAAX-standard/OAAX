@@ -47,7 +47,7 @@ Make sure the versions of the runtime, driver, and firmware are displayed correc
 You should see output similar to the following:
 
 ```bash
-DXRT v3.0.0
+DXRT v3.3.2
 =======================================================
  * Device 0: M1, Accelerator type
 ---------------------   Version   ---------------------
@@ -82,7 +82,7 @@ It loads one model per process. Logs go to stderr and `./runtime.log`; set `DEEP
 
 ### Conversion Toolchain
 
-The DEEPX conversion toolchain converts ONNX models to the DXNN format with the DEEPX compiler (DX-COM). The 2.0.0 image ships DX-COM 2.3.0, so nothing needs to be downloaded besides the image.
+The DEEPX conversion toolchain converts ONNX models to the DXNN format with the DEEPX compiler (DX-COM). The 2.0.0 image ships DX-COM 2.3.0, so nothing needs to be downloaded besides the image. The image is x86_64-only: run the conversion on an x86_64 host, whichever architecture the runtime targets.
 
 The toolchain takes a ZIP archive with, at its root, exactly one ONNX file, exactly one JSON configuration file, and optionally a calibration dataset folder for post-training quantization (recommended: without it the converted model may lose accuracy).
 For instructions on preparing the archive, refer to this GitHub guide: [Prepare Your Model](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#step-2-prepare-your-model){:target="_blank"}.
@@ -101,7 +101,7 @@ This command assumes that the model archive is located at `./model/model.zip`. T
 
 ## Download links and compatibility matrix
 
-Runtime libraries are packaged as `library-dxrt-<DX-RT version>.tar.gz` and contain `libRuntimeLibrary.so`. Pick the build that matches your OS version and CPU architecture, and install the DX-RT version listed in its row on the host machine. Windows builds are not published yet.
+Runtime libraries are packaged as `library-dxrt-v<DX-RT version>.tar.gz` and contain `libRuntimeLibrary.so`. Pick the build that matches your OS version and CPU architecture, and install the DX-RT version listed in its row on the host machine. Windows builds are not published yet.
 
 ### OAAX 2.0
 
