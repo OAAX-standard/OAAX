@@ -37,7 +37,7 @@ After installing the module, install the following components from the DEEPX SDK
 - [NPU Driver](https://github.com/DEEPX-AI/dx_rt_npu_linux_driver){:target="_blank"}
 - [Firmware (FW)](https://github.com/DEEPX-AI/dx_fw){:target="_blank"}
 
-> Make sure to install DXRT v3.0.0 version.
+> Install the DX-RT version the runtime library was built against. OAAX 2.0.0 needs v3.3.2, the 1.x builds need v3.0.0 (see the [download table](#download-links-and-compatibility-matrix)).
 
 After installation, run the following command to verify proper setup:
 ```bash
@@ -47,7 +47,7 @@ Make sure the versions of the runtime, driver, and firmware are displayed correc
 You should see output similar to the following:
 
 ```bash
-DXRT v3.0.0
+DXRT v3.3.2
 =======================================================
  * Device 0: M1, Accelerator type
 ---------------------   Version   ---------------------
@@ -76,35 +76,47 @@ The DEEPX SDK includes an [Open Model Zoo](https://developer.deepx.ai/modelzoo/)
 ### Runtime Library
 
 The runtime implements the [standard OAAX interface](https://github.com/OAAX-standard/OAAX/blob/main/include/interface.h){:target="_blank"}. It does not use any initialization parameters: call `runtime_init` with a `Config` of `length = 0`.
+It loads one model per process. Logs go to stderr and `./runtime.log`. Set `DEEPX_RUNTIME_LOG_FILE` to change the file and `SPDLOG_LEVEL` to change the verbosity.
 
 
 
 ### Conversion Toolchain
 
-The DEEPX conversion toolchain doesn't come with DX COM by default, it needs to be manually downloaded and unpacked on the machine where the conversion will be performed.  
-You can find details about the process in the [DEEPX conversion toolchain GitHub repository](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#step-1-download-deepxs-dx-com){:target="_blank"}.
+The DEEPX conversion toolchain converts ONNX models to the DXNN format with the DEEPX compiler (DX-COM). The 2.0.0 image ships DX-COM 2.3.0, so you download only the image. The image is x86_64-only: convert on an x86_64 host, whichever architecture the runtime targets.
 
-> Make sure to download DX COM 2.0.0 version which is compatible with DXRT v3.0.0
-
-To convert models for use with DEEPX Accelerators, models must be packaged as a ZIP archive.  
+The toolchain takes a ZIP archive. At its root the archive has exactly one ONNX file, exactly one JSON configuration file, and optionally a calibration dataset folder. The folder drives post-training quantization. Without it the converted model can lose accuracy.
 For instructions on preparing the archive, refer to this GitHub guide: [Prepare Your Model](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#step-2-prepare-your-model){:target="_blank"}.
 For guidance on JSON configuration files and supported ONNX operators, refer to the following
 documents:
 - [JSON File Configuration](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#json-file-configuration){:target="_blank"}, or refer to the model zoo for examples.
 - [Supported ONNX Operations](https://github.com/OAAX-standard/deepx-acceleration/tree/main/conversion-toolchain#supported-onnx-operations){:target="_blank"}
 
-Once DX COM is downloaded and the model archive is prepared, you can run the conversion using the following command:
+Once the model archive is prepared, load the image and convert the model:
 
 ```bash
-docker run -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:1.1.0 /app/artifacts/model.zip /app/artifacts/output
+docker load -i oaax-deepx-toolchain.tar
+docker run --rm -v ./model:/app/artifacts oaax-deepx-toolchain:2.0.0 /app/artifacts/model.zip /app/artifacts/output
 ```
-This command assumes that the model archive is located at `./model/model.zip` and the DX COM directory is located at `./dx_com`. The converted model will be saved in the `./model/output` directory.
+This command assumes that the model archive is located at `./model/model.zip`. The toolchain writes the converted model (`*.dxnn`) and a conversion log (`convert.log`) to the `./model/output` directory.
 
 ## Download links and compatibility matrix
 
-> Please make sure that you're using DXRT v3.0.0 version on the host-running machine.
+Runtime libraries are packaged as `library-dxrt-v<DX-RT version>.tar.gz` and contain `libRuntimeLibrary.so`. Pick the build that matches your OS version and CPU architecture. Then install the DX-RT version from its row on the host machine. Windows builds are not published yet.
 
-> **Note:** the builds listed below predate OAAX 2.0 and implement the 1.x runtime API. 2.0 builds will be listed here once published.
+### OAAX 2.0
+
+| OAAX version | OS      | Version | CPU architecture | DX-RT | Runtime library | Conversion toolchain |
+| ------------ | ------- | ------- | ---------------- | ----- | --------------- | -------------------- |
+| 2.0.0        | Ubuntu  | 20.04   | x86_64           | 3.3.2 | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/2.0.0/DEEPX/x86_64/Ubuntu/20.04/library-dxrt-v3.3.2.tar.gz) | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/2.0.0/DEEPX/oaax-deepx-toolchain.tar) |
+| 2.0.0        | Ubuntu  | 20.04   | aarch64          | 3.3.2 | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/2.0.0/DEEPX/aarch64/Ubuntu/20.04/library-dxrt-v3.3.2.tar.gz) | ⬆️ |
+| 2.0.0        | Ubuntu  | 22.04   | x86_64           | 3.3.2 | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/2.0.0/DEEPX/x86_64/Ubuntu/22.04/library-dxrt-v3.3.2.tar.gz) | ⬆️ |
+| 2.0.0        | Ubuntu  | 22.04   | aarch64          | 3.3.2 | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/2.0.0/DEEPX/aarch64/Ubuntu/22.04/library-dxrt-v3.3.2.tar.gz) | ⬆️ |
+| 2.0.0        | Ubuntu  | 24.04   | x86_64           | 3.3.2 | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/2.0.0/DEEPX/x86_64/Ubuntu/24.04/library-dxrt-v3.3.2.tar.gz) | ⬆️ |
+| 2.0.0        | Ubuntu  | 24.04   | aarch64          | 3.3.2 | [Download](https://oaax.nbg1.your-objectstorage.com/runtimes/2.0.0/DEEPX/aarch64/Ubuntu/24.04/library-dxrt-v3.3.2.tar.gz) | ⬆️ |
+
+### OAAX 1.x (legacy)
+
+> **Note:** these builds implement the 1.x runtime API, which is not compatible with OAAX 2.0 hosts. They need DX-RT v3.0.0, and their toolchain needs DX-COM 2.0.0 mounted into the container: `docker run -v ./model:/app/artifacts -v ./dx_com:/app/dx_com oaax-deepx-toolchain:1.1.0 /app/artifacts/model.zip /app/artifacts/output`.
 
 | OAAX versions | OS            | Version  | CPU architecture | Runtime library                                                                                                           | Conversion toolchain                                                                                           |
 | ------------- | ------------- | -------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
