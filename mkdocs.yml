@@ -47,3 +47,7 @@ nav:
   - Intel: Intel.md
   - NVIDIA: NVIDIA.md
   - DEEPX: DEEPX.md
+extra:
+  version:
+    provider: mike   # version selector in the header; versions are deployed by .github/workflows/deploy-docs.yml
+    default: latest
