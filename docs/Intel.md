@@ -48,14 +48,14 @@ It is initialized by calling `RuntimeStatus runtime_init(Config config);`, with 
 
 The conversion toolchain converts an ONNX model to the OpenVINO IR format. By default, it compresses the weights to FP16.
 
-The input is a `.zip` bundle containing `model.onnx` and, optionally, a `config.json` and a `calibration/` directory of images. The container runs as a non-root user, so pass your own user to let it write to the mounted directories:
+The input is a `.zip` bundle with an ONNX model (for example `model.onnx`) and, optionally, a `config.json` and a `calibration/` directory of images. The container runs as root. Pass your own user, so that the files it writes to the mounted output directory belong to you:
 ```bash
 docker load -i oaax-intel-toolchain.tar   # loads the image as oaax-intel-toolchain:latest
 mkdir -p input output
 zip input/model.zip model.onnx
 docker run --rm --user $(id -u):$(id -g) -v ./input:/input -v ./output:/output oaax-intel-toolchain:latest /input/model.zip /output
 ```
-After a successful conversion, the converted model (`model.zip`, containing `model.xml` and `model.bin`) and a conversion log (`logs.json`) are saved in the `./output` directory. Load `model.zip` with the runtime.
+After a successful conversion, the toolchain writes the converted model and a conversion log (`logs.json`) to the `./output` directory. The converted model takes the name of the ONNX model: `model.onnx` gives `model.zip`, which contains `model.xml` and `model.bin`. Load `model.zip` with the runtime.
 
 With the default FP16 compression, the runtime expects FP16 input tensors. To keep the model's original input types (e.g. FP32), disable it with a `config.json` in the bundle:
 ```json
