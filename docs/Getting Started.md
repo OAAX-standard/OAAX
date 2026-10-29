@@ -7,7 +7,7 @@ This walkthrough takes a face detection model through the two OAAX stages on a C
 
 The same host application runs both, only the runtime library and the model file change. That is the point of OAAX.
 
-For other accelerators, follow the same steps with the toolchain and runtime listed on the accelerator's page ([NVIDIA](NVIDIA.md), [DEEPX](DEEPX.md), ...). Their OAAX 2.0 builds are listed there once published.
+For other accelerators, follow the same steps with the toolchain and runtime listed on the accelerator's page ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md), ...), which list the OAAX 2.0 builds and how to pick one.
 
 ## Requirements
 
