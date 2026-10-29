@@ -71,12 +71,12 @@ See the [full list of compliant hardware](Compliant%20XPU.md).
 **How to use it.** It needs [uv](https://docs.astral.sh/uv/getting-started/installation/) and nothing else; run it without installing anything:
 
 ```bash
-uvx oaax-manager list                       # everything available; * marks what fits this machine
+uvx oaax-manager list                       # everything available; * marks builds that fit this OS and CPU
 uvx oaax-manager fetch runtime cpu          # downloads and unpacks the runtime for this machine
 uvx oaax-manager fetch toolchain cpu        # saves the toolchain image and prints the `docker load` command
 ```
 
-Replace `cpu` with `intel`, `nvidia-ort`, `nvidia-trt`, `hailo` or `deepx`. When a chip has several builds, it never guesses: it lists them and you choose with `--variant`.
+Replace `cpu` with `intel`, `nvidia-ort`, `nvidia-trt`, `hailo` or `deepx`. When a chip has several builds (several CUDA versions, HailoRT versions or Ubuntu versions can all be marked `*`), it never guesses: it lists them and you choose with `--variant`.
 
 | Command or option | What it does |
 | ----------------- | ------------ |
@@ -91,7 +91,7 @@ Replace `cpu` with `intel`, `nvidia-ort`, `nvidia-trt`, `hailo` or `deepx`. When
 !!! success "Safe by default"
     Every download is checked against a pinned SHA-256, interrupted downloads resume, archives are extracted all-or-nothing with strict path checks, and an existing folder is never overwritten.
 
-Install it permanently with `uv tool install oaax-manager`, or use the single file from the [releases page](https://github.com/OAAX-standard/oaax-manager/releases) with any Python 3.9+. Details: [PyPI](https://pypi.org/project/oaax-manager/), [GitHub](https://github.com/OAAX-standard/oaax-manager).
+Install it permanently with `uv tool install oaax-manager`, or download the single file `oaax-manager.pyz` from the [releases page](https://github.com/OAAX-standard/oaax-manager/releases) and run it with any Python 3.9+ (`python3 oaax-manager.pyz list`). Details: [PyPI](https://pypi.org/project/oaax-manager/), [GitHub](https://github.com/OAAX-standard/oaax-manager).
 
 ## How OAAX works
 
