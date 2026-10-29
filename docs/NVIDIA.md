@@ -1,6 +1,17 @@
 > **📦 Implementation details**  
 > The runtime and toolchain are implemented in the [nvidia-acceleration repository](https://github.com/OAAX-standard/nvidia-acceleration){:target="_blank"}. Latest release: [v2.0.0](https://github.com/OAAX-standard/nvidia-acceleration/releases/tag/v2.0.0){:target="_blank"}.
 
+## At a glance
+
+| | |
+| --- | --- |
+| **Devices** | NVIDIA GPUs (TensorRT toolchain: compute capability 7.5 or higher), Jetson, DGX Spark / Grace |
+| **Backends** | ONNX Runtime with the CUDA Execution Provider (`nvidia-ort`), native TensorRT 10 or 11 (`nvidia-trt`) |
+| **Runtime library** | `libRuntimeLibrary.so` (Linux), `RuntimeLibrary.dll` (Windows, ONNX Runtime only), 1 MB to 1.7 GB depending on the build |
+| **Toolchain image** | `oaax-nvidia-toolchain:2.0.0` (967 MB) or `oaax-nvidia-tensorrt-toolchain:2.0.0` (11 GB) |
+| **Verified on hardware** | RTX A4000, driver 580, CUDA 13, Ubuntu x86_64: both backends, TensorRT 10 |
+| **Not verified** | Windows, Jetson, DGX Spark / Grace (SBSA), TensorRT 11 conversion, running the CUDA 11 package, the wheel conversion path, `docker run --gpus all` as written |
+
 ## Overview
 
 NVIDIA GPUs are supported through two backends that expose the same OAAX 2.0 runtime interface, so the host application does not change. Use the runtime and the toolchain of the **same** backend together.
