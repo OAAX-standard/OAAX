@@ -42,7 +42,7 @@
 | | Hailo's PCIe driver (`hailort-pcie-driver`) installed, with `/dev/hailo*` present |
 | | A runtime build whose HailoRT version **equals the installed driver version** (below) |
 | **Convert** | Docker, and internet access (the container installs the SDK's Python dependencies at every start) |
-| | From Hailo's [Developer Zone](https://hailo.ai/developer-zone/){:target="_blank"} (login required, not redistributable): `hailo_dataflow_compiler-3.<minor>.0-py3-none-linux_x86_64.whl`, `hailort-4.<minor>.0-cp310-cp310-linux_x86_64.whl` and the matching `hailort_4.<minor>.0_amd64.deb` (it provides `libhailort`, which the wheel needs), **one version of each** in one folder |
+| | From Hailo's [Developer Zone](https://hailo.ai/developer-zone/){:target="_blank"} (login required, not redistributable): `hailo_dataflow_compiler-3.<minor>.0-py3-none-linux_x86_64.whl`, `hailort-4.<minor>.0-cp310-cp310-linux_x86_64.whl` and the matching `hailort_4.<minor>.0_amd64.deb` (it provides `libhailort`, which the wheel needs; an empty or placeholder file is not enough), **one version of each** in one folder |
 
 The image holds Ubuntu 22.04 and Python 3.10 (hence `cp310`). The example below was converted with Dataflow Compiler 3.29.0 and the HailoRT 4.19.0 wheel; which compiler goes with which HailoRT is not documented ([issue #15](https://github.com/OAAX-standard/hailo-acceleration/issues/15)). A model converted that way runs on the 4.20.0 runtime.
 
@@ -248,7 +248,7 @@ Goal: the official YOLOX-s model (Apache-2.0) from ONNX to detections on a Hailo
       artifacts/dog-bicycle.jpg --input-name input0
     ```
 
-**What you should see**: `Runtime: OAAX Hailo Runtime 2.0.0`, an output tensor of shape `[1, 8400, 85]`, two detections (`bicycle` and `dog`, scores 0.953 and 0.934) and `OK: 10 requests`, then `detections.png`, the picture with the boxes. The unconverted model on the [CPU runtime](CPU.md) gives the same classes and scores, with boxes within about 11 pixels (INT8). On the machine of this page the Hailo-8 took about 12 ms per request and the CPU about 80 ms.
+**What you should see**: `Runtime: OAAX Hailo Runtime 2.0.0`, an output tensor of shape `[1, 8400, 85]`, two detections (`bicycle` and `dog`, scores 0.953 and 0.934) and `OK: 10 requests`, then `detections.png`, the picture with the boxes. The unconverted model on the [CPU runtime](CPU.md) gives the same classes and scores, with boxes within about 11 pixels (INT8). As an example, the Hailo-8 took about 12 ms per request and the CPU about 80 ms on the test machine; yours will differ.
 
 ## Troubleshooting
 
