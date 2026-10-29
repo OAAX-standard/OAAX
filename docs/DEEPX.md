@@ -12,6 +12,7 @@
 | Runtime library | `libRuntimeLibrary.so` (about 180 KB), Ubuntu 20.04 / 22.04 / 24.04, x86_64 and aarch64 |
 | Runtime input | one `uint8` NHWC tensor, normalization is compiled into the model |
 | Not supported | Windows, several models in one process |
+| Start here | the [end-to-end example](#end-to-end-example): `uvx oaax-manager fetch toolchain deepx` (**6.1 GB** image), then about **5 minutes** of conversion |
 
 ## Overview
 
@@ -28,7 +29,7 @@ DEEPX NPUs are edge inference accelerators; DX-H1 is the higher-performance vari
 - **Does not do**: image pre-processing, post-processing, float or layout conversion of the input.
 
 !!! warning "DX-H1"
-    DX-COM 2.3.0 reports `Target Hardware: M1`. The repository lists DX-H1 as supported, but this page could not check a DX-H1 conversion. Confirm with DEEPX before relying on it.
+    DX-COM 2.3.0 reports `Target Hardware: M1`. The repository lists DX-H1 as supported, but this page could not check a DX-H1 conversion ([issue #21](https://github.com/OAAX-standard/deepx-acceleration/issues/21){:target="_blank"}).
 
 ## Requirements
 
@@ -43,7 +44,7 @@ DEEPX NPUs are edge inference accelerators; DX-H1 is the higher-performance vari
 | --- | --- | --- |
 | OS | Ubuntu 20.04, 22.04 or 24.04, **the one the runtime was built for** | any Linux with Docker on x86_64 |
 | DEEPX software | [DX-RT](https://github.com/DEEPX-AI/dx_rt){:target="_blank"} **3.3.2**, [NPU driver](https://github.com/DEEPX-AI/dx_rt_npu_linux_driver){:target="_blank"}, [firmware](https://github.com/DEEPX-AI/dx_fw){:target="_blank"} | none (DX-COM is in the image) |
-| Other | a host application that calls the OAAX API | Docker, 6.1 GB of disk for the image |
+| Other | a host application that calls the OAAX API; on a minimal image `libgomp1` | Docker, [uv](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"} (for `oaax-manager`), 6.1 GB of disk for the image |
 | Network | no | **no**: converting works with `--network none` (tested); only downloading the image needs it |
 
 !!! warning "The DX-RT version must match exactly"
@@ -63,13 +64,14 @@ DX-RT is built from source (`./install.sh --all && ./build.sh` in the DX-RT repo
 With [`oaax-manager`](https://pypi.org/project/oaax-manager/){:target="_blank"}, which verifies the checksums:
 
 ```bash
-uvx oaax-manager list        # all builds; * = matches this machine
+uvx oaax-manager list        # all builds; * = matches this CPU architecture (all three Ubuntu variants get a star: pick yours)
 ```
 
 === "This machine"
 
     ```bash
-    uvx oaax-manager fetch runtime deepx --variant ubuntu$(lsb_release -rs)-dxrt3.3.2
+    . /etc/os-release       # sets VERSION_ID, e.g. 22.04
+    uvx oaax-manager fetch runtime deepx --variant ubuntu$VERSION_ID-dxrt3.3.2    # --variant is required
     uvx oaax-manager fetch toolchain deepx     # 6.1 GB, saves oaax-deepx-toolchain-2.0.0.tar
     ```
 
@@ -104,10 +106,10 @@ The input is a `.zip` with, **at its root**, exactly one `.onnx`, exactly one `.
 
 ```bash
 docker load -i oaax-deepx-toolchain-2.0.0.tar     # loads oaax-deepx-toolchain:2.0.0 and :latest
-docker run --rm --user $(id -u):$(id -g) -v $PWD:/work oaax-deepx-toolchain:2.0.0 /work/model.zip /work/output
+docker run --rm --user $(id -u):$(id -g) -v "$PWD:/work" oaax-deepx-toolchain:2.0.0 /work/model.zip /work/output
 ```
 
-Output in `./output`: `<onnx name>.dxnn` and `convert.log` (the toolchain writes no `logs.json`). Without `--user` the files belong to root. A 12.7 MB YOLOv8n with 100 calibration images took 3 min 9 s on a 20-core machine.
+Output in `./output`: `<onnx name>.dxnn` and `convert.log` (the toolchain writes no `logs.json`). Without `--user` the files belong to root. The official YOLOX-s with 100 calibration images took 4 min 42 s on a 20-core machine (see the example below).
 
 ### Options
 
@@ -131,7 +133,7 @@ Preprocessing steps: `resize` (`width`+`height`, or `mode`, `size`, `pad_locatio
     The entrypoint does not forward flags. To use them, run `dxcom` directly (tested with `--opt_level 0 --gen_log`):
 
     ```bash
-    docker run --rm --user $(id -u):$(id -g) -v $PWD/w:/work -w /work --entrypoint dxcom oaax-deepx-toolchain:2.0.0 \
+    docker run --rm --user $(id -u):$(id -g) -v "$PWD/w:/work" -w /work --entrypoint dxcom oaax-deepx-toolchain:2.0.0 \
       -m model.onnx -c model.json -o out --opt_level 0 --gen_log
     ```
 
@@ -150,6 +152,8 @@ Preprocessing steps: `resize` (`width`+`height`, or `mode`, `size`, `pad_locatio
 | `Usage: ... <zip file> <output dir>` | not exactly two arguments |
 | `Expected exactly 1 ONNX file, but found N` / `... JSON file ...` | wrong count, or the files are in a sub-folder of the zip, or the zip path is wrong |
 | `Error: dxcom conversion failed.` | followed by DX-COM's own error, e.g. `ConfigFileError: You Must define input shapes`, `ConfigInputError`, `DataNotFoundError`, `DataPreprocessingError`, `DataLoaderError` |
+
+Known gaps are tracked in the repository: the toolchain writes `convert.log` instead of `logs.json` ([#17](https://github.com/OAAX-standard/deepx-acceleration/issues/17){:target="_blank"}), invalid config keys and `calibration_method` values are accepted silently ([#18](https://github.com/OAAX-standard/deepx-acceleration/issues/18){:target="_blank"}), only a zip bundle is accepted ([#19](https://github.com/OAAX-standard/deepx-acceleration/issues/19){:target="_blank"}) and the image is large ([#20](https://github.com/OAAX-standard/deepx-acceleration/issues/20){:target="_blank"}).
 
 ## Runtime library
 
@@ -192,60 +196,56 @@ The runtime implements the [OAAX 2.0 interface](https://github.com/OAAX-standard
 
 ## End-to-end example
 
-This converts DEEPX's YOLOv8n and runs it on an image with the repository's own test host, which sends a `uint8` NHWC image and decodes the YOLO output.
+This converts the official **YOLOX-s** detector and runs it with the [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"}, one small C host that runs on every OAAX runtime; for DEEPX only two flags differ.
 
-!!! note "Why not the OAAX C example?"
-    The `c-example` model has two inputs and a built-in NMS, and the toolchain rejects it (`DataLoaderError ... expects 2 inputs`). Its host sends float NCHW, which the DEEPX runtime also rejects. The YOLOv8n weights are Ultralytics-derived (AGPL-3.0): use them for evaluation only.
+!!! warning "Not run on hardware"
+    Steps 1 to 5 were run by the page's author (Ubuntu 22.04, x86_64). Step 6 needs a DEEPX card, DX-RT 3.3.2, the driver and the firmware, which were not available: its result is described, not shown.
 
-!!! warning "Steps 1 to 6 were run by the page's author, step 7 was not"
-    No DEEPX card was available. Steps 1 to 6 ran on Ubuntu 22.04 x86_64; the inference in step 7 was not run, so its output is described, not shown.
+!!! note "Before you start"
+    Step 3 downloads the **6.1 GB** toolchain image and step 4 takes about **5 minutes** (4 min 42 s here, including the calibration download).
 
-1. Install the tools: `sudo apt-get install -y git curl cmake build-essential zip unzip lsb-release`, plus [uv](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"} and Docker.
-2. Fetch the runtime and the toolchain, then load the image:
+1. Install the tools (Ubuntu), plus [uv](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"} and [Docker](https://docs.docker.com/engine/install/){:target="_blank"}:
    ```bash
-   uvx oaax-manager fetch runtime deepx --variant ubuntu$(lsb_release -rs)-dxrt3.3.2
+   sudo apt-get install -y git curl cmake build-essential zip unzip libgomp1
+   ```
+2. Get the example, build the host and download the model (the sha256 is checked):
+   ```bash
+   git clone https://github.com/OAAX-standard/examples.git
+   cd examples/yolox-example
+   cmake -S . -B build && cmake --build build
+   bash fetch_model.sh
+   ```
+3. Fetch the runtime and the toolchain, load the image:
+   ```bash
+   . /etc/os-release
+   uvx oaax-manager fetch runtime deepx --variant ubuntu$VERSION_ID-dxrt3.3.2
    uvx oaax-manager fetch toolchain deepx
    docker load -i oaax-deepx-toolchain-2.0.0.tar
    ```
-3. Download the model, its configuration and the calibration images from DEEPX, point the configuration at them and zip:
+4. Convert. The bundle holds the model, [`configs/deepx.json`](https://github.com/OAAX-standard/examples/blob/main/yolox-example/configs/deepx.json){:target="_blank"} and 100 calibration images from DEEPX:
    ```bash
-   mkdir -p calibration_dataset
-   curl -fsSL -o yolo8n.onnx https://sdk.deepx.ai/modelzoo/onnx/YOLOV8N-1.onnx
-   curl -fsSL -o yolo8n.json https://sdk.deepx.ai/modelzoo/json/YOLOV8N-1.json
-   curl -fsSL https://sdk.deepx.ai/dataset/calibration_dataset.tar.gz | tar xz --strip-components=1 -C calibration_dataset
-   sed -i 's#"dataset_path": *"[^"]*"#"dataset_path": "./calibration_dataset"#' yolo8n.json
-   zip -qr yolo8n.zip yolo8n.onnx yolo8n.json calibration_dataset
+   mkdir -p deepx/calibration_dataset
+   curl -fsSL https://sdk.deepx.ai/dataset/calibration_dataset.tar.gz | tar xz --strip-components=1 -C deepx/calibration_dataset
+   cp models/yolox_s.onnx deepx/ && cp configs/deepx.json deepx/yolox_s.json
+   (cd deepx && zip -qr yolox_s.zip yolox_s.onnx yolox_s.json calibration_dataset)
+   docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/deepx:/work" oaax-deepx-toolchain:2.0.0 /work/yolox_s.zip /work/out
    ```
-4. Convert (a few minutes; the file name must keep `yolo8` so the test host decodes the output):
-   ```bash
-   docker run --rm --user $(id -u):$(id -g) -v $PWD:/work oaax-deepx-toolchain:2.0.0 /work/yolo8n.zip /work/out
-   ```
-   Success ends with `Conversion finished at ...` and `out/yolo8n.dxnn` exists.
-5. Prepare the image as raw 640x640 RGB `uint8` (letterboxed, padding 114):
-   ```bash
-   curl -fsSL -o image.jpg https://raw.githubusercontent.com/OAAX-standard/examples/main/c-example/artifacts/image.jpg
-   uv run --no-project --with opencv-python-headless --with numpy python - <<'EOF'
-   import cv2, numpy as np
-   img = cv2.cvtColor(cv2.imread("image.jpg"), cv2.COLOR_BGR2RGB)
-   s = min(640 / img.shape[1], 640 / img.shape[0])
-   w, h = int(img.shape[1] * s), int(img.shape[0] * s)
-   canvas = np.full((640, 640, 3), 114, np.uint8)
-   top, left = (640 - h) // 2, (640 - w) // 2
-   canvas[top:top + h, left:left + w] = cv2.resize(img, (w, h))
-   canvas.tofile("image_640x640x3.raw")
-   EOF
-   ```
-6. Build the test host against the downloaded runtime (it links without DX-RT installed):
-   ```bash
-   git clone --branch v2.0.0 --depth 1 https://github.com/OAAX-standard/deepx-acceleration.git
-   bash deepx-acceleration/tests/runtime/build-tests.sh --runtime-lib-dir $(echo $PWD/runtime-deepx-*)
-   ```
-7. **Not run, needs the card, DX-RT 3.3.2, driver and firmware.** Check `dxrt-cli --status` first, then:
-   ```bash
-   deepx-acceleration/tests/runtime/build/inference_runner --model out/yolo8n.dxnn --input-size 1228800 \
-     --input-shape 1,640,640,3 --image image_640x640x3.raw --runs 100 --warmup 10 --csv
-   ```
-   Expected: log lines on stderr (`[init] runtime initialized`, `[init] model loaded`, the input and output tensor descriptions, then `[yolo8n] N detection(s)` with class, score and box of the first warmup run), and one CSV line on stdout with the average, percentile latencies and throughput. Detections depend on the image: `class=0` is `person` in COCO.
+   It ends with `Conversion finished at ...` and `deepx/out/yolox_s.dxnn` exists.
+5. Check that the host and the runtime are in place: `ls build/yolox_host runtime-deepx-*/libRuntimeLibrary.so`.
+6. **Not run, needs the card.** Check `dxrt-cli --status` (DX-RT 3.3.2), then run the host with the DEEPX flags (`--layout nhwc --dtype uint8`, the converted model takes raw uint8 NHWC pixels):
+
+=== "Same machine"
+
+    ```bash
+    ./build/yolox_host runtime-deepx-*/libRuntimeLibrary.so deepx/out/yolox_s.dxnn artifacts/dog-bicycle.jpg \
+      --layout nhwc --dtype uint8
+    ```
+
+=== "Convert on x86_64, run on an aarch64 board"
+
+    Fetch the runtime on the board (`uvx oaax-manager fetch runtime deepx --variant ubuntu$VERSION_ID-dxrt3.3.2`), build the host there (steps 1 and 2), copy `deepx/out/yolox_s.dxnn` to it and run the same command.
+
+Expected, from the example's description (not observed): the host prints the runtime name (`DEEPX`), the model's output tensor, the detections of the CC0 test image (a bicycle and a dog on the CPU runtime) and `OK: 10 requests ...`, and writes `detections.png`. Box positions and scores can differ slightly from the CPU run because the model is quantized to INT8. Whether the calibration padding placement matches the host's letterbox, and the INT8 accuracy, are unchecked.
 
 ## Troubleshooting
 
@@ -253,7 +253,7 @@ This converts DEEPX's YOLOv8n and runs it on an image with the repository's own 
 | --- | --- |
 | `undefined symbol: _ZN4dxrt14GetTaskMaxLoadEv` or `symbol lookup error` when loading or calling the runtime | The installed DX-RT is older than 3.3.2 (reproduced with 2.0.3). Install 3.3.2, run `ldconfig`, check with `ldd` |
 | `libdxrt.so: cannot open shared object file` | DX-RT is not installed or not on the library path (it installs to `/usr/local/lib`, run `ldconfig`) |
-| `GLIBC_...` / `GLIBCXX_...` not found | Wrong build for the OS: take the variant matching `lsb_release -rs` |
+| `GLIBC_...` / `GLIBCXX_...` not found | Wrong build for the OS: take the variant matching your Ubuntu (`. /etc/os-release; echo $VERSION_ID`) |
 | `[DXRT][Error] Device not found.`, possibly followed by an abort | DX-RT sees no card (seen with `dxrt-cli` and no hardware). Reseat the card and check the driver, firmware and `dxrt-cli --status` |
 | `FILE_NOT_FOUND`, `Model file not found: <path>` | Wrong path to the `.dxnn` |
 | `INVALID_MODEL`, `Failed to load model: ...` | The file is not a DXNN that this DX-RT accepts (an `.onnx`, truncated, or built by a very different DX-COM) |
