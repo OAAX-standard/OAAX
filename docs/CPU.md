@@ -125,9 +125,9 @@ The thread budget per model is `max(1, floor(cores * 0.4 or 0.9) / number of mod
 
 `ModelConfig.config` is **not read**: there are no per-model keys. Use `file_path`, or `model_data` + `model_size` to load from memory (if `model_size` is 0, `file_path` is used).
 
-### Behaviour
+### Behavior
 
-| Topic | Behaviour |
+| Topic | Behavior |
 | --- | --- |
 | Logging | Written to stdout and to `log_file` (rotates at 5 MB, keeps 3 files). Every request failure is logged at `error` level. |
 | Models | Load all models in **one** `runtime_load_models` call; a model's id is its index. A failed load leaves nothing loaded and you may call it again. |
