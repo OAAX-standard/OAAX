@@ -56,11 +56,11 @@ Conversion toolchain (any platform): [Download](https://nbg1.your-objectstorage.
 
 | OS | CPU architecture | HailoRT | Runtime library |
 | -- | ---------------- | ------- | --------------- |
-| Ubuntu | x86_64 | 4.17.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.17.0.tar.gz) (9 MB) |
-| Ubuntu | x86_64 | 4.18.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.18.0.tar.gz) (9 MB) |
-| Ubuntu | x86_64 | 4.19.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.19.0.tar.gz) (9 MB) |
-| Ubuntu | x86_64 | 4.20.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.20.0.tar.gz) (9 MB) |
-| Ubuntu | aarch64 | 4.17.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.17.0.tar.gz) (8 MB) |
-| Ubuntu | aarch64 | 4.18.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.18.0.tar.gz) (8 MB) |
-| Ubuntu | aarch64 | 4.19.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.19.0.tar.gz) (9 MB) |
-| Ubuntu | aarch64 | 4.20.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.20.0.tar.gz) (9 MB) |
+| Ubuntu | x86_64 | 4.17.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.17.0.tar.gz) (8 MB) |
+| Ubuntu | x86_64 | 4.18.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.18.0.tar.gz) (8 MB) |
+| Ubuntu | x86_64 | 4.19.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.19.0.tar.gz) (8 MB) |
+| Ubuntu | x86_64 | 4.20.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.20.0.tar.gz) (8 MB) |
+| Ubuntu | aarch64 | 4.17.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.17.0.tar.gz) (7 MB) |
+| Ubuntu | aarch64 | 4.18.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.18.0.tar.gz) (7 MB) |
+| Ubuntu | aarch64 | 4.19.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.19.0.tar.gz) (8 MB) |
+| Ubuntu | aarch64 | 4.20.0 | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.20.0.tar.gz) (8 MB) |

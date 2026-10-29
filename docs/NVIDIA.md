@@ -104,9 +104,6 @@ The Jetson TensorRT build only bundles `libcudart`: JetPack provides TensorRT an
 
 > **Note:** these builds implement the 1.x runtime API, which is not compatible with OAAX 2.0 hosts. Their toolchain is `oaax-nvidia-toolchain:1.1.1`, run with `docker run -v ./model:/model oaax-nvidia-toolchain:1.1.1 /model/model.onnx /model/output`.
 
-| ------- | ------------ | -------------- |
-| -------- | ---- | --------------- |
-| -------- | -- | -------- | ---- | --------------- |
 | OAAX versions | OS             | Version         | CPU architecture | Runtime library                                                                                                                                                                                                                      | Conversion toolchain                                                                                             |
 | ------------- | -------------- | --------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
 | 1.1.1         | Ubuntu         | 20.04 or higher | x86_64           | [CUDA 11](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.1/NVIDIA/x86_64/Ubuntu/library-cuda_11.tar.gz), [CUDA 12](https://oaax.nbg1.your-objectstorage.com/runtimes/1.1.1/NVIDIA/x86_64/Ubuntu/library-cuda_12.tar.gz)       | [Download](https://oaax.nbg1.your-objectstorage.com/conversion-toolchain/1.1.1/NVIDIA/oaax-nvidia-toolchain.tar) |
