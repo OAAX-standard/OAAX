@@ -259,7 +259,7 @@ Wrote detections.png
 OK: 10 requests, first 95.4 ms (warm-up), then 61.7 ms on average (min 46.8 ms)
 ```
 
-`detections.png` shows the boxes. On the integrated GPU (`effective_device` `GPU`) we got the same two objects, boxes within 6 px, and `first 39.7 ms (warm-up), then 34.2 ms on average`. Times depend on the machine.
+`detections.png` shows the boxes. On the integrated GPU (`effective_device` `GPU`) we got the same two objects with identical boxes and scores (checked against the CPU run), and `first 39.7 ms (warm-up), then 34.2 ms on average`. Times depend on the machine.
 
 ??? note "Default (FP16) conversion: send float16"
     Without `config.json` the toolchain makes the input float16 ([#30](https://github.com/OAAX-standard/intel-acceleration/issues/30)). Pass `--dtype float16` to the host:
