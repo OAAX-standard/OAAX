@@ -51,14 +51,22 @@ NVIDIA GPUs are supported through two backends that expose the same OAAX 2.0 run
 | OS | Linux: Ubuntu 20.04+ for CUDA 11/12 ORT builds; Ubuntu 22.04+ for the CUDA 13 ORT builds and all TRT builds (glibc 2.29 / 2.34 / 2.33). Windows 10/11 (ORT only). | Docker on any Linux x86_64 host (ORT). Docker plus the NVIDIA Container Toolkit, or the Python wheel with a local TensorRT (TRT). |
 | NVIDIA driver | New enough for the package's CUDA major version, per [NVIDIA's compatibility table](https://docs.nvidia.com/deploy/cuda-compatibility/){:target="_blank"}: CUDA 11 needs 450.80+, CUDA 12 needs 525.60+, CUDA 13 needs 580+. | TRT only: a driver for CUDA 13 (580+), with `nvidia-smi` working on the host. |
 | CUDA libraries | **ORT: not bundled.** Install the CUDA major of your package: `libcudart`, `libcublas`, `libcublasLt` and `libcufft` (Windows: on `PATH`). **TRT: bundled** (`libcudart` and TensorRT), nothing to install. | None on the host (they are inside the image). |
-| cuDNN | ORT: bundled, except on Jetson (JetPack provides it). TRT: not used. | None |
+| cuDNN | ORT: bundled, except on Jetson (JetPack provides it) and for the `cuda12` x86_64 package (see the warning below). TRT: not used. | None |
 | TensorRT | TRT: bundled (10.16 or 11.0). **Jetson: not bundled**, JetPack provides it. | The image contains TensorRT 10.16. The TRT 11 runtime needs the wheel with TensorRT 11 installed. |
 
 !!! warning "The TensorRT version must match"
     A `.trt` engine only loads in a runtime with the same TensorRT version as the toolchain that built it. The Docker toolchain is TensorRT 10, so use a `trt10` runtime with it.
 
-!!! warning "Known defect: CUDA 12 ONNX Runtime package on Linux x86_64"
-    The 2.0.0 `cuda12` package bundles cuDNN 9, but its ONNX Runtime (1.16.3) loads `libcudnn.so.8`. Until it is fixed, install cuDNN 8 for CUDA 12 on the host, or use the `cuda11` or `cuda13` package. See [Troubleshooting](#troubleshooting).
+!!! warning "Known issue: the `cuda12` ONNX Runtime package (Linux x86_64) needs cuDNN 8"
+    The 2.0.0 `cuda12` package contains cuDNN 9 files, but its ONNX Runtime (1.16.3) loads **cuDNN 8** (`libcudnn.so.8`), so it fails with `libcudnn.so.8: cannot open shared object file`. Download cuDNN **8.9.7.29 for CUDA 12** from NVIDIA and place it **next to `libRuntimeLibrary.so`** (about 800 MB of libraries):
+
+    ```bash
+    curl -fLO https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
+    tar xJf cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz --wildcards "*/lib/libcudnn.so.8*" "*/lib/libcudnn_*_infer.so.8*"
+    cp -P cudnn-linux-x86_64-8.9.7.29_cuda12-archive/lib/libcudnn.so.8* cudnn-linux-x86_64-8.9.7.29_cuda12-archive/lib/libcudnn_*_infer.so.8* runtime-nvidia-ort-2.0.0-linux-x86_64-cuda12/
+    ```
+
+    (sha256 of the archive, 865 MB: `475333625c7e42a7af3ca0b2f7506a106e30c93b1aa0081cd9c13efb6e21e3bb`.) No `LD_LIBRARY_PATH` is needed for cuDNN, because the runtime libraries look in their own folder. The `cuda11` and `cuda13` packages are not affected: they bundle the cuDNN version they load (8.9.7 and 9.25). The CUDA 12 libraries (`libcudart`, `libcublas`, `libcufft`) must still be installed on the host.
 
 ### Which package do I pick?
 
@@ -352,7 +360,7 @@ Read `runtime.log` (or run with `log_level` `1` and `log_stdout` `true`) first: 
 | Symptom | Cause and fix |
 | --- | --- |
 | `runtime_init failed: ... Failed to load library libonnxruntime_providers_cuda.so with error: libcublasLt.so.12: cannot open shared object file` (ORT) | The CUDA libraries of the package's major version are not installed (or not on the library path). Install them, or fetch the package for the CUDA version you have (`ldconfig -p \| grep libcublasLt`). The same message names `libcudart`, `libcublas` or `libcufft` when one of those is the missing one. |
-| `... libcudnn.so.8: cannot open shared object file` with the `cuda12` ORT package on Linux x86_64 | Known defect of 2.0.0: the package bundles cuDNN 9 but needs cuDNN 8. Install cuDNN 8 for CUDA 12 ([NVIDIA's redistributable archive](https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/){:target="_blank"}, `cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz`) and add its `lib/` to `LD_LIBRARY_PATH`, or use the `cuda11` or `cuda13` package. |
+| `... libcudnn.so.8: cannot open shared object file` with the `cuda12` ORT package on Linux x86_64 | Known issue of 2.0.0: see the [warning in Requirements](#software). Place cuDNN 8.9.7.29 for CUDA 12 next to `libRuntimeLibrary.so` with the three commands given there. Copying only `libcudnn.so.8` is not enough: the host aborts with `Could not load library libcudnn_ops_infer.so.8`. |
 | `CUDA failure 100: no CUDA-capable device is detected` at `runtime_load_models` (ORT); `No CUDA driver or GPU detected` at init | The process sees no GPU: driver not loaded, empty `CUDA_VISIBLE_DEVICES`, or a container started without `--gpus all`. Check `nvidia-smi` in the same environment. |
 | `CUDA driver version is insufficient for CUDA runtime version` | The driver is older than the package's CUDA major ([minimum drivers](#software)). Update the driver or use a package for an older CUDA. |
 | `nvidia-smi` says `Failed to initialize NVML: Driver/library version mismatch` | The driver was updated but the old kernel module is still loaded. Reboot (or reload the `nvidia` kernel modules). |
