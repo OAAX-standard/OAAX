@@ -1,7 +1,9 @@
 > **📦 Implementation details**  
 > You can find the implementation of the DEEPX NPUs runtime & toolchain in the [Github repository](https://github.com/OAAX-standard/deepx-acceleration){:target="_blank"}. This page describes its latest release, [v2.0.0](https://github.com/OAAX-standard/deepx-acceleration/releases/tag/v2.0.0){:target="_blank"}.
 
-| At a glance | |
+## At a glance
+
+| | |
 | --- | --- |
 | Accelerator | DEEPX NPUs **DX-M1** and **DX-H1** (PCIe / M.2 cards) |
 | Engine | DX-RT **3.3.2**, one runtime build per Ubuntu version and CPU architecture |
@@ -165,7 +167,7 @@ The runtime implements the [OAAX 2.0 interface](https://github.com/OAAX-standard
 
 `ModelConfig`: only `file_path` (the `.dxnn` file) is used. `model_data`, `model_size` and `config` are ignored, so a model cannot be loaded from memory.
 
-### Behaviour
+### Behavior
 
 - **One model per process**: `runtime_load_models` needs `num_models == 1` and refuses a second model.
 - **Input**: only the first tensor is read. Its `data_size` must equal the model's input size; name, type and shape are not checked, so send `uint8` NHWC.
