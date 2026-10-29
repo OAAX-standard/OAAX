@@ -1,7 +1,9 @@
 > **📦 Implementation details**  
 > You can find the implementation of the Hailo runtime & toolchain in the [Github repository](https://github.com/OAAX-standard/hailo-acceleration){:target="_blank"}. This page describes the [latest release (v2.0.0)](https://github.com/OAAX-standard/hailo-acceleration/releases/tag/v2.0.0){:target="_blank"}.
 
-| At a glance | |
+## At a glance
+
+| | |
 | --- | --- |
 | **NPU class** | Dedicated AI accelerator on a PCIe / M.2 module |
 | **Chips** | Hailo-8 (see the [Hailo-8L note](#overview)) |
@@ -70,7 +72,7 @@ Runtime libraries are packaged as `library-<HailoRT version>.tar.gz` (same files
 
 #### OAAX 2.0
 
-Conversion toolchain (any platform with Docker): [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/HAILO/oaax-hailo-toolchain.tar) (1.2 GB)
+Conversion toolchain (x86_64 host with Docker): [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/HAILO/oaax-hailo-toolchain.tar) (1.2 GB)
 
 | OS | CPU architecture | HailoRT | Runtime library |
 | -- | ---------------- | ------- | --------------- |
