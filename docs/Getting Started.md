@@ -12,7 +12,7 @@ For other accelerators, follow the same steps with the toolchain and runtime lis
 ## Requirements
 
 - A Linux x86_64 machine (Ubuntu 22.04 or higher) with `docker`, `git`, `zip`, `cmake`, a C compiler and libjpeg:
-  `sudo apt-get install cmake build-essential libjpeg-dev zip`
+  `sudo apt-get install git curl cmake build-essential libjpeg-dev zip`
 - For Intel GPU or NPU inference, the Intel drivers (see the [Intel page](Intel.md#installation)).
 
 ## 1. Get the host application and the model
@@ -70,7 +70,7 @@ The Intel run prints `Runtime: OAAX Intel 2.0.0` instead. The program exits with
 
 ## Download and check with the OAAX tools
 
-Two small command-line tools, run with [uv](https://docs.astral.sh/uv/) (no install needed):
+Two small command-line tools, run with [uv](https://docs.astral.sh/uv/getting-started/installation/) (the tools themselves need no install):
 
 - **[oaax-manager](https://pypi.org/project/oaax-manager/)** ([GitHub](https://github.com/OAAX-standard/oaax-manager)) downloads a runtime or toolchain for your machine and verifies its checksum:
 
