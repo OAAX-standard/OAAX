@@ -113,5 +113,5 @@ Two small command-line tools, run with [uv](https://docs.astral.sh/uv/getting-st
 ## Next steps
 
 - Read how the host talks to a runtime: the [YOLOX example README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"}, the smaller [c-example](https://github.com/OAAX-standard/examples/tree/main/c-example){:target="_blank"} and the [runtime specification](Specification.md#oaax-runtime-specification).
-- Use your own model: export it to ONNX (for example `yolo export model=yolov8n.pt format=onnx` with [Ultralytics](https://github.com/ultralytics/ultralytics){:target="_blank"}), convert it with the toolchain, and adapt the pre- and post-processing in the host application.
+- Use your own model: export it to ONNX (for example `yolo export model=yolov8n.pt format=onnx` with [Ultralytics](https://github.com/ultralytics/ultralytics){:target="_blank"}, which is AGPL-3.0: check the license before redistributing a model or an application built on it), convert it with the toolchain, and adapt the pre- and post-processing in the host application.
 - Add your own accelerator: see the [specification](Specification.md) and the [reference implementation](https://github.com/OAAX-standard/reference-implementation){:target="_blank"}.
