@@ -12,6 +12,7 @@
 | **Runtime library** | `libRuntimeLibrary.so` (Linux), `RuntimeLibrary.dll` (Windows), inside `library.tar.gz` |
 | **Toolchain image** | `oaax-cpu-toolchain:2.0.0` (Docker, x86_64, 835 MB `.tar`) |
 | **OAAX version / license** | 2.0.0 / Apache-2.0 |
+| **Start here** | `uvx oaax-manager fetch runtime cpu && uvx oaax-manager fetch toolchain cpu`, then the [end-to-end example](#end-to-end-example) |
 
 ## Overview
 
@@ -35,6 +36,9 @@ The CPU implementation is the baseline OAAX runtime and toolchain. It runs on an
 | --- | --- |
 | **Linux:** glibc 2.29 or higher (Ubuntu 20.04+, Debian 11+), `libstdc++6`, and on x86_64 `libgomp1` (`sudo apt-get install libgomp1`). The CI tests the runtime on Ubuntu 22.04. | [Docker](https://docs.docker.com/engine/install/){:target="_blank"} on x86_64, and about 1.7 GB of disk (835 MB `.tar` + 809 MB image). |
 | **Windows:** 10 or 11, x86_64. The Visual C++ runtime DLLs are shipped in the archive. | The image bundles Python 3.11, ONNX 1.21.0, ONNX Simplifier 0.4.36 and ONNX Runtime 1.21.1. |
+
+!!! note "Also needed for the end-to-end example"
+    [`uv`](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"} runs `oaax-manager`: `curl -LsSf https://astral.sh/uv/install.sh | sh`, then `export PATH="$HOME/.local/bin:$PATH"`. To build the host on a minimal image: `sudo apt-get install -y git curl cmake build-essential libgomp1 ca-certificates`.
 
 ## Get the runtime and toolchain
 
@@ -74,27 +78,28 @@ There is a single build per platform (no variants), so no variant needs to be pi
 The image takes **one `.onnx` file** (not a `.zip` bundle) and an output directory. It has no other option, no `config.json` and no environment variable.
 
 ```bash
-docker run --rm --user $(id -u):$(id -g) -v ./model:/model oaax-cpu-toolchain:2.0.0 /model/model.onnx /model/output
+docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/model:/model" oaax-cpu-toolchain:2.0.0 /model/model.onnx /model/output
 ```
 
 | Argument | Meaning |
 | --- | --- |
 | `<onnx-path>` | Path **inside the container** of a file ending in `.onnx`. |
 | `<output-directory>` | Path inside the container; created if missing. |
-| `--user $(id -u):$(id -g)` | The image runs as user 1000 (`appuser`); without this flag it can only write to directories that user owns. |
-| `-v ./model:/model` | Mounts the host directory holding the model. It must be writable (not `:ro`). |
+| `--user "$(id -u):$(id -g)"` | The image runs as user 1000 (`appuser`); without this flag it can only write to directories that user owns. |
+| `-v "$PWD/model:/model"` | Mounts the host directory holding the model. It must be writable (not `:ro`). |
 
 !!! warning "The input directory is written to"
     The toolchain first saves `<model-name>-simplified.onnx` next to the input file, then copies it to the output directory. Expect one extra file in the directory you mounted.
 
 **Output** in `<output-directory>`: `<model-name>-simplified.onnx` (the model to give to the runtime) and `logs.json`, an array of `{"Message": ..., "Data": {...}}` entries:
 
-| Message | `Data` fields |
-| --- | --- |
-| `Simplifying ONNX model` | `ONNX Path`, `MD5`, `Size (bytes)` |
-| `Simplified ONNX model successfully` | `Nodes before`, `Nodes after`, `Duration (s)` |
-| `Failed to simplify ONNX model` (instead of the previous one) | `Error`, `Fallback` (the original file is used) |
-| `Successful Conversion` (always last) | `Output Directory`, `Output file name`, `MIME type` (`application/x-onnx; device=cpu`), `Output file MD5`, `Output size (bytes)`, `Logs file name` |
+??? note "`logs.json` entries and fields"
+    | Message | `Data` fields |
+    | --- | --- |
+    | `Simplifying ONNX model` | `ONNX Path`, `MD5`, `Size (bytes)` |
+    | `Simplified ONNX model successfully` | `Nodes before`, `Nodes after`, `Duration (s)` |
+    | `Failed to simplify ONNX model` (instead of the previous one) | `Error`, `Fallback` (the original file is used) |
+    | `Successful Conversion` (always last) | `Output Directory`, `Output file name`, `MIME type` (`application/x-onnx; device=cpu`), `Output file MD5`, `Output size (bytes)`, `Logs file name` |
 
 !!! note
     `Successful Conversion` is also written when simplification failed and the original model was kept: look for `Failed to simplify ONNX model` in `logs.json`. If the toolchain stops with an error, no `logs.json` is written.
@@ -139,32 +144,31 @@ The thread budget per model is `max(1, floor(cores * 0.4 or 0.9) / number of mod
 
 ### Status codes and bad input
 
-| Call | Status (code) and cause |
-| --- | --- |
-| `runtime_init` | `ALREADY_INITIALIZED` (3) when called twice; `INVALID_ARGUMENT` (5) for a bad `perf_mode`, or a non-integer or negative `num_intra_threads` / `num_replicas`; `ERROR` (1) if the log file cannot be opened. |
-| `runtime_load_models` | `NOT_INITIALIZED` (2); `ALREADY_INITIALIZED` (3) on a second call; `INVALID_ARGUMENT` (5) for `n <= 0`; `ERROR` (1) for every model problem (missing file, invalid ONNX, no path given): read `runtime_get_error()`. |
-| `runtime_enqueue_input` | `NOT_INITIALIZED` (2), `MODEL_NOT_LOADED` (4), `INVALID_MODEL_ID` (18), `INVALID_ARGUMENT` (5) for a null pointer, `ERROR` (1) when the model's queue is full. |
-| `runtime_retrieve_output` | `NO_OUTPUT_AVAILABLE` (12) when nothing arrived before the timeout. |
+??? note "Status codes by call"
+    | Call | Status (code) and cause |
+    | --- | --- |
+    | `runtime_init` | `ALREADY_INITIALIZED` (3) when called twice; `INVALID_ARGUMENT` (5) for a bad `perf_mode`, or a non-integer or negative `num_intra_threads` / `num_replicas`; `ERROR` (1) if the log file cannot be opened. |
+    | `runtime_load_models` | `NOT_INITIALIZED` (2); `ALREADY_INITIALIZED` (3) on a second call; `INVALID_ARGUMENT` (5) for `n <= 0`; `ERROR` (1) for every model problem (missing file, invalid ONNX, no path given): read `runtime_get_error()`. |
+    | `runtime_enqueue_input` | `NOT_INITIALIZED` (2), `MODEL_NOT_LOADED` (4), `INVALID_MODEL_ID` (18), `INVALID_ARGUMENT` (5) for a null pointer, `ERROR` (1) when the model's queue is full. |
+    | `runtime_retrieve_output` | `NO_OUTPUT_AVAILABLE` (12) when nothing arrived before the timeout. |
 
 !!! warning "Wrong tensors are not rejected"
     `runtime_enqueue_input` returns success for a tensor with the wrong name, data type or shape. The inference then fails inside ONNX Runtime, the error is written to the log (for example `Unexpected input data type. Actual: (tensor(float16)), expected: (tensor(float))`), and **no output is ever produced** for that request ([known issue #46](https://github.com/OAAX-standard/reference-implementation/issues/46){:target="_blank"}). A host that only sees `NO_OUTPUT_AVAILABLE` should check the log.
 
 ## End-to-end example
 
-From a clean Ubuntu 22.04+ x86_64 machine with Docker and [uv](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"}. It downloads about 845 MB (8.5 MB runtime, 835 MB toolchain, a few MB of sources) and needs 809 MB more on disk for the Docker image. Measured on a fast connection: download 15 s, build 9 s, conversion 1.4 s, inference under 0.1 s.
+Runs the official YOLOX-S detector (36 MB, 80 COCO classes, no NMS inside) from `.onnx` to detections with the generic [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} host, which is the same for every chip. Needs Ubuntu 22.04+ on x86_64, Docker and the tools above. It downloads about 880 MB (835 MB toolchain, 36 MB model, 8.5 MB runtime) and uses 809 MB more for the Docker image. Run in a clean Ubuntu 22.04 container, the whole sequence took 35 s on a fast connection.
 
-1. Install the build tools: `sudo apt-get install git curl cmake build-essential libjpeg-dev`
-2. Get the host application and the face detection model, and build it:
+1. Build the host and fetch the model (checked against a pinned sha256):
 
     ```bash
     git clone https://github.com/OAAX-standard/examples.git
-    cd examples/c-example
-    mkdir build && (cd build && cmake .. && make)
-    mkdir -p work/model && cp artifacts/model.onnx work/model/
-    cd work
+    cd examples/yolox-example
+    cmake -S . -B build && cmake --build build
+    bash fetch_model.sh                          # writes models/yolox_s.onnx
     ```
 
-3. Download the runtime and the toolchain, and load the toolchain image:
+2. Download the runtime and the toolchain, and load the toolchain image:
 
     ```bash
     uvx oaax-manager fetch runtime cpu
@@ -172,33 +176,35 @@ From a clean Ubuntu 22.04+ x86_64 machine with Docker and [uv](https://docs.astr
     docker load -i oaax-cpu-toolchain-2.0.0.tar      # prints: Loaded image: oaax-cpu-toolchain:2.0.0
     ```
 
-4. Convert the model:
+3. Convert the model (2 s of simplification):
 
     ```bash
-    docker run --rm --user $(id -u):$(id -g) -v ./model:/model oaax-cpu-toolchain:2.0.0 /model/model.onnx /model/cpu-output
-    ls model/cpu-output      # logs.json  model-simplified.onnx
+    mkdir -p model && cp models/yolox_s.onnx model/
+    docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/model:/model" oaax-cpu-toolchain:2.0.0 /model/yolox_s.onnx /model/output
+    ls model/output      # logs.json  yolox_s-simplified.onnx
     ```
 
-5. Run inference:
+4. Run inference:
 
     ```bash
-    ../build/c_example runtime-cpu-2.0.0-linux-x86_64/libRuntimeLibrary.so model/cpu-output/model-simplified.onnx ../artifacts/image.jpg
+    ./build/yolox_host runtime-cpu-2.0.0-linux-x86_64/libRuntimeLibrary.so model/output/yolox_s-simplified.onnx artifacts/dog-bicycle.jpg
     ```
 
-Expected output (12 faces are listed in an order that varies; the timing depends on your CPU, here 20 threads):
+Expected output (timings depend on your CPU; here a 20-thread machine in use):
 
 ```
 Runtime: OAAX CPU Runtime 2.0.0
 Runtime info: {"loaded_models":1,"requests_in_flight":0,"backend_version":"1.17.3"}
-Output tensor 'bboxes-format:xyxysc;0:face': type 1, shape [12, 6]
-  face 1.000 at (0.651, 0.045) - (0.771, 0.297)
-  ...
-OK: 10/10 requests answered in 9.9 ms (1.0 ms per request)
+Input: 'images' float32 NCHW, 1280x854 image letterboxed to 640
+Output tensor 'output': type 1, shape [1, 8400, 85]
+Detections (score >= 0.30, NMS IoU 0.45): 2
+  bicycle        0.953  ( 616,  210) - (1228,  806)
+  dog            0.934  ( 216,  244) - ( 521,  587)
+Wrote detections.png
+OK: 10 requests, first 93.9 ms (warm-up), then 104.5 ms on average (min 89.0 ms)
 ```
 
-The model is already simple (122 nodes before and after simplification), so `model-simplified.onnx` is identical to `model.onnx`. The program exits with a non-zero code if a request fails; the runtime also writes `runtime.log`.
-
-On **aarch64**, run `uvx oaax-manager fetch runtime cpu` on that machine and convert the model on an x86_64 machine. The Windows and aarch64 runtimes were not run for this page (not verified on hardware).
+`detections.png` is the picture shown on the [Hello World](Getting%20Started.md) page. Simplification only removed 4 of the 279 nodes (the CPU runtime also runs the unconverted model). Pass options of the table above to the host with `--config KEY=VALUE`, for example `--config perf_mode=power`. The Windows and aarch64 runtimes were not run for this page (not verified on hardware).
 
 ## Troubleshooting
 
