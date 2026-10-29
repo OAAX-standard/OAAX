@@ -29,7 +29,7 @@ cd work
 
 ## 2. CPU
 
-Download the [CPU toolchain and runtime](CPU.md#download-links-and-compatibility-matrix), then convert the model and run it:
+Download the [CPU toolchain and runtime](CPU.md#download-links-and-compatibility-matrix), or fetch them with [`oaax-manager`](#download-and-check-with-the-oaax-tools), then convert the model and run it:
 
 ```bash
 docker load -i oaax-cpu-toolchain.tar
@@ -67,6 +67,29 @@ OK: 10/10 requests answered in 7.0 ms (0.7 ms per request)
 ```
 
 The Intel run prints `Runtime: OAAX Intel 2.0.0` instead. The program exits with a non-zero code if a request fails, and the runtime writes `runtime.log` in the current directory.
+
+## Download and check with the OAAX tools
+
+Two small command-line tools, run with [uv](https://docs.astral.sh/uv/) (no install needed):
+
+- **[oaax-manager](https://pypi.org/project/oaax-manager/)** ([GitHub](https://github.com/OAAX-standard/oaax-manager)) downloads a runtime or toolchain for your machine and verifies its checksum:
+
+  ```bash
+  uvx oaax-manager list                    # what is available (* = matches this machine)
+  uvx oaax-manager fetch runtime cpu       # writes runtime-cpu-2.0.0-linux-x86_64/libRuntimeLibrary.so
+  uvx oaax-manager fetch toolchain cpu     # saves oaax-cpu-toolchain-2.0.0.tar and prints the `docker load` command
+  ```
+
+  In [step 2](#2-cpu), use these two paths in place of `oaax-cpu-toolchain.tar` and `cpu-runtime/libRuntimeLibrary.so`.
+
+- **[oaax-conformance](https://pypi.org/project/oaax-conformance/)** ([GitHub](https://github.com/OAAX-standard/conformance)) checks a runtime or toolchain against the specification:
+
+  ```bash
+  uvx --python 3.12 --from 'oaax-conformance[e2e]' oaax-conformance runtime ./libRuntimeLibrary.so --model @tiny-conv --out report
+  uvx --python 3.12 --from 'oaax-conformance[e2e]' oaax-conformance toolchain oaax-cpu-toolchain:2.0.0 --out report
+  ```
+
+  Open `report/report.html` for the details. Exit code 0 means every required check passed. The reference CPU runtime and toolchain have [known findings](https://github.com/OAAX-standard/conformance#known-findings-on-the-reference-implementation), so exit code 1 is expected for them.
 
 ## Next steps
 
