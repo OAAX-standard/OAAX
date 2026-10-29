@@ -64,7 +64,7 @@ bash fetch_model.sh                          # writes models/yolox_s.onnx (36 MB
     ./build/yolox_host runtime-intel-2.0.0-linux-x86_64/libRuntimeLibrary.so intel/output/model.zip artifacts/dog-bicycle.jpg
     ```
 
-    The conversion prints harmless OpenVINO telemetry warnings. The runtime uses the CPU device by default: add `--config device_type=GPU` (or `NPU`) to use that device, and check `effective_device` in the `Runtime info` line, because a device that cannot run the model falls back to the CPU. More: [Intel page](Intel.md).
+    When the container runs as your own user (`--user $(id -u):$(id -g)`), the conversion prints harmless OpenVINO telemetry warnings. The runtime uses the CPU device by default: add `--config device_type=GPU` (or `NPU`) to use that device, and check `effective_device` in the `Runtime info` line, because a device that cannot run the model falls back to the CPU. More: [Intel page](Intel.md).
 
 ## What you should see
 
@@ -85,7 +85,7 @@ OK: 10 requests, first 90.5 ms (warm-up), then 91.4 ms on average (min 71.9 ms)
 `detections.png` is the picture above. Timings depend on your machine. The program exits with a non-zero code if a request fails, and the runtime writes `runtime.log` in the current directory.
 
 !!! note "Where this was run"
-    Both tabs were run end to end in a clean Ubuntu 22.04 container (download, conversion and run took 17 s for the CPU and 25 s for Intel on a fast connection, with the Docker images already in the local store). Intel was run on its CPU device there, and on an Intel integrated GPU on a workstation (`effective_device` GPU, same detections). The NPU was not run. The example's [README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} gives the commands for the other chips and records runs on NVIDIA (ONNX Runtime and TensorRT) and Hailo-8; the DEEPX model converts but was not run (no card). The accelerator pages ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md)) list the builds and how to pick one.
+    Both tabs were run end to end in a clean Ubuntu 22.04 container (about a minute each, from installing the tools to the detections, on a fast connection and with the Docker images already in the local store; a first `docker load` takes longer). Intel was run on its CPU device there, and on an Intel integrated GPU on a workstation (`effective_device` GPU, same detections). The NPU was not run. The example's [README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} gives the commands for the other chips and records runs on NVIDIA (ONNX Runtime and TensorRT) and Hailo-8; the DEEPX model converts but was not run (no card). The accelerator pages ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md)) list the builds and how to pick one.
 
 ## Download and check with the OAAX tools
 
