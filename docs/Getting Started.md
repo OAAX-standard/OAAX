@@ -1,72 +1,91 @@
 # Hello World Example
 
-This walkthrough takes a face detection model through the two OAAX stages on a CPU and on an Intel accelerator:
+This walkthrough takes the official **YOLOX** object detector through the two OAAX stages and prints what it finds in a photo:
 
 1. **Convert** the ONNX model with the chip's conversion toolchain (a Docker image).
-2. **Run** the converted model with the chip's runtime library, through a small C host application.
+2. **Run** the converted model with the chip's runtime library, through one small C host application.
 
-The same host application runs both, only the runtime library and the model file change. That is the point of OAAX.
+The host is the same for every chip: only the runtime library and the converted model change. That is the point of OAAX.
 
-For other accelerators, follow the same steps with the toolchain and runtime listed on the accelerator's page ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md), ...), which list the OAAX 2.0 builds and how to pick one.
+![YOLOX detections: a dog and a bicycle](media/yolox-detections.jpg)
+
+*The picture the host writes. Photo: [Dog from Barcelona 01.jpg](https://commons.wikimedia.org/wiki/File:Dog_from_Barcelona_01.jpg){:target="_blank"} by Nicolas Vigier, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/){:target="_blank"}.*
 
 ## Requirements
 
-- A Linux x86_64 machine (Ubuntu 22.04 or higher) with `docker`, `git`, `zip`, `cmake`, a C compiler and libjpeg:
-  `sudo apt-get install git curl cmake build-essential libjpeg-dev zip`
-- For Intel GPU or NPU inference, the Intel drivers (see the [Intel page](Intel.md#installation)).
+- A Linux x86_64 machine (Ubuntu 22.04 or higher) with [Docker](https://docs.docker.com/engine/install/){:target="_blank"} that your user can run without `sudo`.
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/){:target="_blank"}, which runs the OAAX tools: `curl -LsSf https://astral.sh/uv/install.sh | sh`, then `export PATH="$HOME/.local/bin:$PATH"`.
+- Build tools: `sudo apt-get install -y git curl cmake build-essential libgomp1 ca-certificates zip` (`zip` is only needed for the Intel tab).
+- For Intel GPU or NPU inference, the Intel drivers (see the [Intel page](Intel.md#installation)). The CPU device needs none.
 
-## 1. Get the host application and the model
+## 1. Build the host and get the model
 
-The [examples repository](https://github.com/OAAX-standard/examples) contains a C program that loads any OAAX 2.0 runtime, runs a model on an image and prints the detections, together with a face detection model and an image.
+The [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} is a C program that loads any OAAX 2.0 runtime, runs the model on an image, prints the detections and draws them. It has no dependencies besides a C compiler and CMake.
 
 ```bash
 git clone https://github.com/OAAX-standard/examples.git
-cd examples/c-example
-mkdir build && (cd build && cmake .. && make)
-mkdir -p work/model && cp artifacts/model.onnx work/model/
-cd work
+cd examples/yolox-example
+cmake -S . -B build && cmake --build build
+bash fetch_model.sh                          # writes models/yolox_s.onnx (36 MB, sha256 checked)
 ```
 
-## 2. CPU
+## 2. Convert and run
 
-Download the [CPU toolchain and runtime](CPU.md#download-links-and-compatibility-matrix), or fetch them with [`oaax-manager`](#download-and-check-with-the-oaax-tools), then convert the model and run it:
+=== "CPU"
 
-```bash
-docker load -i oaax-cpu-toolchain.tar
-docker run --rm --user $(id -u):$(id -g) -v ./model:/model oaax-cpu-toolchain:2.0.0 /model/model.onnx /model/cpu-output
+    Downloads 844 MB (toolchain 835 MB, runtime 8.5 MB).
 
-mkdir cpu-runtime && tar xzf library.tar.gz -C cpu-runtime    # the CPU runtime archive
-../build/c_example cpu-runtime/libRuntimeLibrary.so model/cpu-output/model-simplified.onnx ../artifacts/image.jpg
-```
+    ```bash
+    uvx oaax-manager fetch runtime cpu
+    uvx oaax-manager fetch toolchain cpu
+    docker load -i oaax-cpu-toolchain-2.0.0.tar
 
-## 3. Intel
+    mkdir -p model && cp models/yolox_s.onnx model/
+    docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/model:/model" oaax-cpu-toolchain:2.0.0 /model/yolox_s.onnx /model/output
 
-Download the [Intel toolchain and runtime](Intel.md#download-links-and-compatibility-matrix). The Intel toolchain takes a `.zip` bundle; the `config.json` keeps the model's FP32 inputs (by default the toolchain converts the model to FP16 and the runtime then expects FP16 input tensors):
+    ./build/yolox_host runtime-cpu-2.0.0-linux-x86_64/libRuntimeLibrary.so model/output/yolox_s-simplified.onnx artifacts/dog-bicycle.jpg
+    ```
 
-```bash
-docker load -i oaax-intel-toolchain.tar
-mkdir -p intel-input intel-output
-cp model/model.onnx intel-input/
-echo '{ "optimization": { "fp16_compression": false } }' > intel-input/config.json
-(cd intel-input && zip model.zip model.onnx config.json)
-docker run --rm --user $(id -u):$(id -g) -v ./intel-input:/input -v ./intel-output:/output oaax-intel-toolchain:latest /input/model.zip /output
+    More on the CPU toolchain and runtime: [CPU page](CPU.md).
 
-mkdir intel-runtime && tar xzf library.tar.gz -C intel-runtime    # the Intel runtime archive
-../build/c_example intel-runtime/libRuntimeLibrary.so intel-output/model.zip ../artifacts/image.jpg
-```
+=== "Intel"
 
-(Extract the CPU and Intel runtime archives separately: both are named `library.tar.gz`.)
+    Downloads 1.3 GB (toolchain 1.2 GB, runtime 90 MB). The config keeps the model's float32 input; by default the Intel toolchain converts to FP16 and the runtime then expects FP16 tensors.
+
+    ```bash
+    uvx oaax-manager fetch runtime intel
+    uvx oaax-manager fetch toolchain intel
+    docker load -i oaax-intel-toolchain-2.0.0.tar
+
+    mkdir -p intel/input intel/output && cp models/yolox_s.onnx intel/input/model.onnx && cp configs/intel.json intel/input/config.json
+    (cd intel/input && zip model.zip model.onnx config.json)
+    docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/intel/input:/input" -v "$PWD/intel/output:/output" oaax-intel-toolchain:latest /input/model.zip /output
+
+    ./build/yolox_host runtime-intel-2.0.0-linux-x86_64/libRuntimeLibrary.so intel/output/model.zip artifacts/dog-bicycle.jpg
+    ```
+
+    When the container runs as your own user (`--user $(id -u):$(id -g)`), the conversion prints harmless OpenVINO telemetry warnings. The runtime uses the CPU device by default: add `--config device_type=GPU` (or `NPU`) to use that device, and check `effective_device` in the `Runtime info` line, because a device that cannot run the model falls back to the CPU. More: [Intel page](Intel.md).
 
 ## What you should see
 
+On the CPU (the Intel run prints `Runtime: OAAX Intel 2.0.0`, a longer `Runtime info` line, and the same two detections):
+
 ```
 Runtime: OAAX CPU Runtime 2.0.0
-...
-  face 1.000 at (0.142, 0.421) - (0.253, 0.633)
-OK: 10/10 requests answered in 7.0 ms (0.7 ms per request)
+Runtime info: {"loaded_models":1,"requests_in_flight":0,"backend_version":"1.17.3"}
+Input: 'images' float32 NCHW, 1280x854 image letterboxed to 640
+Output tensor 'output': type 1, shape [1, 8400, 85]
+Detections (score >= 0.30, NMS IoU 0.45): 2
+  bicycle        0.953  ( 616,  210) - (1228,  806)
+  dog            0.934  ( 216,  244) - ( 521,  587)
+Wrote detections.png
+OK: 10 requests, first 90.5 ms (warm-up), then 91.4 ms on average (min 71.9 ms)
 ```
 
-The Intel run prints `Runtime: OAAX Intel 2.0.0` instead. The program exits with a non-zero code if a request fails, and the runtime writes `runtime.log` in the current directory.
+`detections.png` is the picture above. Timings depend on your machine. The program exits with a non-zero code if a request fails, and the runtime writes `runtime.log` in the current directory.
+
+!!! note "Where this was run"
+    Both tabs were run end to end in a clean Ubuntu 22.04 container (about a minute each, from installing the tools to the detections, on a fast connection and with the Docker images already in the local store; a first `docker load` takes longer). Intel was run on its CPU device there, and on an Intel integrated GPU on a workstation (`effective_device` GPU, same detections). The NPU was not run. The example's [README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} gives the commands for the other chips and records runs on NVIDIA (ONNX Runtime and TensorRT) and Hailo-8; the DEEPX model converts but was not run (no card). The accelerator pages ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md)) list the builds and how to pick one.
 
 ## Download and check with the OAAX tools
 
@@ -80,7 +99,7 @@ Two small command-line tools, run with [uv](https://docs.astral.sh/uv/getting-st
   uvx oaax-manager fetch toolchain cpu     # saves oaax-cpu-toolchain-2.0.0.tar and prints the `docker load` command
   ```
 
-  In [step 2](#2-cpu), use these two paths in place of `oaax-cpu-toolchain.tar` and `cpu-runtime/libRuntimeLibrary.so`.
+  The example above already uses it; the same two commands exist for every chip (`intel`, `nvidia-ort`, `nvidia-trt`, `hailo`, `deepx`).
 
 - **[oaax-conformance](https://pypi.org/project/oaax-conformance/)** ([GitHub](https://github.com/OAAX-standard/conformance)) checks a runtime or toolchain against the specification:
 
@@ -93,6 +112,6 @@ Two small command-line tools, run with [uv](https://docs.astral.sh/uv/getting-st
 
 ## Next steps
 
-- Read how the host talks to a runtime: the [c-example README](https://github.com/OAAX-standard/examples/tree/main/c-example) and the [runtime specification](Specification.md#oaax-runtime-specification).
-- Use your own model: export it to ONNX (for example `yolo export model=yolov8n.pt format=onnx` with [Ultralytics](https://github.com/ultralytics/ultralytics)), convert it with the toolchain, and adapt the pre- and post-processing in the host application.
-- Add your own accelerator: see the [specification](Specification.md) and the [reference implementation](https://github.com/OAAX-standard/reference-implementation).
+- Read how the host talks to a runtime: the [YOLOX example README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"}, the smaller [c-example](https://github.com/OAAX-standard/examples/tree/main/c-example){:target="_blank"} and the [runtime specification](Specification.md#oaax-runtime-specification).
+- Use your own model: export it to ONNX (for example `yolo export model=yolov8n.pt format=onnx` with [Ultralytics](https://github.com/ultralytics/ultralytics){:target="_blank"}, which is AGPL-3.0: check the license before redistributing a model or an application built on it), convert it with the toolchain, and adapt the pre- and post-processing in the host application.
+- Add your own accelerator: see the [specification](Specification.md) and the [reference implementation](https://github.com/OAAX-standard/reference-implementation){:target="_blank"}.
