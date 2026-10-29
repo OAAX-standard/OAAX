@@ -1,32 +1,19 @@
 # Compliant AI Accelerators
 
-This page provides an overview of the AI accelerators that have an OAAX-compliant implementations.  
-For more details about deploying on an AI accelerator, please refer to its respective documentation page.
+These accelerators have an OAAX 2.0 implementation: a runtime library and a conversion toolchain. Open a chip's page for its requirements, downloads, options and a complete example.
 
-## CPU
+| Device class | Hardware | Page | Run end to end by the documentation authors |
+| ------------ | -------- | ---- | ------------------------------------------- |
+| CPU | x86_64 with AVX2 (Intel, AMD), aarch64 with NEON (Arm) | [CPU](CPU.md) | x86_64 Linux. Not run: aarch64, Windows |
+| CPU | Intel CPUs with AVX2 | [Intel](Intel.md) | Yes |
+| GPU | Intel GPUs | [Intel](Intel.md) | Integrated GPU |
+| GPU | NVIDIA GPUs with CUDA 11, 12 or 13, Jetson, DGX Spark | [NVIDIA](NVIDIA.md) | RTX A4000: ONNX Runtime and TensorRT 10. Not run: Jetson, DGX Spark, Windows, TensorRT 11 |
+| NPU | Intel NPU | [Intel](Intel.md) | Not run |
+| NPU | Hailo-8 | [Hailo](Hailo.md) | Runtime on Hailo-8 hardware (HailoRT 4.20.0). Conversion needs Hailo's SDK: run by the example's authors, not re-run for the page |
+| NPU | DEEPX DX-M1, DX-H1 | [DEEPX](DEEPX.md) | Model conversion. Inference not run (no card) |
 
-- Intel CPUs with AVX2 instruction set
-- AMD CPUs with AVX2 instruction set
-- ARM CPUs with NEON instruction set
+A listed chip means an OAAX 2.0 runtime and toolchain are published for it. The last column is what was actually run while writing these pages; each page lists the details.
 
-## Intel
+Fetch any runtime or toolchain with [OAAX Manager](index.md#oaax-manager-get-a-runtime-or-toolchain-in-one-command), then follow the [Hello World example](Getting%20Started.md).
 
-- CPUs with AVX2 instruction set
-- GPU
-- NPU
-
-## NVIDIA
-
-- GPUs with CUDA support 11 or 12, ie. GPUs with compute capability ≥ 3.5
-
-## DEEPX
-
-- DX-M1
-- DX-H1
-
-## HAILO
-
-- Hailo-8
-- Hailo-8L
-
-See the [Hailo page](Hailo.md).
+Want your accelerator on this list? See the [Contributing Guide](https://github.com/OAAX-standard/OAAX/blob/main/CONTRIBUTING.md) and the [Specification](Specification.md).
