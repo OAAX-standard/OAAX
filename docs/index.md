@@ -1,8 +1,6 @@
 # Welcome to OAAX
-<picture>
-   <source srcset="./media/logo - white text.png" media="(prefers-color-scheme: dark)" />
-   <img src="./media/logo - white text.png" width="100%" alt="ONNX - OAAX" />
-</picture>
+![OAAX](./media/logo%20-%20black%20text.png#only-light){ width="100%" }
+![OAAX](./media/logo%20-%20white%20text.png#only-dark){ width="100%" }
 
 **OAAX (Open AI Accelerator eXchange)** is an open standard that lets one ONNX model run on many AI accelerators through one conversion step and one runtime API. Export your model from any framework to ONNX, convert it with the accelerator's toolchain, and load it from your application through the same C interface on every chip. No framework or vendor specific integration.
 
