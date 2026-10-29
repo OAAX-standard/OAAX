@@ -12,6 +12,8 @@ These accelerators have an OAAX 2.0 implementation: a runtime library and a conv
 | NPU | Hailo-8 | [Hailo](Hailo.md) |
 | NPU | DEEPX DX-M1, DX-H1 | [DEEPX](DEEPX.md) |
 
+Each page states what was verified on hardware and what was not; a listed chip is not a claim that every build was run.
+
 Fetch any runtime or toolchain with [OAAX Manager](index.md#oaax-manager-get-a-runtime-or-toolchain-in-one-command), then follow the [Hello World example](Getting%20Started.md).
 
 Want your accelerator on this list? See the [Contributing Guide](https://github.com/OAAX-standard/OAAX/blob/main/CONTRIBUTING.md) and the [Specification](Specification.md).
