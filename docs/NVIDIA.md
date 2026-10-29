@@ -263,7 +263,7 @@ bash fetch_model.sh                             # models/yolox_s.onnx (36 MB), s
     uvx oaax-manager fetch toolchain nvidia-ort
     docker load -i oaax-nvidia-onnxruntime-toolchain-2.0.0.tar
 
-    # 3. Convert (4 s)
+    # 3. Convert (about 4 s)
     mkdir -p ort && cp models/yolox_s.onnx ort/model.onnx
     docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/ort:/model" oaax-nvidia-toolchain:2.0.0 /model/model.onnx /model/output
 
