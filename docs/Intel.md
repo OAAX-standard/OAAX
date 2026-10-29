@@ -90,8 +90,8 @@ Runtime libraries are packaged as `library.tar.gz`. Extract all the files into t
 
 | OAAX version | OS      | Version         | CPU architecture | Runtime library | Conversion toolchain |
 | ------------ | ------- | --------------- | ---------------- | --------------- | -------------------- |
-| 2.0.0        | Ubuntu  | 22.04 or higher | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/INTEL/x86_64/Ubuntu/library.tar.gz) (86 MiB) | [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/INTEL/oaax-intel-toolchain.tar) (1.1 GiB) |
-| 2.0.0        | Windows | 10, 11          | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/INTEL/x86_64/Windows/library.tar.gz) (58 MiB) | ⬆️ |
+| 2.0.0        | Ubuntu  | 22.04 or higher | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/INTEL/x86_64/Ubuntu/library.tar.gz) (90 MB) | [Download](https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/INTEL/oaax-intel-toolchain.tar) (1.2 GB) |
+| 2.0.0        | Windows | 10, 11          | x86_64           | [Download](https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/INTEL/x86_64/Windows/library.tar.gz) (61 MB) | ⬆️ |
 
 ## Conversion toolchain
 
