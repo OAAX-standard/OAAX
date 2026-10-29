@@ -176,7 +176,7 @@ Runs the official YOLOX-S detector (36 MB, 80 COCO classes, no NMS inside) from 
     docker load -i oaax-cpu-toolchain-2.0.0.tar      # prints: Loaded image: oaax-cpu-toolchain:2.0.0
     ```
 
-3. Convert the model (2 s of simplification):
+3. Convert the model (about 2 s of simplification):
 
     ```bash
     mkdir -p model && cp models/yolox_s.onnx model/
