@@ -56,7 +56,7 @@ Every page covers the same things: requirements, where to get the runtime and th
 
     ---
 
-    Convert a face detection model and run it on a CPU or an Intel accelerator in about ten minutes.
+    Convert the YOLOX object detector, run it on a CPU or an Intel accelerator and see a dog and a bicycle detected.
 
     [:octicons-arrow-right-24: Hello World](Getting%20Started.md)
 
