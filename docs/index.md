@@ -42,7 +42,7 @@ Every page covers the same things: requirements, where to get the runtime and th
 
     ---
 
-    Hailo-8 and Hailo-8L, one runtime build per HailoRT version.
+    Hailo-8, one runtime build per HailoRT version.
 
     [:octicons-arrow-right-24: Hailo](Hailo.md)
 

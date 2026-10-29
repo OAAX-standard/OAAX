@@ -9,7 +9,7 @@ These accelerators have an OAAX 2.0 implementation: a runtime library and a conv
 | GPU | Intel GPUs | [Intel](Intel.md) |
 | GPU | NVIDIA GPUs with CUDA 11, 12 or 13, Jetson, DGX Spark | [NVIDIA](NVIDIA.md) |
 | NPU | Intel NPU | [Intel](Intel.md) |
-| NPU | Hailo-8, Hailo-8L | [Hailo](Hailo.md) |
+| NPU | Hailo-8 | [Hailo](Hailo.md) |
 | NPU | DEEPX DX-M1, DX-H1 | [DEEPX](DEEPX.md) |
 
 Fetch any runtime or toolchain with [OAAX Manager](index.md#oaax-manager-get-a-runtime-or-toolchain-in-one-command), then follow the [Hello World example](Getting%20Started.md).
