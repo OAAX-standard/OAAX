@@ -119,6 +119,55 @@ Toolchains must ensure:
 * **File Integrity**: All output files are complete and valid
 * **Metadata Accuracy**: Log information correctly reflects actual conversion results
 
+#### 5.3 Bundle manifest (new in 2.1)
+
+A toolchain **must** also write `oaax-manifest.json` next to the model file. It tells a host what the model takes and returns, so that hosts can use any runtime without vendor-specific code. It is machine-readable and separate from the human-oriented conversion log. The format is defined by the [JSON Schema](https://github.com/OAAX-standard/OAAX/blob/main/schema/oaax-manifest.schema.json); `schema/oaax_manifest.py` validates a manifest and derives the `onnx` part from an ONNX file, so toolchains that keep the ONNX tensors as they are can generate the whole file.
+
+```json
+{
+  "schema": "oaax-manifest/1",
+  "oaax_version": "2.1",
+  "model_file": "model.bin",
+  "precision": "INT8",
+  "equivalent": true,
+  "inputs": [
+    {
+      "name": "images",
+      "onnx":   { "dtype": "FLOAT", "shape": [1, 3, 640, 640], "layout": "NCHW" },
+      "native": { "dtype": "UINT8", "shape": [1, 640, 640, 3], "layout": "NHWC",
+                  "quantization": { "scale": 1.0, "zero_point": 0 } }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output0",
+      "onnx":   { "dtype": "FLOAT", "shape": [20, 6], "layout": "XX" },
+      "native": { "dtype": "FLOAT", "shape": [20, 6], "layout": "XX" }
+    }
+  ]
+}
+```
+
+| Field | Meaning |
+| ----- | ------- |
+| `model_file` | File name, in the same directory, of the model to pass to `runtime_load_models`. |
+| `precision` | `FP32`, `FP16`, `BF16`, `INT8`, `MIXED` or `OTHER`: the numeric precision of the converted model. |
+| `equivalent` | `true`: the runtime returns every ONNX output under its ONNX name, convertible mechanically to the ONNX tensor. `false`: it returns something else (for example raw detection heads); `outputs` then lists only the `native` tensors. |
+| `name` | The ONNX tensor name, byte for byte. Unique among inputs and among outputs. |
+| `onnx` | The tensor as the original ONNX model defines it: what the user works with. |
+| `native` | The tensor as the runtime expects it (inputs) or returns it (outputs): what goes through `runtime_enqueue_input` and comes out of `runtime_retrieve_output`. |
+| `dtype` | `FLOAT`, `FLOAT16`, `BFLOAT16`, `DOUBLE`, `UINT8`, `INT8`, `UINT16`, `INT16`, `UINT32`, `INT32`, `UINT64`, `INT64` or `BOOL` (the `TensorElementType` names without the `DATA_TYPE_` prefix). |
+| `shape` | Dimensions in the order of `layout`; `-1` = size not fixed. For an input the shape is exact; for an output it is the **maximum** of each dimension, and the `TensorDescriptor` of each returned output holds the actual shape. |
+| `layout` | One letter per axis, exactly `rank` letters: `N` batch, `C` channels, `H` height, `W` width, `D` depth or frames, `T` time or sequence, `X` an axis with none of these meanings (`"XX"` for a `[detections, 6]` tensor). Each letter except `X` appears at most once. ONNX defines no layout: use `NCHW` for image tensors (rank 4) and `X` otherwise. |
+
+**What `native` may differ in.** Only what a host can convert mechanically:
+
+* **Layout**: `native` is the `onnx` tensor with its axes permuted (the letters say how).
+* **Data type**: float to float (`FLOAT` to `FLOAT16`, ...), or float to integer with `quantization`. Stored value = clamp(round(real / `scale`) + `zero_point`); real = (stored - `zero_point`) * `scale`. Quantization is per tensor, and only for a float tensor stored as integers. Any other dtype change is not allowed.
+* Names, and the number of tensors, never differ. A runtime that cannot meet this (raw heads, extra outputs) sets `"equivalent": false`.
+
+A toolchain that changes nothing sets `native` equal to `onnx`.
+
 ---
 
 ### 6. Error Handling

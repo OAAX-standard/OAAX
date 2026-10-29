@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/OAAX-standard/OAAX/main/schema/oaax-manifest.schema.json",
+  "title": "OAAX bundle manifest",
+  "description": "oaax-manifest.json: written by a toolchain next to the model file; tells a host what the model takes and returns. Cross-field rules (layout length, permutation, quantization) are checked by oaax_manifest.py.",
+  "type": "object",
+  "required": ["schema", "oaax_version", "model_file", "precision", "equivalent", "inputs", "outputs"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "oaax-manifest/1" },
+    "oaax_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "model_file": { "type": "string", "minLength": 1, "pattern": "^[^/\\\\]+$", "description": "File name (no directory) of the model in the same directory: what to pass to runtime_load_models." },
+    "precision": { "enum": ["FP32", "FP16", "BF16", "INT8", "MIXED", "OTHER"] },
+    "equivalent": { "type": "boolean", "description": "true: every ONNX output is returned by the runtime under the same name, convertible mechanically. false: the runtime returns something else (e.g. raw heads); outputs list only the native tensors." },
+    "inputs": { "type": "array", "items": { "$ref": "#/$defs/tensor", "required": ["onnx"] }, "minItems": 1 },
+    "outputs": { "type": "array", "items": { "$ref": "#/$defs/tensor" }, "minItems": 1 },
+    "toolchain": { "type": "object", "properties": { "name": { "type": "string" }, "version": { "type": "string" } } },
+    "extra": { "type": "object" }
+  },
+  "if": { "properties": { "equivalent": { "const": true } } },
+  "then": { "properties": { "outputs": { "items": { "required": ["onnx"] } } } },
+  "$defs": {
+    "dtype": { "enum": ["FLOAT", "UINT8", "INT8", "UINT16", "INT16", "INT32", "INT64", "BOOL", "FLOAT16", "DOUBLE", "UINT32", "UINT64", "BFLOAT16"] },
+    "dim": { "type": "integer", "anyOf": [{ "const": -1 }, { "minimum": 1 }] },
+    "view": {
+      "type": "object",
+      "required": ["dtype", "shape", "layout"],
+      "properties": {
+        "dtype": { "$ref": "#/$defs/dtype" },
+        "shape": { "type": "array", "items": { "$ref": "#/$defs/dim" } },
+        "layout": { "type": "string", "pattern": "^[NCHWDTX]*$" }
+      }
+    },
+    "tensor": {
+      "type": "object",
+      "required": ["name", "native"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "onnx": { "allOf": [{ "$ref": "#/$defs/view" }], "unevaluatedProperties": false },
+        "native": {
+          "allOf": [{ "$ref": "#/$defs/view" }],
+          "properties": {
+            "quantization": {
+              "type": "object",
+              "required": ["scale", "zero_point"],
+              "additionalProperties": false,
+              "properties": { "scale": { "type": "number", "exclusiveMinimum": 0 }, "zero_point": { "type": "integer" } }
+            }
+          },
+          "unevaluatedProperties": false
+        }
+      }
+    }
+  }
+}
