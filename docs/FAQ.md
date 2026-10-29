@@ -114,9 +114,6 @@ No, the runtime runs natively. However, you can deploy it inside containers, iso
 **How often does the standard change?**
 OAAX aims for **stable, versioned releases**. Breaking changes are minimized to maintain compatibility.
 
-**Are OAAX 2.0 runtimes compatible with 1.x hosts?**
-No. OAAX 2.0 replaces the 1.x C API, so hosts and runtimes must both implement the 2.0 [interface](https://github.com/OAAX-standard/OAAX/blob/main/include/interface.h).
-
 ---
 
 ### 🧾 Licensing & Legal
