@@ -10,7 +10,7 @@ These accelerators have an OAAX 2.0 implementation: a runtime library and a conv
 | GPU | NVIDIA GPUs with CUDA 11, 12 or 13, Jetson, DGX Spark | [NVIDIA](NVIDIA.md) | RTX A4000: ONNX Runtime and TensorRT 10. Not yet verified: Jetson, DGX Spark, Windows, TensorRT 11 |
 | NPU | Intel NPU | [Intel](Intel.md) | Not yet verified |
 | NPU | Hailo-8 | [Hailo](Hailo.md) | Runtime on Hailo-8 hardware (HailoRT 4.20.0). Conversion needs Hailo's SDK |
-| NPU | DEEPX DX-M1, DX-H1 | [DEEPX](DEEPX.md) | Model conversion and inference on a DEEPX card |
+| NPU | DEEPX DX-M1, DX-H1 | [DEEPX](DEEPX.md) | DX-M1: model conversion and inference (DX-RT 3.3.2) |
 
 A listed chip means an OAAX 2.0 runtime and toolchain are published for it. The last column is what has been verified on real hardware; each page lists the details.
 
