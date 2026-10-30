@@ -13,7 +13,7 @@
 | **Model format** | ONNX in, `<model>.hailo8.onnx` out (the compiled model is wrapped in an ONNX file) |
 | **Runtime library** | `libRuntimeLibrary.so` (Ubuntu, x86_64 and aarch64) |
 | **Toolchain image** | `onnx-to-hailo:latest` (Docker, x86_64 hosts only, 1.2 GB, needs Hailo's SDK files) |
-| **How far it is verified** | Run on a Hailo-8 with HailoRT 4.20.0. The 4.17 to 4.19 runtimes are only compiled and symbol-checked by CI. Hailo-8L is not verified ([issue #14](https://github.com/OAAX-standard/hailo-acceleration/issues/14)). |
+| **How far it is verified** | Run on a Hailo-8 with HailoRT 4.20.0. The 4.17 to 4.19 runtimes are only compiled and symbol-checked by CI. Hailo-8L is not verified. |
 
 ## Overview
 
@@ -23,8 +23,8 @@
 - **Model constraints**: the Hailo SDK decides which operators convert; the repository does not list them. It documents YOLOv8n, YOLOv8s and YOLOX-s as converting, and YOLO11n and YOLO26n as failing (attention layers, SDK 3.25.0). The model needs one image input with a fixed size.
 - **Not done**: no Hailo-8L target, no model script or optimization level, no batch or device selection, no accuracy check, no decoding of detections (the host does it).
 
-!!! warning "Known gaps"
-    A wrong input name, an unconverted model and a failed conversion do not fail loudly (see [Troubleshooting](#troubleshooting) and issues [#8](https://github.com/OAAX-standard/hailo-acceleration/issues/8) to [#17](https://github.com/OAAX-standard/hailo-acceleration/issues/17)). The toolchain compiles for `hailo8` only.
+!!! warning "Limits"
+    A wrong input name, an unconverted model and a failed conversion do not fail loudly (see [Troubleshooting](#troubleshooting)). The toolchain compiles for `hailo8` only.
 
 ## Requirements
 
@@ -44,7 +44,7 @@
 | **Convert** | Docker, and internet access (the container installs the SDK's Python dependencies at every start) |
 | | From Hailo's [Developer Zone](https://hailo.ai/developer-zone/){:target="_blank"} (login required, not redistributable): `hailo_dataflow_compiler-3.<minor>.0-py3-none-linux_x86_64.whl`, `hailort-4.<minor>.0-cp310-cp310-linux_x86_64.whl` and the matching `hailort_4.<minor>.0_amd64.deb` (it provides `libhailort`, which the wheel needs; an empty or placeholder file is not enough), **one version of each** in one folder |
 
-The image holds Ubuntu 22.04 and Python 3.10 (hence `cp310`). The example below was converted with Dataflow Compiler 3.29.0 and the HailoRT 4.19.0 wheel; which compiler goes with which HailoRT is not documented ([issue #15](https://github.com/OAAX-standard/hailo-acceleration/issues/15)). A model converted that way runs on the 4.20.0 runtime.
+The image holds Ubuntu 22.04 and Python 3.10 (hence `cp310`). The example below was converted with Dataflow Compiler 3.29.0 and the HailoRT 4.19.0 wheel; which compiler goes with which HailoRT is not documented. A model converted that way runs on the 4.20.0 runtime.
 
 **Pick the runtime variant**: it is the version of the installed driver.
 
@@ -92,8 +92,8 @@ Conversion toolchain (any platform with Docker): [Download](https://nbg1.your-ob
 ### Run it
 
 1. Put the three SDK files in `hailo-deps/` and make a zip with the model and an options JSON (below). Without calibration images the toolchain uses the 100 COCO images it ships with (the SDK used 64 of them in the YOLOX run).
-2. Load the image. Its name and tag come from the tar: **`onnx-to-hailo:latest`** (no versioned tag, [issue #16](https://github.com/OAAX-standard/hailo-acceleration/issues/16)).
-3. Run it. **Do not pass `--user`**: the container installs the SDK as root and fails otherwise ([issue #9](https://github.com/OAAX-standard/hailo-acceleration/issues/9)). Pass `-e PIP_FIND_LINKS=https://storage.googleapis.com/jax-releases/jax_releases.html` with Dataflow Compiler 3.29: it requires `jaxlib==0.4.13`, which is gone from PyPI.
+2. Load the image. Its name and tag come from the tar: **`onnx-to-hailo:latest`** (no versioned tag).
+3. Run it. **Do not pass `--user`**: the container installs the SDK as root and fails otherwise. Pass `-e PIP_FIND_LINKS=https://storage.googleapis.com/jax-releases/jax_releases.html` with Dataflow Compiler 3.29: it requires `jaxlib==0.4.13`, which is gone from PyPI.
 
 ```bash
 docker load -i oaax-hailo-toolchain-2.0.0.tar
@@ -145,7 +145,7 @@ The output folder gets `<model>.hailo8.onnx` and `logs.json` (and possibly a `tm
 | `Conversion Failed` (last) | `Human Error` (always the same generic text), `Technical Error` (the real reason) |
 
 !!! warning "The exit code is 0 even when the conversion fails"
-    Check that the last message is `Successful Conversion` ([issue #8](https://github.com/OAAX-standard/hailo-acceleration/issues/8)). Only the failures before the conversion below give a non-zero exit code.
+    Check that the last message is `Successful Conversion`. Only the failures before the conversion below give a non-zero exit code.
 
 | Message | Meaning and fix |
 | --- | --- |
@@ -180,7 +180,7 @@ The threads only run the ONNX nodes that stay on the CPU (for YOLOX: slicing in 
 ### Models and inputs
 
 - `ModelConfig`: give `file_path` (or `model_data` + `model_size`). `ModelConfig.config` is unused. At most **8 models**; a model's id is its index in the array. Models load once per `runtime_init`.
-- **Inputs are bound by tensor name**, in any order. The name must be the one in the *converted* model: the SDK renames the input to `input0`, so read it from the `.hailo8.onnx` file (`onnx.load(path).graph.input`), not from your original model ([issue #10](https://github.com/OAAX-standard/hailo-acceleration/issues/10)).
+- **Inputs are bound by tensor name**, in any order. The name must be the one in the *converted* model: the SDK renames the input to `input0`, so read it from the `.hailo8.onnx` file (`onnx.load(path).graph.input`), not from your original model.
 - Each model has an input queue and the runtime one output queue, 100 items each. When full, the **oldest** item is dropped and `runtime_enqueue_input` still succeeds: keep retrieving. With several replicas outputs can come back in any order: match them by `Tensors.id`.
 - Enqueueing and retrieving can be done from different threads. To switch models, call `runtime_cleanup` and `runtime_init` again. The library exports only the OAAX API (checked in CI), so a host can unload it and load another copy.
 
@@ -195,16 +195,16 @@ The threads only run the ONNX nodes that stay on the CPU (for YOLOX: slicing in 
 | `runtime_retrieve_output` | `NO_OUTPUT_AVAILABLE` (12) | Nothing within the timeout (`0` = do not wait, negative = wait forever). |
 
 !!! warning "A bad input is not reported to the caller"
-    A wrong tensor name, type or shape is **accepted** by `runtime_enqueue_input`. The request fails in the worker, is logged (`Inference run failed` and the ONNX Runtime reason) and no output arrives: the host sees `NO_OUTPUT_AVAILABLE` ([issue #12](https://github.com/OAAX-standard/hailo-acceleration/issues/12)).
+    A wrong tensor name, type or shape is **accepted** by `runtime_enqueue_input`. The request fails in the worker, is logged (`Inference run failed` and the ONNX Runtime reason) and no output arrives: the host sees `NO_OUTPUT_AVAILABLE`.
 
-`runtime_get_info()` returns `{"loaded_models":N,"requests_in_flight":N,"backend_version":"..."}`. If the log file cannot be opened the library exits the process ([issue #13](https://github.com/OAAX-standard/hailo-acceleration/issues/13)): use a writable `log_file`.
+`runtime_get_info()` returns `{"loaded_models":N,"requests_in_flight":N,"backend_version":"..."}`. If the log file cannot be opened the library exits the process: use a writable `log_file`.
 
 ## End-to-end example
 
 Goal: the official YOLOX-s model (Apache-2.0) from ONNX to detections on a Hailo-8, with the [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} of the examples repository as host. The same host runs every OAAX chip; for Hailo only the model and one flag change.
 
-!!! warning "What was and was not run"
-    Steps 1 to 3 and 5 were run on a Hailo-8 (HailoRT 4.20.0, Ubuntu 22.04). **Step 4, the conversion, was run by the example's authors** (about 14 minutes, Dataflow Compiler 3.29.0, HailoRT 4.19.0 wheel), because the Hailo SDK is not redistributable; step 5 used the model they produced.
+!!! note "Before you start"
+    Step 4, the conversion, needs Hailo's SDK, which is not redistributable: it takes about 14 minutes (Dataflow Compiler 3.29.0, HailoRT 4.19.0 wheel). Step 5 runs on a Hailo-8 with HailoRT 4.20.0.
 
 **Prerequisites**: a Linux x86_64 machine with the Hailo-8 driver and [uv](https://docs.astral.sh/uv/getting-started/installation/); `sudo apt-get install git curl cmake build-essential libgomp1 zip` and [Docker](https://docs.docker.com/engine/install/); and the three SDK files in `hailo-deps/` ([Software](#software)).
 
@@ -259,7 +259,7 @@ Goal: the official YOLOX-s model (Apache-2.0) from ONNX to detections on a Hailo
 | Same, `hailortcli scan` lists nothing, no `/dev/hailo*` | Driver not installed or loaded | Install `hailort-pcie-driver`, reload or reboot, check `lsmod \| grep hailo` and the permissions of `/dev/hailo*`. |
 | Requests accepted, no output, `NO_OUTPUT_AVAILABLE`; log has `Invalid Feed Input Name:<name>` | Input name differs from the converted model's | Use the name inside the `.hailo8.onnx` (`input0` in the example). |
 | `Unexpected input data type` in the log | Tensor type differs from the model's | Send the types the converted model declares. |
-| Model loads, but it is slow and the chip is idle | An unconverted ONNX was loaded: it runs on the CPU ([issue #11](https://github.com/OAAX-standard/hailo-acceleration/issues/11)) | Load the `.hailo8.onnx`; it has a `HailoOp` node. |
+| Model loads, but it is slow and the chip is idle | An unconverted ONNX was loaded: it runs on the CPU | Load the `.hailo8.onnx`; it has a `HailoOp` node. |
 | `libatomic.so.1` or `libgomp.so.1: cannot open shared object file` | Missing system library | `sudo apt-get install libatomic1 libgomp1`. |
 | `MLDataType for: tensor(float) is not currently registered` after switching runtimes | A runtime build older than 2.0.0 | Use the 2.0.0 builds. |
 | Conversion fails or exits strangely | See [Outputs, logs and errors](#outputs-logs-and-errors) | Includes the `jaxlib` and missing-`libhailort` cases. |
