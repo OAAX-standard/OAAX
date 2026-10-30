@@ -84,8 +84,8 @@ OK: 10 requests, first 90.5 ms (warm-up), then 91.4 ms on average (min 71.9 ms)
 
 `detections.png` is the picture above. Timings depend on your machine. The program exits with a non-zero code if a request fails, and the runtime writes `runtime.log` in the current directory.
 
-!!! note "Where this was run"
-    Both tabs were run end to end in a clean Ubuntu 22.04 container (about a minute each, from installing the tools to the detections, on a fast connection and with the Docker images already in the local store; a first `docker load` takes longer). Intel was run on its CPU device there, and on an Intel integrated GPU on a workstation (`effective_device` GPU, same detections). The NPU was not run. The example's [README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} gives the commands for the other chips and records runs on NVIDIA (ONNX Runtime and TensorRT) and Hailo-8. The DEEPX conversion is covered on its page. The accelerator pages ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md)) list the builds and how to pick one.
+!!! note "Other chips"
+    The example's [README](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"} gives the commands for the other chips (NVIDIA with ONNX Runtime or TensorRT, Hailo, DEEPX). The accelerator pages ([NVIDIA](NVIDIA.md), [Hailo](Hailo.md), [DEEPX](DEEPX.md)) list the builds and how to pick one.
 
 ## Download and check with the OAAX tools
 

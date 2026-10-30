@@ -140,7 +140,7 @@ The thread budget per model is `max(1, floor(cores * 0.4 or 0.9) / number of mod
 | Ordering | With more than one replica, outputs can arrive in any order: match them to requests with `Tensors.id`. |
 | Limits | Each model queues about 1,000 pending requests (measured: the first failure came at about 1,150 with 1 replica); then `runtime_enqueue_input` returns `ERROR` (1) with `input queue full`. `runtime_retrieve_output(timeout_ms)`: negative waits forever, `0` does not wait. |
 | Diagnostics | `runtime_get_info()` returns `{"loaded_models":N,"requests_in_flight":N,"backend_version":"..."}` (queued requests, not those running). |
-| Cleanup | Always call `runtime_cleanup()` before exiting or unloading: the process aborts at exit otherwise ([known issue #45](https://github.com/OAAX-standard/reference-implementation/issues/45){:target="_blank"}). |
+| Cleanup | Always call `runtime_cleanup()` before exiting or unloading: the process aborts at exit otherwise. |
 
 ### Status codes and bad input
 
@@ -153,7 +153,7 @@ The thread budget per model is `max(1, floor(cores * 0.4 or 0.9) / number of mod
     | `runtime_retrieve_output` | `NO_OUTPUT_AVAILABLE` (12) when nothing arrived before the timeout. |
 
 !!! warning "Wrong tensors are not rejected"
-    `runtime_enqueue_input` returns success for a tensor with the wrong name, data type or shape. The inference then fails inside ONNX Runtime, the error is written to the log (for example `Unexpected input data type. Actual: (tensor(float16)), expected: (tensor(float))`), and **no output is ever produced** for that request ([known issue #46](https://github.com/OAAX-standard/reference-implementation/issues/46){:target="_blank"}). A host that only sees `NO_OUTPUT_AVAILABLE` should check the log.
+    `runtime_enqueue_input` returns success for a tensor with the wrong name, data type or shape. The inference then fails inside ONNX Runtime, the error is written to the log (for example `Unexpected input data type. Actual: (tensor(float16)), expected: (tensor(float))`), and **no output is ever produced** for that request. A host that only sees `NO_OUTPUT_AVAILABLE` should check the log.
 
 ## End-to-end example
 
@@ -220,5 +220,5 @@ OK: 10 requests, first 93.9 ms (warm-up), then 104.5 ms on average (min 89.0 ms)
 | Requests succeed but no output arrives | Check the log for `Inference error for request N`: a wrong tensor name (`Invalid input name`), data type (`Unexpected input data type`, for example float16 sent to a float32 model) or shape (`Got invalid dimensions`). |
 | `libgomp.so.1: cannot open shared object file` or `GLIBC_2.29 not found` | Install `libgomp1`; the OS is older than Ubuntu 20.04 / Debian 11. (From the library's dependencies; not reproduced.) |
 | `Illegal instruction` on x86_64 | The CPU has no AVX2. Not verified: no such CPU was available. |
-| The host aborts when it exits | `runtime_cleanup()` was not called ([#45](https://github.com/OAAX-standard/reference-implementation/issues/45){:target="_blank"}). |
+| The host aborts when it exits | `runtime_cleanup()` was not called. |
 | Changing `num_threads` has no effect | 2.0.0 reads `perf_mode`, `num_intra_threads` and `num_replicas` instead. |

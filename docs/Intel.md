@@ -44,7 +44,7 @@ The toolchain converts an ONNX model to OpenVINO IR. The runtime loads that IR a
 | GPU | an OpenCL GPU driver, see [Installation](#installation) | Intel graphics driver |
 | NPU | the NPU driver, see [Installation](#installation) | NPU driver |
 
-**To convert a model:** Docker 20.10 or higher on an x86_64 host and 1.2 GB of disk for the image. Python, OpenVINO (2026.4.1 in the image, not pinned: [#28](https://github.com/OAAX-standard/intel-acceleration/issues/28)) and NNCF 2.19 are inside the image.
+**To convert a model:** Docker 20.10 or higher on an x86_64 host and 1.2 GB of disk for the image. Python, OpenVINO (2026.4.1 in the image, not pinned) and NNCF 2.19 are inside the image.
 
 **Tools for the steps of this page:** [uv](https://docs.astral.sh/uv/getting-started/installation/) (runs `oaax-manager`), `zip`, and to build the example host `git`, `curl`, `cmake` and `build-essential`. On a minimal image (container) install them all: `sudo apt-get install -y git curl cmake build-essential zip libgomp1`.
 
@@ -70,7 +70,7 @@ Only GPU and NPU need drivers. The CPU needs none.
     Install the current Intel graphics driver (GPU) or NPU driver, see the two guides above.
 
 !!! warning "A GPU or NPU request can silently run on the CPU"
-    If the device is missing or the model does not compile on it (no driver, no access to `/dev/dri`, user not in the `render` group, no `--device /dev/dri` in Docker), the run still succeeds, on the CPU. The reason is only in `runtime.log` ([issue #31](https://github.com/OAAX-standard/intel-acceleration/issues/31)). **Always check `effective_device`** in `runtime_get_info()` (the `Runtime info:` line of the example host) and `available_devices` for the devices OpenVINO found.
+    If the device is missing or the model does not compile on it (no driver, no access to `/dev/dri`, user not in the `render` group, no `--device /dev/dri` in Docker), the run still succeeds, on the CPU. The reason is only in `runtime.log`. **Always check `effective_device`** in `runtime_get_info()` (the `Runtime info:` line of the example host) and `available_devices` for the devices OpenVINO found.
 
 !!! warning "`GPU` means any OpenCL GPU"
     Without the Intel driver, a host with another vendor's OpenCL GPU lists that GPU as `GPU`, and the runtime uses it. With several GPUs, `GPU` becomes `MULTI:GPU.0,GPU.1,...`; use `GPU.0`, `GPU.1` to pick one.
@@ -98,7 +98,7 @@ Runtime libraries are packaged as `library.tar.gz`. Extract all the files into t
 
 ## Conversion toolchain
 
-The image has the tag `oaax-intel-toolchain:latest` only (there is no `:2.0.0` tag, [#25](https://github.com/OAAX-standard/intel-acceleration/issues/25); the version is in the image label `version=2.0.0`). Its entrypoint is `conversion_toolchain INPUT_ZIP OUTPUT_DIR`. The container runs as root by default, so pass your own user to own the output files:
+The image has the tag `oaax-intel-toolchain:latest` only (there is no `:2.0.0` tag; the version is in the image label `version=2.0.0`). Its entrypoint is `conversion_toolchain INPUT_ZIP OUTPUT_DIR`. The container runs as root by default, so pass your own user to own the output files:
 
 ```bash
 mkdir -p input output
@@ -116,17 +116,17 @@ Every key is optional. Unknown keys are ignored. Example: `{ "optimization": { "
 
 | Key | Type, default | Effect |
 | --- | --- | --- |
-| `optimization.fp16_compression` | bool, `true` | Stores the weights in FP16 (half the size) **and**, unless `preprocessing.input_dtype` is set, makes every input FP16 ([#30](https://github.com/OAAX-standard/intel-acceleration/issues/30)). `false` keeps the model's input types (for example FP32). Forced to `false` when quantizing |
-| `optimization.quantization.enabled` | bool, `false` | INT8 post-training quantization (NNCF). Needs calibration images; makes the input `u8` with `/255` baked in, whatever `scale_values` says ([#29](https://github.com/OAAX-standard/intel-acceleration/issues/29)) |
-| `optimization.quantization.preset` | `mixed`, `performance`, `accuracy`; `mixed` | `performance` quantizes all layers (fastest). `accuracy` is accepted but gives the same IR as `mixed` ([#27](https://github.com/OAAX-standard/intel-acceleration/issues/27)) |
+| `optimization.fp16_compression` | bool, `true` | Stores the weights in FP16 (half the size) **and**, unless `preprocessing.input_dtype` is set, makes every input FP16. `false` keeps the model's input types (for example FP32). Forced to `false` when quantizing |
+| `optimization.quantization.enabled` | bool, `false` | INT8 post-training quantization (NNCF). Needs calibration images; makes the input `u8` with `/255` baked in, whatever `scale_values` says |
+| `optimization.quantization.preset` | `mixed`, `performance`, `accuracy`; `mixed` | `performance` quantizes all layers (fastest). `accuracy` is accepted but gives the same IR as `mixed` |
 | `optimization.quantization.subset_size` | int > 0, `300` | Maximum number of calibration images used |
 | `optimization.quantization.target_device` | `any`, `cpu`, `gpu`, `npu`; `any` | NNCF target. `npu` forces `performance` and keeps attention and DFL MatMuls in FP16 |
-| `optimization.quantization.mode`, `.calibration_data` | `int8`, `"calibration/"` | Accepted, no effect: INT8 is always used, the folder is found by name (below) ([#27](https://github.com/OAAX-standard/intel-acceleration/issues/27)) |
+| `optimization.quantization.mode`, `.calibration_data` | `int8`, `"calibration/"` | Accepted, no effect: INT8 is always used, the folder is found by name (below) |
 | `preprocessing.input_dtype` | `u8`, `f16`, `f32` or `null` | Element type of **all** inputs; the IR converts back to the model's type inside |
 | `preprocessing.mean_values`, `.scale_values` | list of numbers or `null` | `(x - mean) / scale` per channel, baked in and applied to **every** input (rank 4 is read as NCHW, rank 3 as CHW) |
 | `advanced.batch_size` | int > 0, `1` | Fixes the batch dimension. Fails if the model has batch 1 hard-coded in its post-processing |
 | `advanced.dynamic_batch` | bool, `false` | Makes the batch dimension dynamic (`-1`). Excludes `batch_size` > 1 |
-| `model_file`, `advanced.input_shape`, `.input_names`, `.output_names` | | Accepted, no effect ([#27](https://github.com/OAAX-standard/intel-acceleration/issues/27)) |
+| `model_file`, `advanced.input_shape`, `.input_names`, `.output_names` | | Accepted, no effect |
 
 **Input type of the converted model:**
 
@@ -190,7 +190,7 @@ The runtime implements the [OAAX runtime interface](Specification.md#oaax-runtim
 
 ## End-to-end example
 
-The generic [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example) (`yolox_host`, the official `yolox_s.onnx`, a CC0 test image): from nothing to detections. Run on a clean Ubuntu 22.04 (about 1 minute in total with a fast connection).
+The generic [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example) (`yolox_host`, the official `yolox_s.onnx`, a CC0 test image): from nothing to detections. It takes about a minute on a fast connection.
 
 !!! note "Prerequisites"
     [Docker](https://docs.docker.com/engine/install/) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then `sudo apt-get install -y git curl cmake build-essential zip libgomp1`. For the GPU or NPU tab, the drivers from [Installation](#installation).
@@ -262,7 +262,7 @@ OK: 10 requests, first 95.4 ms (warm-up), then 61.7 ms on average (min 46.8 ms)
 `detections.png` shows the boxes. On the integrated GPU (`effective_device` `GPU`) we got the same two objects with identical boxes and scores (checked against the CPU run), and `first 39.7 ms (warm-up), then 34.2 ms on average`. Times depend on the machine.
 
 ??? note "Default (FP16) conversion: send float16"
-    Without `config.json` the toolchain makes the input float16 ([#30](https://github.com/OAAX-standard/intel-acceleration/issues/30)). Pass `--dtype float16` to the host:
+    Without `config.json` the toolchain makes the input float16. Pass `--dtype float16` to the host:
 
     ```bash
     mkdir -p intel16/input intel16/output && cp models/yolox_s.onnx intel16/input/model.onnx
@@ -274,7 +274,7 @@ OK: 10 requests, first 95.4 ms (warm-up), then 61.7 ms on average (min 46.8 ms)
     The result is the same two objects (59.5 ms on average here). Without the flag the host stops with `dtype mismatch for input 'images': model expects f16 but caller sent f32`.
 
 ??? warning "INT8: YOLOX finds nothing (known behavior)"
-    The toolchain bakes a `/255` into every INT8 model and ignores `scale_values` ([#29](https://github.com/OAAX-standard/intel-acceleration/issues/29)), but YOLOX expects raw 0-255 pixels. We converted `yolox_s` with `"quantization": {"enabled": true}` (calibration images in `calibration/`, 8 s) and ran it with `--dtype uint8`: it took 17 ms per request and found `Detections ...: 0`. Workaround, not run by us: add a `Mul` by 255 after the input of the ONNX before converting.
+    The toolchain bakes a `/255` into every INT8 model and ignores `scale_values`, but YOLOX expects raw 0-255 pixels. A `yolox_s` converted with `"quantization": {"enabled": true}` (calibration images in `calibration/`) and run with `--dtype uint8` finds no detections. Workaround (untested): add a `Mul` by 255 after the input of the ONNX before converting.
 
 ## Troubleshooting
 
@@ -285,8 +285,8 @@ OK: 10 requests, first 95.4 ms (warm-up), then 61.7 ms on average (min 46.8 ms)
 | `Unrecognized device ID` in the log for `NPU` | No NPU is present (or its driver is missing) |
 | `GPU` is not the Intel GPU | Another vendor's OpenCL GPU was picked: see the warning above. Install the Intel driver or set `GPU.0` or `GPU.1` |
 | One model fails to compile on the GPU (for example `No layout format available for gathernd ... data_type u8`, seen on OpenVINO 2026.1.0) | An operator or type the GPU plugin lacks. The runtime falls back to the CPU; change the model to avoid it for the GPU |
-| `runtime_enqueue_input` returns success but no output arrives (`RUNTIME_STATUS_NO_OUTPUT_AVAILABLE`) | The input name or shape does not match the IR, so the request is dropped: look for `Tensor setup failed` in `runtime.log`. Compare with `inputs` in `runtime_get_info()` ([#33](https://github.com/OAAX-standard/intel-acceleration/issues/33)) |
-| The GPU returns extra all-zero rows (for example `[20, 6]` instead of `[12, 6]`) | A dynamic output is padded to its upper bound on the GPU. Skip rows whose score is 0 ([#32](https://github.com/OAAX-standard/intel-acceleration/issues/32)) |
+| `runtime_enqueue_input` returns success but no output arrives (`RUNTIME_STATUS_NO_OUTPUT_AVAILABLE`) | The input name or shape does not match the IR, so the request is dropped: look for `Tensor setup failed` in `runtime.log`. Compare with `inputs` in `runtime_get_info()` |
+| The GPU returns extra all-zero rows (for example `[20, 6]` instead of `[12, 6]`) | A dynamic output is padded to its upper bound on the GPU. Skip rows whose score is 0 |
 | Integer inputs (ids above 65504) give wrong results | They were converted to FP16. Convert with `"fp16_compression": false` |
 | `error while loading shared libraries: libgomp.so.1` or `libopenvino.so.2610` | Install `libgomp1`. Keep all the files of the archive in one directory |
 | `Failed to extract model archive` | Pass the `.zip` made by the toolchain, not the `.onnx` or the `.xml` |

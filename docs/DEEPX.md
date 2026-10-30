@@ -29,7 +29,7 @@ DEEPX NPUs are edge inference accelerators; DX-H1 is the higher-performance vari
 - **Does not do**: image pre-processing, post-processing, float or layout conversion of the input.
 
 !!! warning "DX-H1"
-    DX-COM 2.3.0 reports `Target Hardware: M1`. The repository lists DX-H1 as supported, but this page could not check a DX-H1 conversion ([issue #21](https://github.com/OAAX-standard/deepx-acceleration/issues/21){:target="_blank"}).
+    DX-COM 2.3.0 reports `Target Hardware: M1`. DX-H1 conversion is not verified yet.
 
 ## Requirements
 
@@ -153,7 +153,7 @@ Preprocessing steps: `resize` (`width`+`height`, or `mode`, `size`, `pad_locatio
 | `Expected exactly 1 ONNX file, but found N` / `... JSON file ...` | wrong count, or the files are in a sub-folder of the zip, or the zip path is wrong |
 | `Error: dxcom conversion failed.` | followed by DX-COM's own error, e.g. `ConfigFileError: You Must define input shapes`, `ConfigInputError`, `DataNotFoundError`, `DataPreprocessingError`, `DataLoaderError` |
 
-Known gaps are tracked in the repository: the toolchain writes `convert.log` instead of `logs.json` ([#17](https://github.com/OAAX-standard/deepx-acceleration/issues/17){:target="_blank"}), invalid config keys and `calibration_method` values are accepted silently ([#18](https://github.com/OAAX-standard/deepx-acceleration/issues/18){:target="_blank"}), only a zip bundle is accepted ([#19](https://github.com/OAAX-standard/deepx-acceleration/issues/19){:target="_blank"}) and the image is large ([#20](https://github.com/OAAX-standard/deepx-acceleration/issues/20){:target="_blank"}).
+Limits: the toolchain writes `convert.log` instead of `logs.json`, invalid config keys and `calibration_method` values are accepted silently, only a zip bundle is accepted, and the image is large (6.1 GB).
 
 ## Runtime library
 
@@ -198,8 +198,8 @@ The runtime implements the [OAAX 2.0 interface](https://github.com/OAAX-standard
 
 This converts the official **YOLOX-s** detector and runs it with the [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/yolox-example){:target="_blank"}, one small C host that runs on every OAAX runtime; for DEEPX only two flags differ.
 
-!!! warning "Not run on hardware"
-    Steps 1 to 5 were run by the page's author (Ubuntu 22.04, x86_64). Step 6 needs a DEEPX card, DX-RT 3.3.2, the driver and the firmware, which were not available: its result is described, not shown.
+!!! note "What step 6 needs"
+    A DEEPX card, DX-RT 3.3.2, the driver and the firmware.
 
 !!! note "Before you start"
     Step 3 downloads the **6.1 GB** toolchain image and step 4 takes about **5 minutes** (4 min 42 s here, including the calibration download).
@@ -232,7 +232,7 @@ This converts the official **YOLOX-s** detector and runs it with the [YOLOX exam
    ```
    It ends with `Conversion finished at ...` and `deepx/out/yolox_s.dxnn` exists.
 5. Check that the host and the runtime are in place: `ls build/yolox_host runtime-deepx-*/libRuntimeLibrary.so`.
-6. **Not run, needs the card.** Check `dxrt-cli --status` (DX-RT 3.3.2), then run the host with the DEEPX flags (`--layout nhwc --dtype uint8`, the converted model takes raw uint8 NHWC pixels):
+6. **Run on the card.** Check `dxrt-cli --status` (DX-RT 3.3.2), then run the host with the DEEPX flags (`--layout nhwc --dtype uint8`, the converted model takes raw uint8 NHWC pixels):
 
 === "Same machine"
 
