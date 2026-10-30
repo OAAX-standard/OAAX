@@ -5,7 +5,7 @@
 
 | | |
 | --- | --- |
-| **Devices** | Intel CPU, integrated or discrete GPU (Arc, Iris Xe, UHD, Data Center GPU) and NPU, one runtime for all three |
+| **Devices** | Intel CPU, integrated or discrete GPU (Arc, Iris Xe, UHD, Data Center GPU) and NPU (Linux), one runtime for all three |
 | **Engine** | [OpenVINO™](https://docs.openvino.ai/2026/index.html) 2026.1.0 (native C++ API) |
 | **Toolchain input** | `.zip` bundle with `model.onnx` and an optional `config.json` (plus calibration images for INT8) |
 | **Toolchain output** | `<model>.zip` with the OpenVINO IR (`model.xml` and `model.bin`), plus `logs.json` |
@@ -30,7 +30,7 @@ The toolchain converts an ONNX model to OpenVINO IR. The runtime loads that IR a
 | --- | --- | --- |
 | CPU | Core 6th to 14th gen and Core Ultra, Xeon, Atom. The runtime refuses to start without **AVX2** | Core i7-12700K |
 | GPU | Arc, Iris Xe, UHD / HD Graphics, Data Center GPU Flex and Max | UHD Graphics 770 (integrated) |
-| NPU | Core Ultra NPU | not verified on hardware |
+| NPU | Core Ultra NPU | Verified on Linux. Not supported on Windows yet |
 
 ### Software
 
@@ -42,7 +42,7 @@ The toolchain converts an ONNX model to OpenVINO IR. The runtime loads that IR a
 | System packages | `libgomp1`. Minimal images (containers) do not have it | none, the Visual C++ runtime DLLs are in the archive |
 | OpenVINO | included in the runtime archive (2026.1.0), nothing to install | included |
 | GPU | an OpenCL GPU driver, see [Installation](#installation) | Intel graphics driver |
-| NPU | the NPU driver, see [Installation](#installation) | NPU driver |
+| NPU | the NPU driver, see [Installation](#installation) | Not supported yet |
 
 **To convert a model:** Docker 20.10 or higher on an x86_64 host and 1.2 GB of disk for the image. Python, OpenVINO (2026.4.1 in the image, not pinned) and NNCF 2.19 are inside the image.
 
@@ -67,7 +67,7 @@ Only GPU and NPU need drivers. The CPU needs none.
 
 === "Windows"
 
-    Install the current Intel graphics driver (GPU) or NPU driver, see the two guides above.
+    Install the current Intel graphics driver (GPU), see the guide above. The NPU is not supported on Windows yet.
 
 !!! warning "A GPU or NPU request can silently run on the CPU"
     If the device is missing or the model does not compile on it (no driver, no access to `/dev/dri`, user not in the `render` group, no `--device /dev/dri` in Docker), the run still succeeds, on the CPU. The reason is only in `runtime.log`. **Always check `effective_device`** in `runtime_get_info()` (the `Runtime info:` line of the example host) and `available_devices` for the devices OpenVINO found.
@@ -165,7 +165,7 @@ The runtime implements the [OAAX runtime interface](Specification.md#oaax-runtim
 | `num_requests` | int, `0` = auto | Parallel inference requests per model. Auto asks OpenVINO (we saw 1 with `latency`, 4 to 5 with `throughput`) |
 | `num_streams` | int, `0` = auto | OpenVINO streams, only used with `throughput`; 4 is recommended for a discrete GPU |
 | `auto_batch_size` | int, `0` = off | Wraps the device in `BATCH:<device>(N)` to batch concurrent requests. Ignored on the CPU |
-| `npu_turbo` | `1` or `0` (default) | Sets `NPU_TURBO=YES` on an NPU (not verified on hardware) |
+| `npu_turbo` | `1` or `0` (default) | Sets `NPU_TURBO=YES` on an NPU (Linux only) |
 | `cache_dir` | path, `.` (default), `""` = off | OpenVINO compiled-model cache (`<hash>.blob` files), shared by all models. It avoids recompiling at every start and is **created in the current directory by default** |
 | `max_queue_size` | int, `100`, `0` = unlimited | Pending inputs per model and pending outputs. When full, `runtime_enqueue_input` returns `RUNTIME_STATUS_ERROR` (`input queue at capacity`) |
 | `log_level` | `0` trace to `6` off, `2` (default) | Minimum log level |
@@ -243,7 +243,7 @@ The generic [YOLOX example](https://github.com/OAAX-standard/examples/tree/main/
         ./build/yolox_host runtime-intel-2.0.0-linux-x86_64/libRuntimeLibrary.so intel/output/model.zip artifacts/dog-bicycle.jpg --config device_type=NPU
         ```
 
-        Not verified on hardware. Without an NPU the command still succeeds, with `"effective_device":"CPU"`.
+        Linux only: the NPU is not supported on Windows yet. Without an NPU the command still succeeds, with `"effective_device":"CPU"`.
 
 Output on the CPU (the `Runtime info` line is shortened; it is one long JSON line):
 
