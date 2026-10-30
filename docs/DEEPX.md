@@ -245,7 +245,20 @@ This converts the official **YOLOX-s** detector and runs it with the [YOLOX exam
 
     Fetch the runtime on the board (`uvx oaax-manager fetch runtime deepx --variant ubuntu$VERSION_ID-dxrt3.3.2`), build the host there (steps 1 and 2), copy `deepx/out/yolox_s.dxnn` to it and run the same command.
 
-Expected, from the example's description (not observed): the host prints the runtime name (`DEEPX`), the model's output tensor, the detections of the CC0 test image (a bicycle and a dog on the CPU runtime) and `OK: 10 requests ...`, and writes `detections.png`. Box positions and scores can differ slightly from the CPU run because the model is quantized to INT8. Whether the calibration padding placement matches the host's letterbox, and the INT8 accuracy, are unchecked.
+The host prints the runtime name (`DEEPX`), the model's output tensor, the detections and `OK: 10 requests ...`, and writes `detections.png`. Output on a DX-M1 (DX-RT 3.3.2, Ubuntu 24.04):
+
+```
+Runtime: DEEPX 2.0.0
+Input: 'images' uint8 NHWC, 1280x854 image letterboxed to 640
+Output tensor 'output': type 1, shape [1, 8400, 85]
+Detections (score >= 0.30, NMS IoU 0.45): 2
+  bicycle        0.949  ( 613,  210) - (1228,  804)
+  dog            0.927  ( 212,  247) - ( 521,  587)
+Wrote detections.png
+OK: 10 requests, first 34.6 ms (warm-up), then 24.3 ms on average (min 22.7 ms)
+```
+
+The same two objects as on the CPU runtime; boxes are within 4 px and scores within 0.01 because the model is quantized to INT8. Times depend on the host.
 
 ## Troubleshooting
 
@@ -254,7 +267,7 @@ Expected, from the example's description (not observed): the host prints the run
 | `undefined symbol: _ZN4dxrt14GetTaskMaxLoadEv` or `symbol lookup error` when loading or calling the runtime | The installed DX-RT is older than 3.3.2 (reproduced with 2.0.3). Install 3.3.2, run `ldconfig`, check with `ldd` |
 | `libdxrt.so: cannot open shared object file` | DX-RT is not installed or not on the library path (it installs to `/usr/local/lib`, run `ldconfig`) |
 | `GLIBC_...` / `GLIBCXX_...` not found | Wrong build for the OS: take the variant matching your Ubuntu (`. /etc/os-release; echo $VERSION_ID`) |
-| `[DXRT][Error] Device not found.`, possibly followed by an abort | DX-RT sees no card (seen with `dxrt-cli` and no hardware). Reseat the card and check the driver, firmware and `dxrt-cli --status` |
+| `Device not found` from `dxrt-cli` (also `[DXRT][Error] Device not found.`, possibly followed by an abort), while `lspci` lists the card | The driver is not loaded: `lsmod | grep dx` is empty and `/dev/dxrt0` is missing. The driver is built for one kernel, so a kernel update removes it. In `dx_rt_npu_linux_driver/modules` run `./build.sh` (needs `linux-headers-$(uname -r)`), `sudo ./build.sh -c uninstall`, `sudo ./build.sh -c install --reload`, then check `dxrt-cli --status`. If `lspci` does not list the card either, reseat it |
 | `FILE_NOT_FOUND`, `Model file not found: <path>` | Wrong path to the `.dxnn` |
 | `INVALID_MODEL`, `Failed to load model: ...` | The file is not a DXNN that this DX-RT accepts (an `.onnx`, truncated, or built by a very different DX-COM) |
 | `TENSOR_SHAPE_MISMATCH`, `Input size X does not match model input size Y` | The host sent the wrong tensor, typically float or NCHW. Send `uint8` NHWC of exactly Y bytes |
