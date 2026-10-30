@@ -1,0 +1,1071 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.oaax.org/Getting%20Started/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../Compliant%20XPU/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Hello World Example - OAAX</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hello-world-example" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="OAAX" class="md-header__button md-logo" aria-label="OAAX" data-md-component="logo">
+      
+  <img src="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OAAX
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hello World Example
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OAAX-standard/OAAX" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../CPU/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CPU
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Intel/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Intel
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../NVIDIA/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  NVIDIA
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../DEEPX/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DEEPX
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Hailo/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hailo
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OAAX" class="md-nav__button md-logo" aria-label="OAAX" data-md-component="logo">
+      
+  <img src="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png" alt="logo">
+
+    </a>
+    OAAX
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OAAX-standard/OAAX" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAAX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hello World Example
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hello World Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-build-the-host-and-get-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Build the host and get the model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-convert-and-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Convert and run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-should-see" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you should see
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-and-check-with-the-oaax-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download and check with the OAAX tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Compliant%20XPU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compliant AI Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Specification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAAX Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CPU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Intel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NVIDIA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVIDIA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEEPX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEEPX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Hailo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hailo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/OAAX-standard/OAAX/edit/main/docs/Getting Started.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/OAAX-standard/OAAX/raw/main/docs/Getting Started.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="hello-world-example">Hello World Example</h1>
+<p>This walkthrough takes the official <strong>YOLOX</strong> object detector through the two OAAX stages and prints what it finds in a photo:</p>
+<ol>
+<li><strong>Convert</strong> the ONNX model with the chip's conversion toolchain (a Docker image).</li>
+<li><strong>Run</strong> the converted model with the chip's runtime library, through one small C host application.</li>
+</ol>
+<p>The host is the same for every chip: only the runtime library and the converted model change. That is the point of OAAX.</p>
+<p><img alt="YOLOX detections: a dog and a bicycle" src="../media/yolox-detections.jpg" /></p>
+<p><em>The picture the host writes. Photo: <a href="https://commons.wikimedia.org/wiki/File:Dog_from_Barcelona_01.jpg" target="_blank">Dog from Barcelona 01.jpg</a> by Nicolas Vigier, <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0 1.0</a>.</em></p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>A Linux x86_64 machine (Ubuntu 22.04 or higher) with <a href="https://docs.docker.com/engine/install/" target="_blank">Docker</a> that your user can run without <code>sudo</code>.</li>
+<li><a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank"><code>uv</code></a>, which runs the OAAX tools: <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code>, then <code>export PATH="$HOME/.local/bin:$PATH"</code>.</li>
+<li>Build tools: <code>sudo apt-get install -y git curl cmake build-essential libgomp1 ca-certificates zip</code> (<code>zip</code> is needed for the Intel, DEEPX and Hailo tabs).</li>
+<li>The hardware of the chip you pick, with its driver on the machine that runs the model: for Intel GPU or NPU the Intel drivers (see the <a href="../Intel/#installation">Intel page</a>; the CPU device needs none), for NVIDIA a driver and the CUDA 13 libraries, for DEEPX a card with DX-RT 3.3.2, for Hailo a Hailo-8 with HailoRT 4.20.0.</li>
+</ul>
+<h2 id="1-build-the-host-and-get-the-model">1. Build the host and get the model</h2>
+<p>The <a href="https://github.com/OAAX-standard/examples/tree/main/yolox-example" target="_blank">YOLOX example</a> is a C program that loads any OAAX 2.0 runtime, runs the model on an image, prints the detections and draws them. It has no dependencies besides a C compiler and CMake.</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/OAAX-standard/examples.git
+<span class="nb">cd</span><span class="w"> </span>examples/yolox-example
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build
+bash<span class="w"> </span>fetch_model.sh<span class="w">                          </span><span class="c1"># writes models/yolox_s.onnx (36 MB, sha256 checked)</span>
+</code></pre></div>
+<h2 id="2-convert-and-run">2. Convert and run</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">CPU</label><label for="__tabbed_1_2">Intel</label><label for="__tabbed_1_3">NVIDIA</label><label for="__tabbed_1_4">DEEPX</label><label for="__tabbed_1_5">Hailo</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Downloads 844 MB (toolchain 835 MB, runtime 8.5 MB).</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>cpu
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>cpu
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-cpu-toolchain-2.0.0.tar
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>model<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>model/
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/model:/model"</span><span class="w"> </span>oaax-cpu-toolchain:2.0.0<span class="w"> </span>/model/yolox_s.onnx<span class="w"> </span>/model/output
+
+./build/yolox_host<span class="w"> </span>runtime-cpu-2.0.0-linux-x86_64/libRuntimeLibrary.so<span class="w"> </span>model/output/yolox_s-simplified.onnx<span class="w"> </span>artifacts/dog-bicycle.jpg
+</code></pre></div>
+<p>More on the CPU toolchain and runtime: <a href="../CPU/">CPU page</a>.</p>
+</div>
+<div class="tabbed-block">
+<p>Downloads 1.3 GB (toolchain 1.2 GB, runtime 90 MB). The config keeps the model's float32 input; by default the Intel toolchain converts to FP16 and the runtime then expects FP16 tensors.</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>intel
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>intel
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-intel-toolchain-2.0.0.tar
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>intel/input<span class="w"> </span>intel/output<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>intel/input/model.onnx<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>configs/intel.json<span class="w"> </span>intel/input/config.json
+<span class="o">(</span><span class="nb">cd</span><span class="w"> </span>intel/input<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>zip<span class="w"> </span>model.zip<span class="w"> </span>model.onnx<span class="w"> </span>config.json<span class="o">)</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/intel/input:/input"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/intel/output:/output"</span><span class="w"> </span>oaax-intel-toolchain:latest<span class="w"> </span>/input/model.zip<span class="w"> </span>/output
+
+./build/yolox_host<span class="w"> </span>runtime-intel-2.0.0-linux-x86_64/libRuntimeLibrary.so<span class="w"> </span>intel/output/model.zip<span class="w"> </span>artifacts/dog-bicycle.jpg
+</code></pre></div>
+<p>When the container runs as your own user (<code>--user $(id -u):$(id -g)</code>), the conversion prints harmless OpenVINO telemetry warnings. The runtime uses the CPU device by default: add <code>--config device_type=GPU</code> (or <code>NPU</code>) to use that device, and check <code>effective_device</code> in the <code>Runtime info</code> line, because a device that cannot run the model falls back to the CPU. More: <a href="../Intel/">Intel page</a>.</p>
+</div>
+<div class="tabbed-block">
+<p>Downloads 1.8 GB (toolchain 967 MB, runtime 823 MB). This is the ONNX Runtime build: the conversion needs no GPU, and the run needs an NVIDIA driver for CUDA 13 and the CUDA 13 libraries (<code>libcudart</code>, <code>libcublas</code>, <code>libcublasLt</code>, <code>libcufft</code>).</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>nvidia-ort<span class="w"> </span>--variant<span class="w"> </span>cuda13
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>nvidia-ort
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-nvidia-onnxruntime-toolchain-2.0.0.tar
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>ort<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>ort/model.onnx
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/ort:/model"</span><span class="w"> </span>oaax-nvidia-toolchain:2.0.0<span class="w"> </span>/model/model.onnx<span class="w"> </span>/model/output
+
+./build/yolox_host<span class="w"> </span>runtime-nvidia-ort-2.0.0-linux-x86_64-cuda13/libRuntimeLibrary.so<span class="w"> </span>ort/output/model-simplified.onnx<span class="w"> </span>artifacts/dog-bicycle.jpg
+</code></pre></div>
+<p>On an RTX A4000 this takes about 11 ms per request. TensorRT, the faster NVIDIA runtime, and the other CUDA versions: <a href="../NVIDIA/">NVIDIA page</a>.</p>
+</div>
+<div class="tabbed-block">
+<p>Downloads 6.1 GB (toolchain 6.1 GB, runtime 180 KB) and 100 calibration images from DEEPX. The conversion takes about 5 minutes on any x86_64 machine; running the model needs a DEEPX card with DX-RT 3.3.2 and its driver, so copy <code>deepx/out/yolox_s.dxnn</code> and the runtime there if that is another machine. The converted model takes raw uint8 NHWC pixels, hence the two flags.</p>
+<div class="highlight"><pre><span></span><code>.<span class="w"> </span>/etc/os-release
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>deepx<span class="w"> </span>--variant<span class="w"> </span>ubuntu<span class="nv">$VERSION_ID</span>-dxrt3.3.2
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>deepx
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-deepx-toolchain-2.0.0.tar
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>deepx/calibration_dataset
+curl<span class="w"> </span>-fsSL<span class="w"> </span>https://sdk.deepx.ai/dataset/calibration_dataset.tar.gz<span class="w"> </span><span class="p">|</span><span class="w"> </span>tar<span class="w"> </span>xz<span class="w"> </span>--strip-components<span class="o">=</span><span class="m">1</span><span class="w"> </span>-C<span class="w"> </span>deepx/calibration_dataset
+cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>deepx/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>configs/deepx.json<span class="w"> </span>deepx/yolox_s.json
+<span class="o">(</span><span class="nb">cd</span><span class="w"> </span>deepx<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>zip<span class="w"> </span>-qr<span class="w"> </span>yolox_s.zip<span class="w"> </span>yolox_s.onnx<span class="w"> </span>yolox_s.json<span class="w"> </span>calibration_dataset<span class="o">)</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/deepx:/work"</span><span class="w"> </span>oaax-deepx-toolchain:2.0.0<span class="w"> </span>/work/yolox_s.zip<span class="w"> </span>/work/out
+
+./build/yolox_host<span class="w"> </span>runtime-deepx-*/libRuntimeLibrary.so<span class="w"> </span>deepx/out/yolox_s.dxnn<span class="w"> </span>artifacts/dog-bicycle.jpg<span class="w"> </span>--layout<span class="w"> </span>nhwc<span class="w"> </span>--dtype<span class="w"> </span>uint8
+</code></pre></div>
+<p>On a DX-M1 this takes about 24 ms per request. More: <a href="../DEEPX/">DEEPX page</a>.</p>
+</div>
+<div class="tabbed-block">
+<p>Downloads 1.2 GB (toolchain 1.2 GB, runtime 8 MB). Converting needs Hailo's own SDK, which is not redistributable: the Dataflow Compiler wheel, the HailoRT wheel and the HailoRT <code>.deb</code>, in a <code>hailo-deps/</code> folder (see the <a href="../Hailo/#software">Hailo page</a>). The conversion takes about 14 minutes; running the model needs a Hailo-8 with HailoRT 4.20.0.</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>hailo<span class="w"> </span>--variant<span class="w"> </span>hailort4.20.0
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>hailo
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-hailo-toolchain-2.0.0.tar
+
+mkdir<span class="w"> </span>-p<span class="w"> </span>hailo/input<span class="w"> </span>hailo/output<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>hailo/input/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>configs/hailo.json<span class="w"> </span>hailo/input/yolox_s.json
+<span class="o">(</span><span class="nb">cd</span><span class="w"> </span>hailo/input<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>zip<span class="w"> </span>yolox_s.zip<span class="w"> </span>yolox_s.onnx<span class="w"> </span>yolox_s.json<span class="o">)</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">PIP_FIND_LINKS</span><span class="o">=</span>https://storage.googleapis.com/jax-releases/jax_releases.html<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo-deps:/app/hailo-deps"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo/input:/app/input:ro"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo/output:/app/output"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>onnx-to-hailo:latest<span class="w"> </span>/app/input/yolox_s.zip<span class="w"> </span>/app/output
+sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>hailo/output<span class="w">      </span><span class="c1"># the container writes as root</span>
+
+./build/yolox_host<span class="w"> </span>runtime-hailo-2.0.0-linux-x86_64-hailort4.20.0/libRuntimeLibrary.so<span class="w"> </span>hailo/output/yolox_s.hailo8.onnx<span class="w"> </span>artifacts/dog-bicycle.jpg<span class="w"> </span>--input-name<span class="w"> </span>input0
+</code></pre></div>
+<p>The SDK renames the model's input to <code>input0</code>, hence the flag. On a Hailo-8 this takes about 12 ms per request. More: <a href="../Hailo/">Hailo page</a>.</p>
+</div>
+</div>
+</div>
+<h2 id="what-you-should-see">What you should see</h2>
+<p>On the CPU (the other chips print their own runtime name and <code>Runtime info</code> line, and the same two detections; the INT8 models of DEEPX and Hailo move the boxes by a few pixels):</p>
+<div class="highlight"><pre><span></span><code>Runtime: OAAX CPU Runtime 2.0.0
+Runtime info: {"loaded_models":1,"requests_in_flight":0,"backend_version":"1.17.3"}
+Input: 'images' float32 NCHW, 1280x854 image letterboxed to 640
+Output tensor 'output': type 1, shape [1, 8400, 85]
+Detections (score &gt;= 0.30, NMS IoU 0.45): 2
+  bicycle        0.953  ( 616,  210) - (1228,  806)
+  dog            0.934  ( 216,  244) - ( 521,  587)
+Wrote detections.png
+OK: 10 requests, first 90.5 ms (warm-up), then 91.4 ms on average (min 71.9 ms)
+</code></pre></div>
+<p><code>detections.png</code> is the picture above. Timings depend on your machine. The program exits with a non-zero code if a request fails, and the runtime writes <code>runtime.log</code> in the current directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Other chips and builds</p>
+<p>NVIDIA TensorRT (the fastest NVIDIA runtime), other CUDA, HailoRT and Ubuntu versions, Windows and Arm builds are on the accelerator pages: <a href="../CPU/">CPU</a>, <a href="../Intel/">Intel</a>, <a href="../NVIDIA/">NVIDIA</a>, <a href="../Hailo/">Hailo</a>, <a href="../DEEPX/">DEEPX</a>. The example's <a href="https://github.com/OAAX-standard/examples/tree/main/yolox-example" target="_blank">README</a> has the commands for every chip.</p>
+</div>
+<h2 id="download-and-check-with-the-oaax-tools">Download and check with the OAAX tools</h2>
+<p>Two small command-line tools, run with <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> (the tools themselves need no install):</p>
+<ul>
+<li><strong><a href="https://pypi.org/project/oaax-manager/">oaax-manager</a></strong> (<a href="https://github.com/OAAX-standard/oaax-manager">GitHub</a>) downloads a runtime or toolchain for your machine and verifies its checksum:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>list<span class="w">                    </span><span class="c1"># what is available (* = matches this machine)</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>cpu<span class="w">       </span><span class="c1"># writes runtime-cpu-2.0.0-linux-x86_64/libRuntimeLibrary.so</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>cpu<span class="w">     </span><span class="c1"># saves oaax-cpu-toolchain-2.0.0.tar and prints the `docker load` command</span>
+</code></pre></div>
+<p>The example above already uses it; the same two commands exist for every chip (<code>intel</code>, <code>nvidia-ort</code>, <code>nvidia-trt</code>, <code>hailo</code>, <code>deepx</code>).</p>
+<ul>
+<li><strong><a href="https://pypi.org/project/oaax-conformance/">oaax-conformance</a></strong> (<a href="https://github.com/OAAX-standard/conformance">GitHub</a>) checks a runtime or toolchain against the specification:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.12<span class="w"> </span>--from<span class="w"> </span><span class="s1">'oaax-conformance[e2e]'</span><span class="w"> </span>oaax-conformance<span class="w"> </span>runtime<span class="w"> </span>./libRuntimeLibrary.so<span class="w"> </span>--model<span class="w"> </span>@tiny-conv<span class="w"> </span>--out<span class="w"> </span>report
+uvx<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.12<span class="w"> </span>--from<span class="w"> </span><span class="s1">'oaax-conformance[e2e]'</span><span class="w"> </span>oaax-conformance<span class="w"> </span>toolchain<span class="w"> </span>oaax-cpu-toolchain:2.0.0<span class="w"> </span>--out<span class="w"> </span>report
+</code></pre></div>
+<p>Open <code>report/report.html</code> for the details. Exit code 0 means every required check passed. The reference CPU runtime and toolchain have <a href="https://github.com/OAAX-standard/conformance#known-findings-on-the-reference-implementation">known findings</a>, so exit code 1 is expected for them.</p>
+<h2 id="next-steps">Next steps</h2>
+<ul>
+<li>Read how the host talks to a runtime: the <a href="https://github.com/OAAX-standard/examples/tree/main/yolox-example" target="_blank">YOLOX example README</a>, the smaller <a href="https://github.com/OAAX-standard/examples/tree/main/c-example" target="_blank">c-example</a> and the <a href="../Specification/#oaax-runtime-specification">runtime specification</a>.</li>
+<li>Use your own model: export it to ONNX (for example <code>yolo export model=yolov8n.pt format=onnx</code> with <a href="https://github.com/ultralytics/ultralytics" target="_blank">Ultralytics</a>, which is AGPL-3.0: check the license before redistributing a model or an application built on it), convert it with the toolchain, and adapt the pre- and post-processing in the host application.</li>
+<li>Add your own accelerator: see the <a href="../Specification/">specification</a> and the <a href="https://github.com/OAAX-standard/reference-implementation" target="_blank">reference implementation</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.top", "toc.integrate", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit", "content.action.view", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

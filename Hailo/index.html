@@ -1,0 +1,1651 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.oaax.org/Hailo/">
+      
+      
+        <link rel="prev" href="../DEEPX/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Hailo - OAAX</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#at-a-glance" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="OAAX" class="md-header__button md-logo" aria-label="OAAX" data-md-component="logo">
+      
+  <img src="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OAAX
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hailo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OAAX-standard/OAAX" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../CPU/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CPU
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Intel/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Intel
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../NVIDIA/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  NVIDIA
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../DEEPX/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DEEPX
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hailo
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OAAX" class="md-nav__button md-logo" aria-label="OAAX" data-md-component="logo">
+      
+  <img src="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png" alt="logo">
+
+    </a>
+    OAAX
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OAAX-standard/OAAX" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAAX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Getting%20Started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hello World Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Compliant%20XPU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compliant AI Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Specification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAAX Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CPU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Intel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NVIDIA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVIDIA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEEPX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEEPX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hailo
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hailo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-runtime-and-toolchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get the runtime and toolchain
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Get the runtime and toolchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-links-and-compatibility-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download links and compatibility matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Download links and compatibility matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oaax-20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OAAX 2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversion-toolchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conversion toolchain
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conversion toolchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zip-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zip contents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Options JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs-logs-and-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs, logs and errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runtime library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime_init-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        runtime_init keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#models-and-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models and inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-codes-and-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status codes and errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-to-end-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/OAAX-standard/OAAX/edit/main/docs/Hailo.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/OAAX-standard/OAAX/raw/main/docs/Hailo.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+  <h1>Hailo</h1>
+
+<blockquote>
+<p><strong>📦 Implementation details</strong><br />
+You can find the implementation of the Hailo runtime &amp; toolchain in the <a href="https://github.com/OAAX-standard/hailo-acceleration" target="_blank">Github repository</a>. This page describes the <a href="https://github.com/OAAX-standard/hailo-acceleration/releases/tag/v2.0.0" target="_blank">latest release (v2.0.0)</a>.</p>
+</blockquote>
+<h2 id="at-a-glance">At a glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Start here</strong></td>
+<td>Check your HailoRT version (<a href="#software">how</a>), then follow the <a href="#end-to-end-example">end-to-end example</a>.</td>
+</tr>
+<tr>
+<td><strong>NPU class</strong></td>
+<td>Dedicated AI accelerator on a PCIe / M.2 module</td>
+</tr>
+<tr>
+<td><strong>Chips</strong></td>
+<td>Hailo-8</td>
+</tr>
+<tr>
+<td><strong>HailoRT versions</strong></td>
+<td>4.17.0, 4.18.0, 4.19.0, 4.20.0: one runtime build per version</td>
+</tr>
+<tr>
+<td><strong>Engine</strong></td>
+<td>ONNX Runtime with the Hailo execution provider, on top of HailoRT</td>
+</tr>
+<tr>
+<td><strong>Model format</strong></td>
+<td>ONNX in, <code>&lt;model&gt;.hailo8.onnx</code> out (the compiled model is wrapped in an ONNX file)</td>
+</tr>
+<tr>
+<td><strong>Runtime library</strong></td>
+<td><code>libRuntimeLibrary.so</code> (Ubuntu, x86_64 and aarch64)</td>
+</tr>
+<tr>
+<td><strong>Toolchain image</strong></td>
+<td><code>onnx-to-hailo:latest</code> (Docker, x86_64 hosts only, 1.2 GB, needs Hailo's SDK files)</td>
+</tr>
+<tr>
+<td><strong>How far it is verified</strong></td>
+<td>Run on a Hailo-8 with HailoRT 4.20.0. The 4.17 to 4.19 runtimes are only compiled and symbol-checked by CI. Hailo-8L is not verified.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="overview">Overview</h2>
+<ul>
+<li><strong>Toolchain</strong>: unpacks a zip (ONNX model, an options JSON, optional calibration images) and runs the Hailo SDK steps <em>parse</em>, <em>optimize</em> (INT8 quantization with the calibration images) and <em>compile</em> for the <code>hailo8</code> architecture. It writes <code>&lt;model&gt;.hailo8.onnx</code>: a graph whose <code>HailoOp</code> node embeds the compiled model, followed by the parts of the original graph the chip cannot run.</li>
+<li><strong>Runtime</strong>: loads that file with ONNX Runtime; the Hailo execution provider runs the <code>HailoOp</code> node on the chip through HailoRT and everything else on the host CPU. Inputs and outputs keep the types and layout of the converted graph (float32 NCHW in and out for YOLOX and YOLOv8).</li>
+<li><strong>One runtime build per HailoRT version</strong>: each archive bundles its own <code>libhailort</code>, which must match the HailoRT driver installed on the host.</li>
+<li><strong>Model constraints</strong>: the Hailo SDK decides which operators convert; the repository does not list them. It documents YOLOv8n, YOLOv8s and YOLOX-s as converting, and YOLO11n and YOLO26n as failing (attention layers, SDK 3.25.0). The model needs one image input with a fixed size.</li>
+<li><strong>Not done</strong>: no Hailo-8L target, no model script or optimization level, no batch or device selection, no accuracy check, no decoding of detections (the host does it).</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Limits</p>
+<p>A wrong input name, an unconverted model and a failed conversion do not fail loudly (see <a href="#troubleshooting">Troubleshooting</a>). The toolchain compiles for <code>hailo8</code> only.</p>
+</div>
+<h2 id="requirements">Requirements</h2>
+<h3 id="hardware">Hardware</h3>
+<ul>
+<li>A <strong>Hailo-8</strong> module (PCIe or M.2) in an x86_64 or aarch64 host.</li>
+<li>Conversion needs an <strong>x86_64</strong> Linux machine (the image and Hailo's compiler are x86_64 only). Copy the converted model to an aarch64 device afterwards.</li>
+</ul>
+<h3 id="software">Software</h3>
+<table>
+<thead>
+<tr>
+<th>Needed to</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Run</strong></td>
+<td>Ubuntu 20.04 or higher (the libraries need glibc 2.29 and libstdc++ from GCC 9; Ubuntu 22.04 was used for this page)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>libatomic1</code> and <code>libgomp1</code>: <code>sudo apt-get install libatomic1 libgomp1</code></td>
+</tr>
+<tr>
+<td></td>
+<td>Hailo's PCIe driver (<code>hailort-pcie-driver</code>) installed, with <code>/dev/hailo*</code> present</td>
+</tr>
+<tr>
+<td></td>
+<td>A runtime build whose HailoRT version <strong>equals the installed driver version</strong> (below)</td>
+</tr>
+<tr>
+<td><strong>Convert</strong></td>
+<td>Docker, and internet access (the container installs the SDK's Python dependencies at every start)</td>
+</tr>
+<tr>
+<td></td>
+<td>From Hailo's <a href="https://hailo.ai/developer-zone/" target="_blank">Developer Zone</a> (login required, not redistributable): <code>hailo_dataflow_compiler-3.&lt;minor&gt;.0-py3-none-linux_x86_64.whl</code>, <code>hailort-4.&lt;minor&gt;.0-cp310-cp310-linux_x86_64.whl</code> and the matching <code>hailort_4.&lt;minor&gt;.0_amd64.deb</code> (it provides <code>libhailort</code>, which the wheel needs; an empty or placeholder file is not enough), <strong>one version of each</strong> in one folder</td>
+</tr>
+</tbody>
+</table>
+<p>The image holds Ubuntu 22.04 and Python 3.10 (hence <code>cp310</code>). The example below was converted with Dataflow Compiler 3.29.0 and the HailoRT 4.19.0 wheel; which compiler goes with which HailoRT is not documented. A model converted that way runs on the 4.20.0 runtime.</p>
+<p><strong>Pick the runtime variant</strong>: it is the version of the installed driver.</p>
+<div class="highlight"><pre><span></span><code>hailortcli<span class="w"> </span>--version<span class="w">                 </span><span class="c1"># HailoRT-CLI version 4.20.0</span>
+dpkg<span class="w"> </span>-l<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>hailo<span class="w">              </span><span class="c1"># hailort and hailort-pcie-driver, same version</span>
+modinfo<span class="w"> </span>hailo_pci<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>^version<span class="w">    </span><span class="c1"># driver version</span>
+hailortcli<span class="w"> </span>scan<span class="w">                      </span><span class="c1"># lists the devices</span>
+</code></pre></div>
+<h2 id="get-the-runtime-and-toolchain">Get the runtime and toolchain</h2>
+<p><a href="https://pypi.org/project/oaax-manager/">oaax-manager</a> (0.1.1 or newer, which fixed the Hailo checksums; check with <code>uvx oaax-manager --version</code>) downloads and verifies both. Install <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> first.</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>list<span class="w">                                                         </span><span class="c1"># Hailo rows: hailort4.17.0 ... hailort4.20.0</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>hailo<span class="w"> </span>--variant<span class="w"> </span>hailort4.20.0<span class="w">                  </span><span class="c1"># -&gt; runtime-hailo-2.0.0-linux-x86_64-hailort4.20.0/</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>hailo<span class="w"> </span>--variant<span class="w"> </span>hailort4.20.0<span class="w"> </span>--arch<span class="w"> </span>aarch64<span class="w">   </span><span class="c1"># for an aarch64 device</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>hailo<span class="w">                                        </span><span class="c1"># -&gt; oaax-hailo-toolchain-2.0.0.tar</span>
+</code></pre></div>
+<p><code>--variant</code> is required (several builds exist). The runtime folder holds <code>libRuntimeLibrary.so</code>, <code>libonnxruntime_providers_hailo.so</code>, <code>libonnxruntime_providers_shared.so</code>, <code>libhailort.so.&lt;version&gt;</code> and <code>oaax_runtime.h</code>. <strong>Keep them together</strong>: the companion libraries are found next to <code>libRuntimeLibrary.so</code>.</p>
+<h3 id="download-links-and-compatibility-matrix">Download links and compatibility matrix</h3>
+<p>Runtime libraries are packaged as <code>library-&lt;HailoRT version&gt;.tar.gz</code> (same files as above). SHA-256 sums are in the <a href="https://github.com/OAAX-standard/hailo-acceleration/releases/tag/v2.0.0" target="_blank">release notes</a>; sizes are in brackets.</p>
+<h4 id="oaax-20">OAAX 2.0</h4>
+<p>Conversion toolchain (any platform with Docker): <a href="https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/HAILO/oaax-hailo-toolchain.tar">Download</a> (1.2 GB)</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>CPU architecture</th>
+<th>HailoRT</th>
+<th>Runtime library</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ubuntu</td>
+<td>x86_64</td>
+<td>4.17.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.17.0.tar.gz">Download</a> (8 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>x86_64</td>
+<td>4.18.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.18.0.tar.gz">Download</a> (8 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>x86_64</td>
+<td>4.19.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.19.0.tar.gz">Download</a> (8 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>x86_64</td>
+<td>4.20.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/x86_64/Ubuntu/library-4.20.0.tar.gz">Download</a> (8 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>aarch64</td>
+<td>4.17.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.17.0.tar.gz">Download</a> (7 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>aarch64</td>
+<td>4.18.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.18.0.tar.gz">Download</a> (7 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>aarch64</td>
+<td>4.19.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.19.0.tar.gz">Download</a> (8 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>aarch64</td>
+<td>4.20.0</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/HAILO/aarch64/Ubuntu/library-4.20.0.tar.gz">Download</a> (8 MB)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="conversion-toolchain">Conversion toolchain</h2>
+<h3 id="run-it">Run it</h3>
+<ol>
+<li>Put the three SDK files in <code>hailo-deps/</code> and make a zip with the model and an options JSON (below). Without calibration images the toolchain uses the 100 COCO images it ships with (the SDK used 64 of them in the YOLOX run).</li>
+<li>Load the image. Its name and tag come from the tar: <strong><code>onnx-to-hailo:latest</code></strong> (no versioned tag).</li>
+<li>Run it. <strong>Do not pass <code>--user</code></strong>: the container installs the SDK as root and fails otherwise. Pass <code>-e PIP_FIND_LINKS=https://storage.googleapis.com/jax-releases/jax_releases.html</code> with Dataflow Compiler 3.29: it requires <code>jaxlib==0.4.13</code>, which is gone from PyPI.</li>
+</ol>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-hailo-toolchain-2.0.0.tar
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">PIP_FIND_LINKS</span><span class="o">=</span>https://storage.googleapis.com/jax-releases/jax_releases.html<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo-deps:/app/hailo-deps"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/input:/app/input:ro"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/output:/app/output"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>onnx-to-hailo:latest<span class="w"> </span>/app/input/model.zip<span class="w"> </span>/app/output
+sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>output<span class="w">     </span><span class="c1"># the container wrote as root</span>
+</code></pre></div>
+<p>The entry point takes exactly two arguments (zip path, output folder, both inside the container). Every start re-installs the SDK; the conversion itself took about 14 minutes for YOLOX-s.</p>
+<h3 id="zip-contents">Zip contents</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*.onnx</code></td>
+<td>Exactly one, at the top level. Its name decides the output name.</td>
+</tr>
+<tr>
+<td><code>*.json</code></td>
+<td>Exactly one, at the top level: the options below.</td>
+</tr>
+<tr>
+<td><code>*.jpg</code>, <code>*.jpeg</code></td>
+<td>Optional calibration images, anywhere in the zip. Resized (stretched) to <code>width</code> x <code>height</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="options-json">Options JSON</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>height</code>, <code>width</code></td>
+<td>int</td>
+<td>required</td>
+<td>Model input size; calibration images are resized to it.</td>
+</tr>
+<tr>
+<td><code>channels</code></td>
+<td>int</td>
+<td>required</td>
+<td><code>1</code> = grayscale calibration images, anything else = RGB.</td>
+</tr>
+<tr>
+<td><code>nchw</code></td>
+<td>bool</td>
+<td>required</td>
+<td>Layout of the calibration array. Keep <code>false</code>: Hailo expects NHWC data whatever the model's layout.</td>
+</tr>
+<tr>
+<td><code>means</code>, <code>stds</code></td>
+<td>list of numbers</td>
+<td>required</td>
+<td>Calibration pixels become <code>(pixel - mean) / std</code> (pixels are 0 to 255). <strong>Give the runtime the same normalization.</strong> One value or one per channel.</td>
+</tr>
+<tr>
+<td><code>start_node_names</code></td>
+<td>list of strings</td>
+<td><code>[]</code></td>
+<td>Where the SDK starts parsing; empty = the model's inputs.</td>
+</tr>
+<tr>
+<td><code>end_node_names</code></td>
+<td>list of strings</td>
+<td><code>[]</code></td>
+<td>Where the SDK stops parsing; the nodes after stay plain ONNX on the host. Empty = auto-detect the YOLOv8 head (finds only 6 of the 9 head nodes of YOLOX, so list them); other models: the whole graph.</td>
+</tr>
+</tbody>
+</table>
+<p>Other keys are ignored. The YOLOX-s file of the example (<code>configs/hailo.json</code> in the examples repository):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"start_node_names"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w"> </span><span class="nt">"end_node_names"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Sigmoid_264"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Conv_261"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sigmoid_263"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sigmoid_285"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Conv_282"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sigmoid_284"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sigmoid_306"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Conv_303"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Sigmoid_305"</span><span class="p">],</span>
+<span class="w"> </span><span class="nt">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">640</span><span class="p">,</span><span class="w"> </span><span class="nt">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">640</span><span class="p">,</span><span class="w"> </span><span class="nt">"channels"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"nchw"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nt">"means"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">],</span><span class="w"> </span><span class="nt">"stds"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">]}</span>
+</code></pre></div>
+<h3 id="outputs-logs-and-errors">Outputs, logs and errors</h3>
+<p>The output folder gets <code>&lt;model&gt;.hailo8.onnx</code> and <code>logs.json</code> (and possibly a <code>tmp/</code> folder: the unzipped input). <code>logs.json</code> is a list of <code>{"Message": ..., "Data": {...}}</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th><code>Data</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Converting ONNX to Hailo-ONNX</code></td>
+<td><code>Input Path</code></td>
+</tr>
+<tr>
+<td><code>Starting conversion</code></td>
+<td><code>Target Hardware</code> (<code>hailo8</code>); stages <code>Translation</code>, <code>Optimizing Model</code>, <code>Compiling Model</code> set to <code>Done</code> as they finish</td>
+</tr>
+<tr>
+<td><code>Auto-detected end nodes</code></td>
+<td><code>nodes</code>: the cut found for YOLOv8 models</td>
+</tr>
+<tr>
+<td><code>Successful Conversion</code> (last)</td>
+<td><code>MIME type</code> (<code>application/x-onnx; device=hailo-8</code>), <code>Output Path</code></td>
+</tr>
+<tr>
+<td><code>Conversion Failed</code> (last)</td>
+<td><code>Human Error</code> (always the same generic text), <code>Technical Error</code> (the real reason)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">The exit code is 0 even when the conversion fails</p>
+<p>Check that the last message is <code>Successful Conversion</code>. Only the failures before the conversion below give a non-zero exit code.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Meaning and fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dpkg: error: cannot access archive '../hailo-deps/hailort_4.*.0_amd64.deb'</code> (exit 2)</td>
+<td><code>hailo-deps</code> not mounted, or the file is missing or misnamed.</td>
+</tr>
+<tr>
+<td><code>dpkg: error: requested operation requires superuser privilege</code> (exit 2)</td>
+<td>You passed <code>--user</code>. Remove it.</td>
+</tr>
+<tr>
+<td><code>Usage: /app/scripts/convert.sh &lt;onnx-path&gt; &lt;output-directory&gt;</code> (exit 1)</td>
+<td>Wrong number of arguments.</td>
+</tr>
+<tr>
+<td><code>Could not find a version that satisfies the requirement jaxlib==0.4.13</code></td>
+<td>Add <code>PIP_FIND_LINKS</code> (above).</td>
+</tr>
+<tr>
+<td>Technical Error <code>No module named 'hailo_sdk_client'</code></td>
+<td>The SDK wheels were not installed; read the container's log above.</td>
+</tr>
+<tr>
+<td>Technical Error <code>The HailoRT Python API (hailo_platform package) must be installed</code></td>
+<td>After a <strong>14-minute compile</strong>: the HailoRT wheel is there but its <code>libhailort</code> (from the <code>.deb</code>) is not. Install the real <code>.deb</code> of the same version.</td>
+</tr>
+<tr>
+<td>Technical Error <code>File is not a zip file</code>, <code>No ONNX file found in the zip</code>, <code>More than one ONNX file found in the zip</code> (same for JSON)</td>
+<td>Fix the zip.</td>
+</tr>
+<tr>
+<td>Technical Error <code>'means'</code> (or another key)</td>
+<td>A required options key is missing.</td>
+</tr>
+<tr>
+<td>Technical Error from the SDK parser (may recommend other end nodes)</td>
+<td>An operator is not supported. Use the recommended <code>end_node_names</code> / <code>start_node_names</code>, or another model.</td>
+</tr>
+</tbody>
+</table>
+<p>The compiler warns that with fewer than 1024 calibration images and no GPU it lowers the optimization level; this is why INT8 boxes can differ by about 10 pixels from the CPU run. Give it more images if that matters.</p>
+<h2 id="runtime-library">Runtime library</h2>
+<p>The library implements the OAAX <a href="../Specification/#oaax-runtime-specification">runtime interface</a>. Unknown config keys are ignored.</p>
+<h3 id="runtime_init-keys"><code>runtime_init</code> keys</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Values</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_level</code></td>
+<td><code>0</code> debug, <code>1</code> info, <code>2</code> warning, <code>3</code> error</td>
+<td><code>1</code></td>
+<td>Minimum level written to the log file. Out of range = <code>1</code>; a non-numeric value counts as <code>0</code>.</td>
+</tr>
+<tr>
+<td><code>log_file</code></td>
+<td>path</td>
+<td><code>runtime.log</code></td>
+<td>Base name: the files are <code>&lt;log_file&gt;.0</code>, <code>.1</code>, ... (a new one every 4 MiB, appended to). The console always gets INFO and above.</td>
+</tr>
+<tr>
+<td><code>n_threads</code></td>
+<td><code>1</code> to <code>16</code></td>
+<td><code>4</code></td>
+<td>ONNX Runtime threads in total, split evenly over all replicas of all models (at least 1 each). Above 16 = 16; <code>0</code>, negative or non-numeric = ignored (<code>perf_mode</code> applies).</td>
+</tr>
+<tr>
+<td><code>perf_mode</code></td>
+<td><code>eco</code>, <code>power</code></td>
+<td>unset</td>
+<td>Only used when <code>n_threads</code> is not set: 40% (<code>eco</code>) or 90% (<code>power</code>) of the online cores, at least 1. Another value = 4.</td>
+</tr>
+<tr>
+<td><code>n_replicas</code></td>
+<td><code>1</code> or more</td>
+<td><code>1</code></td>
+<td>ONNX Runtime sessions, each with its own worker thread, per model. Below 1 = 1.</td>
+</tr>
+</tbody>
+</table>
+<p>The threads only run the ONNX nodes that stay on the CPU (for YOLOX: slicing in front, reshapes behind); the chip works inside HailoRT. There is no device-selection key. HailoRT writes its own <code>hailort.log</code> in the working directory.</p>
+<h3 id="models-and-inputs">Models and inputs</h3>
+<ul>
+<li><code>ModelConfig</code>: give <code>file_path</code> (or <code>model_data</code> + <code>model_size</code>). <code>ModelConfig.config</code> is unused. At most <strong>8 models</strong>; a model's id is its index in the array. Models load once per <code>runtime_init</code>.</li>
+<li><strong>Inputs are bound by tensor name</strong>, in any order. The name must be the one in the <em>converted</em> model: the SDK renames the input to <code>input0</code>, so read it from the <code>.hailo8.onnx</code> file (<code>onnx.load(path).graph.input</code>), not from your original model.</li>
+<li>Each model has an input queue and the runtime one output queue, 100 items each. When full, the <strong>oldest</strong> item is dropped and <code>runtime_enqueue_input</code> still succeeds: keep retrieving. With several replicas outputs can come back in any order: match them by <code>Tensors.id</code>.</li>
+<li>Enqueueing and retrieving can be done from different threads. To switch models, call <code>runtime_cleanup</code> and <code>runtime_init</code> again. The library exports only the OAAX API (checked in CI), so a host can unload it and load another copy.</li>
+</ul>
+<h3 id="status-codes-and-errors">Status codes and errors</h3>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Status</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>runtime_init</code></td>
+<td><code>ALREADY_INITIALIZED</code> (3)</td>
+<td>Called twice without <code>runtime_cleanup</code>.</td>
+</tr>
+<tr>
+<td><code>runtime_load_models</code></td>
+<td><code>NOT_INITIALIZED</code> (2), <code>ALREADY_INITIALIZED</code> (3), <code>INVALID_ARGUMENT</code> (5)</td>
+<td>No init; models already loaded; fewer than 1 or more than 8 models.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>ERROR</code> (1)</td>
+<td>Any model failure (missing file, unsupported model, chip unreachable, version mismatch). <code>runtime_get_error()</code> says <code>Failed to create ORT session for replica N</code>; <strong>the reason is in the log</strong> (<code>ORT error: ...</code>).</td>
+</tr>
+<tr>
+<td><code>runtime_enqueue_input</code></td>
+<td><code>NOT_INITIALIZED</code> (2), <code>MODEL_NOT_LOADED</code> (4), <code>INVALID_MODEL_ID</code> (18), <code>INVALID_ARGUMENT</code> (5)</td>
+<td>Wrong call order, bad id, <code>NULL</code> tensors.</td>
+</tr>
+<tr>
+<td><code>runtime_retrieve_output</code></td>
+<td><code>NO_OUTPUT_AVAILABLE</code> (12)</td>
+<td>Nothing within the timeout (<code>0</code> = do not wait, negative = wait forever).</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">A bad input is not reported to the caller</p>
+<p>A wrong tensor name, type or shape is <strong>accepted</strong> by <code>runtime_enqueue_input</code>. The request fails in the worker, is logged (<code>Inference run failed</code> and the ONNX Runtime reason) and no output arrives: the host sees <code>NO_OUTPUT_AVAILABLE</code>.</p>
+</div>
+<p><code>runtime_get_info()</code> returns <code>{"loaded_models":N,"requests_in_flight":N,"backend_version":"..."}</code>. If the log file cannot be opened the library exits the process: use a writable <code>log_file</code>.</p>
+<h2 id="end-to-end-example">End-to-end example</h2>
+<p>Goal: the official YOLOX-s model (Apache-2.0) from ONNX to detections on a Hailo-8, with the <a href="https://github.com/OAAX-standard/examples/tree/main/yolox-example" target="_blank">YOLOX example</a> of the examples repository as host. The same host runs every OAAX chip; for Hailo only the model and one flag change.</p>
+<div class="admonition note">
+<p class="admonition-title">Before you start</p>
+<p>Step 4, the conversion, needs Hailo's SDK, which is not redistributable: it takes about 14 minutes (Dataflow Compiler 3.29.0, HailoRT 4.19.0 wheel). Step 5 runs on a Hailo-8 with HailoRT 4.20.0.</p>
+</div>
+<p><strong>Prerequisites</strong>: a Linux x86_64 machine with the Hailo-8 driver and <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>; <code>sudo apt-get install git curl cmake build-essential libgomp1 zip</code> and <a href="https://docs.docker.com/engine/install/">Docker</a>; and the three SDK files in <code>hailo-deps/</code> (<a href="#software">Software</a>).</p>
+<ol>
+<li>
+<p><strong>Build the host and get the model</strong> (the model's sha256 is checked):</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/OAAX-standard/examples.git<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>examples/yolox-example
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build
+bash<span class="w"> </span>fetch_model.sh<span class="w">                       </span><span class="c1"># models/yolox_s.onnx</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Get the runtime and the toolchain</strong>, with the variant equal to your HailoRT version:</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>hailo<span class="w"> </span>--variant<span class="w"> </span>hailort4.20.0
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>hailo<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-hailo-toolchain-2.0.0.tar
+</code></pre></div>
+</li>
+<li>
+<p><strong>Pack the model</strong> with the options of the example:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>hailo/input<span class="w"> </span>hailo/output<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>hailo/input/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>configs/hailo.json<span class="w"> </span>hailo/input/yolox_s.json
+<span class="o">(</span><span class="nb">cd</span><span class="w"> </span>hailo/input<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>zip<span class="w"> </span>yolox_s.zip<span class="w"> </span>yolox_s.onnx<span class="w"> </span>yolox_s.json<span class="o">)</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Convert</strong> (about 14 minutes; the container runs as root):</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">PIP_FIND_LINKS</span><span class="o">=</span>https://storage.googleapis.com/jax-releases/jax_releases.html<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo-deps:/app/hailo-deps"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo/input:/app/input:ro"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/hailo/output:/app/output"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>onnx-to-hailo:latest<span class="w"> </span>/app/input/yolox_s.zip<span class="w"> </span>/app/output
+sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>hailo/output
+</code></pre></div>
+<p>The last message of <code>hailo/output/logs.json</code> must be <code>Successful Conversion</code>.</p>
+</li>
+<li>
+<p><strong>Run the host</strong> with the converted model (<code>input0</code> is the renamed input):</p>
+<div class="highlight"><pre><span></span><code>./build/yolox_host<span class="w"> </span>runtime-hailo-2.0.0-linux-x86_64-hailort4.20.0/libRuntimeLibrary.so<span class="w"> </span>hailo/output/yolox_s.hailo8.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>artifacts/dog-bicycle.jpg<span class="w"> </span>--input-name<span class="w"> </span>input0
+</code></pre></div>
+</li>
+</ol>
+<p><strong>What you should see</strong>: <code>Runtime: OAAX Hailo Runtime 2.0.0</code>, an output tensor of shape <code>[1, 8400, 85]</code>, two detections (<code>bicycle</code> and <code>dog</code>, scores 0.953 and 0.934) and <code>OK: 10 requests</code>, then <code>detections.png</code>, the picture with the boxes. The unconverted model on the <a href="../CPU/">CPU runtime</a> gives the same classes and scores, with boxes within about 11 pixels (INT8). As an example, the Hailo-8 took about 12 ms per request and the CPU about 80 ms on the test machine; yours will differ.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Failed to create ORT session for replica 0</code>; <code>hailort.log</code> says <code>Driver version (4.20.0) is different from library version (4.19.0)</code> (<code>HAILO_INVALID_DRIVER_VERSION(76)</code>)</td>
+<td>Runtime variant differs from the driver</td>
+<td>Download the variant equal to the driver version (<a href="#software">how to check</a>).</td>
+</tr>
+<tr>
+<td>Same, with <code>HAILO_DRIVER_FAIL(36)</code> / <code>Failed to query driver info</code></td>
+<td>Same mismatch (seen with a 4.17.0 library on a 4.20.0 driver)</td>
+<td>Same fix.</td>
+</tr>
+<tr>
+<td>Same, <code>hailortcli scan</code> lists nothing, no <code>/dev/hailo*</code></td>
+<td>Driver not installed or loaded</td>
+<td>Install <code>hailort-pcie-driver</code>, reload or reboot, check <code>lsmod \| grep hailo</code> and the permissions of <code>/dev/hailo*</code>.</td>
+</tr>
+<tr>
+<td>Requests accepted, no output, <code>NO_OUTPUT_AVAILABLE</code>; log has <code>Invalid Feed Input Name:&lt;name&gt;</code></td>
+<td>Input name differs from the converted model's</td>
+<td>Use the name inside the <code>.hailo8.onnx</code> (<code>input0</code> in the example).</td>
+</tr>
+<tr>
+<td><code>Unexpected input data type</code> in the log</td>
+<td>Tensor type differs from the model's</td>
+<td>Send the types the converted model declares.</td>
+</tr>
+<tr>
+<td>Model loads, but it is slow and the chip is idle</td>
+<td>An unconverted ONNX was loaded: it runs on the CPU</td>
+<td>Load the <code>.hailo8.onnx</code>; it has a <code>HailoOp</code> node.</td>
+</tr>
+<tr>
+<td><code>libatomic.so.1</code> or <code>libgomp.so.1: cannot open shared object file</code></td>
+<td>Missing system library</td>
+<td><code>sudo apt-get install libatomic1 libgomp1</code>.</td>
+</tr>
+<tr>
+<td><code>MLDataType for: tensor(float) is not currently registered</code> after switching runtimes</td>
+<td>A runtime build older than 2.0.0</td>
+<td>Use the 2.0.0 builds.</td>
+</tr>
+<tr>
+<td>Conversion fails or exits strangely</td>
+<td>See <a href="#outputs-logs-and-errors">Outputs, logs and errors</a></td>
+<td>Includes the <code>jaxlib</code> and missing-<code>libhailort</code> cases.</td>
+</tr>
+<tr>
+<td>Conversion: SDK parse error on a YOLO11 or other new model</td>
+<td>Operators the SDK version does not support</td>
+<td>Use a supported model or a newer SDK, or cut the graph with <code>start_node_names</code> / <code>end_node_names</code>.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.top", "toc.integrate", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit", "content.action.view", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

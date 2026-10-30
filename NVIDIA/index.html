@@ -1,0 +1,1808 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.oaax.org/NVIDIA/">
+      
+      
+        <link rel="prev" href="../Intel/">
+      
+      
+        <link rel="next" href="../DEEPX/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>NVIDIA - OAAX</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#at-a-glance" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="OAAX" class="md-header__button md-logo" aria-label="OAAX" data-md-component="logo">
+      
+  <img src="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OAAX
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              NVIDIA
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/OAAX-standard/OAAX" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../CPU/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CPU
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Intel/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Intel
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  NVIDIA
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../DEEPX/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  DEEPX
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../Hailo/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Hailo
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="OAAX" class="md-nav__button md-logo" aria-label="OAAX" data-md-component="logo">
+      
+  <img src="https://raw.githubusercontent.com/OAAX-standard/OAAX/refs/heads/_media/media/logomark%20-%20white.png" alt="logo">
+
+    </a>
+    OAAX
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/OAAX-standard/OAAX" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAAX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Getting%20Started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hello World Example
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Compliant%20XPU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compliant AI Accelerators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Specification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAAX Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CPU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Intel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVIDIA
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVIDIA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-package-do-i-pick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which package do I pick?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-runtime-and-toolchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get the runtime and toolchain
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Get the runtime and toolchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-links-and-compatibility-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download links and compatibility matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Download links and compatibility matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oaax-20-onnx-runtime-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OAAX 2.0: ONNX Runtime backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oaax-20-tensorrt-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OAAX 2.0: TensorRT backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversion-toolchain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conversion toolchain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime library
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runtime library">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime_init-config-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        runtime_init config keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#end-to-end-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEEPX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DEEPX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Hailo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hailo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/OAAX-standard/OAAX/edit/main/docs/NVIDIA.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/OAAX-standard/OAAX/raw/main/docs/NVIDIA.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+  <h1>NVIDIA</h1>
+
+<blockquote>
+<p><strong>📦 Implementation details</strong><br />
+The runtime and toolchain are implemented in the <a href="https://github.com/OAAX-standard/nvidia-acceleration" target="_blank">nvidia-acceleration repository</a>. Latest release: <a href="https://github.com/OAAX-standard/nvidia-acceleration/releases/tag/v2.0.0" target="_blank">v2.0.0</a>.</p>
+</blockquote>
+<h2 id="at-a-glance">At a glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Devices</strong></td>
+<td>NVIDIA GPUs (TensorRT toolchain: compute capability 7.5 or higher), Jetson, DGX Spark / Grace</td>
+</tr>
+<tr>
+<td><strong>Backends</strong></td>
+<td>ONNX Runtime with the CUDA Execution Provider (<code>nvidia-ort</code>), native TensorRT 10 or 11 (<code>nvidia-trt</code>)</td>
+</tr>
+<tr>
+<td><strong>Runtime library</strong></td>
+<td><code>libRuntimeLibrary.so</code> (Linux), <code>RuntimeLibrary.dll</code> (Windows, ONNX Runtime only), 1 MB to 1.7 GB depending on the build</td>
+</tr>
+<tr>
+<td><strong>Toolchain image</strong></td>
+<td><code>oaax-nvidia-toolchain:2.0.0</code> (967 MB) or <code>oaax-nvidia-tensorrt-toolchain:2.0.0</code> (11 GB)</td>
+</tr>
+<tr>
+<td><strong>Start here</strong></td>
+<td><code>uvx oaax-manager fetch runtime nvidia-ort --variant cuda13</code> and <code>uvx oaax-manager fetch toolchain nvidia-ort</code>, then the <a href="#end-to-end-example">end-to-end example</a></td>
+</tr>
+<tr>
+<td><strong>Verified / not</strong></td>
+<td>Verified on an RTX A4000, driver 580, CUDA 13, Ubuntu x86_64: both backends (ONNX Runtime and TensorRT 10), with the YOLOX example. Not verified: Windows, Jetson, DGX Spark / Grace (SBSA), TensorRT 11 conversion, running the CUDA 11 package, the wheel conversion path, <code>docker run --gpus all</code> as written</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Which backend and <code>--variant</code>?</strong></th>
+<th>Backend</th>
+<th><code>--variant</code> (Linux x86_64; <a href="#which-package-do-i-pick">other platforms</a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The simplest path, any model, Windows, or to convert without a GPU</td>
+<td>ONNX Runtime (<code>nvidia-ort</code>)</td>
+<td><code>cuda13</code>, or the CUDA major you have installed (<code>cuda11</code>, <code>cuda12</code>; check with <code>ldconfig -p \| grep libcublasLt</code>)</td>
+</tr>
+<tr>
+<td>The fastest inference, a model with fixed-size outputs</td>
+<td>TensorRT (<code>nvidia-trt</code>)</td>
+<td><code>ubuntu22.04-trt10-cuda13</code> (TensorRT 10 matches the Docker toolchain)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="overview">Overview</h2>
+<p>NVIDIA GPUs are supported through two backends that expose the same OAAX 2.0 runtime interface, so the host application does not change. Use the runtime and the toolchain of the <strong>same</strong> backend together.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ONNX Runtime backend</th>
+<th>TensorRT backend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platforms</td>
+<td>Linux x86_64, Jetson, SBSA, <strong>Windows x86_64</strong></td>
+<td>Linux x86_64, Jetson, SBSA (same GPU classes)</td>
+</tr>
+<tr>
+<td>Toolchain input</td>
+<td><code>.onnx</code> file (no GPU needed)</td>
+<td><code>.zip</code> bundle: <code>model.onnx</code> + <code>config.json</code> (needs the target GPU)</td>
+</tr>
+<tr>
+<td>Toolchain output</td>
+<td><code>model-simplified.onnx</code></td>
+<td><code>model.trt</code> engine, built for the GPU it ran on</td>
+</tr>
+<tr>
+<td>Runtime accepts</td>
+<td><code>.onnx</code> path or in-memory buffer; bundles ONNX Runtime and cuDNN</td>
+<td><code>.trt</code> path or in-memory buffer; bundles TensorRT and <code>libcudart</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>ONNX Runtime</strong> (start here): the toolchain only simplifies the graph, so you can convert on any machine, and the runtime executes the model with the <a href="https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html" target="_blank">CUDA Execution Provider</a>. Broadest model coverage and the only backend on Windows.</li>
+<li><strong>TensorRT</strong>: the toolchain compiles an engine for the exact GPU in the machine (<code>trtexec</code>), and the runtime loads it directly. Best inference performance, but the engine only runs on the GPU architecture, CPU platform and TensorRT version it was built for.</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="hardware">Hardware</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU</td>
+<td>An NVIDIA GPU. The TensorRT toolchain refuses GPUs below compute capability 7.5 (Turing). Verified on an RTX A4000 (8.6). Both runtimes always use GPU 0: pick another with <code>CUDA_VISIBLE_DEVICES</code>.</td>
+</tr>
+<tr>
+<td>GPU memory</td>
+<td>Depends on the model. ORT: the CUDA memory arena grows on demand (cap it with <code>gpu_mem_limit</code>). TRT: the engine plus one set of input/output buffers per concurrent slot (<code>max_concurrent</code>).</td>
+</tr>
+<tr>
+<td>Jetson / DGX Spark, Grace (<code>sbsa</code>)</td>
+<td>Jetson, ORT: JetPack 5 (CUDA 11), 6 (CUDA 12) or 7 (CUDA 13); TRT: JetPack 6 only (CUDA 12, TensorRT 10). SBSA, ORT: CUDA 13; TRT: Ubuntu 24.04, TensorRT 10 (CUDA 12 or 13) or TensorRT 11 (CUDA 13).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="software">Software</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Needed to <strong>run</strong> (runtime)</th>
+<th>Needed to <strong>convert</strong> (toolchain)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tools</td>
+<td><code>libgomp1</code> (needed by both runtimes).</td>
+<td><code>docker</code>; TRT also <code>zip</code>. To fetch and try the example: <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank"><code>uv</code></a>, <code>git</code>, <code>curl</code>, <code>cmake</code> and <code>build-essential</code> (minimal images lack them: <code>sudo apt-get install -y git curl cmake build-essential libgomp1 zip</code>).</td>
+</tr>
+<tr>
+<td>OS</td>
+<td>Linux: Ubuntu 20.04+ for CUDA 11/12 ORT builds; Ubuntu 22.04+ for the CUDA 13 ORT builds and all TRT builds (glibc 2.29 / 2.34 / 2.33). Windows 10/11 (ORT only).</td>
+<td>Docker on any Linux x86_64 host (ORT). Docker plus the NVIDIA Container Toolkit, or the Python wheel with a local TensorRT (TRT).</td>
+</tr>
+<tr>
+<td>NVIDIA driver</td>
+<td>New enough for the package's CUDA major version, per <a href="https://docs.nvidia.com/deploy/cuda-compatibility/" target="_blank">NVIDIA's compatibility table</a>: CUDA 11 needs 450.80+, CUDA 12 needs 525.60+, CUDA 13 needs 580+.</td>
+<td>TRT only: a driver for CUDA 13 (580+), with <code>nvidia-smi</code> working on the host.</td>
+</tr>
+<tr>
+<td>CUDA libraries</td>
+<td><strong>ORT: not bundled.</strong> Install the CUDA major of your package: <code>libcudart</code>, <code>libcublas</code>, <code>libcublasLt</code> and <code>libcufft</code> (Windows: on <code>PATH</code>). <strong>TRT: bundled</strong> (<code>libcudart</code> and TensorRT), nothing to install.</td>
+<td>None on the host (they are inside the image).</td>
+</tr>
+<tr>
+<td>cuDNN</td>
+<td>ORT: bundled, except on Jetson (JetPack provides it) and for the <code>cuda12</code> x86_64 package (see the warning below). TRT: not used.</td>
+<td>None</td>
+</tr>
+<tr>
+<td>TensorRT</td>
+<td>TRT: bundled (10.16 or 11.0); an engine only loads in a runtime with the <strong>same TensorRT version</strong> as the toolchain that built it. <strong>Jetson: not bundled</strong>, JetPack provides it.</td>
+<td>The image contains TensorRT 10.16, so use a <code>trt10</code> runtime with it. The TRT 11 runtime needs the wheel with TensorRT 11 installed.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Known issue: the <code>cuda12</code> ONNX Runtime package (Linux x86_64) needs cuDNN 8</p>
+<p>The 2.0.0 <code>cuda12</code> package contains cuDNN 9 files, but its ONNX Runtime (1.16.3) loads <strong>cuDNN 8</strong> (<code>libcudnn.so.8</code>), so it fails with <code>libcudnn.so.8: cannot open shared object file</code>. Download cuDNN <strong>8.9.7.29 for CUDA 12</strong> from NVIDIA and place it <strong>next to <code>libRuntimeLibrary.so</code></strong> (about 786 MB of libraries):</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fLO<span class="w"> </span>https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz
+tar<span class="w"> </span>xJf<span class="w"> </span>cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz<span class="w"> </span>--wildcards<span class="w"> </span><span class="s2">"*/lib/libcudnn.so.8*"</span><span class="w"> </span><span class="s2">"*/lib/libcudnn_*_infer.so.8*"</span>
+cp<span class="w"> </span>-P<span class="w"> </span>cudnn-linux-x86_64-8.9.7.29_cuda12-archive/lib/libcudnn.so.8*<span class="w"> </span>cudnn-linux-x86_64-8.9.7.29_cuda12-archive/lib/libcudnn_*_infer.so.8*<span class="w"> </span>runtime-nvidia-ort-2.0.0-linux-x86_64-cuda12/
+</code></pre></div>
+<p>(sha256 of the archive, 865 MB: <code>475333625c7e42a7af3ca0b2f7506a106e30c93b1aa0081cd9c13efb6e21e3bb</code>.) No <code>LD_LIBRARY_PATH</code> is needed for cuDNN, because the runtime libraries look in their own folder. The <code>cuda11</code> and <code>cuda13</code> packages are not affected: they bundle the cuDNN version they load (8.9.7 and 9.25). The CUDA 12 libraries (<code>libcudart</code>, <code>libcublas</code>, <code>libcufft</code>) must still be installed on the host.</p>
+</div>
+<h3 id="which-package-do-i-pick">Which package do I pick?</h3>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>ONNX Runtime <code>--variant</code></th>
+<th>TensorRT <code>--variant</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux x86_64</td>
+<td><code>cuda11</code>, <code>cuda12</code>, <code>cuda13</code></td>
+<td><code>ubuntu22.04-trt10-cuda12</code>, <code>ubuntu22.04-trt10-cuda13</code>, <code>ubuntu22.04-trt11-cuda12</code>, <code>ubuntu22.04-trt11-cuda13</code></td>
+</tr>
+<tr>
+<td>Jetson</td>
+<td><code>jetson-cuda11</code> (JetPack 5), <code>jetson-cuda12</code> (6), <code>jetson-cuda13</code> (7)</td>
+<td><code>jetson-ubuntu22.04-trt10-cuda12</code> (JetPack 6)</td>
+</tr>
+<tr>
+<td>DGX Spark / Grace</td>
+<td><code>sbsa-cuda13</code></td>
+<td><code>sbsa-ubuntu24.04-trt10-cuda12</code>, <code>sbsa-ubuntu24.04-trt10-cuda13</code>, <code>sbsa-ubuntu24.04-trt11-cuda13</code></td>
+</tr>
+<tr>
+<td>Windows x86_64</td>
+<td><code>cuda11</code>, <code>cuda12</code>, <code>cuda13</code> with <code>--os windows</code></td>
+<td>not available</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-the-runtime-and-toolchain">Get the runtime and toolchain</h2>
+<p><a href="https://pypi.org/project/oaax-manager/"><code>oaax-manager</code></a> downloads, verifies (sha256) and unpacks the right build for the machine it runs on. All commands are run with <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>:</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>nvidia-ort<span class="w"> </span>--variant<span class="w"> </span>cuda13<span class="w">   </span><span class="c1"># -&gt; runtime-nvidia-ort-2.0.0-linux-x86_64-cuda13/</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>nvidia-ort<span class="w">                  </span><span class="c1"># -&gt; oaax-nvidia-onnxruntime-toolchain-2.0.0.tar</span>
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-nvidia-onnxruntime-toolchain-2.0.0.tar<span class="w">   </span><span class="c1"># loads oaax-nvidia-toolchain:2.0.0</span>
+
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>nvidia-trt<span class="w"> </span>--variant<span class="w"> </span>ubuntu22.04-trt10-cuda13
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>nvidia-trt<span class="w">                  </span><span class="c1"># 11 GB</span>
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-nvidia-tensorrt-toolchain-2.0.0.tar<span class="w">      </span><span class="c1"># loads oaax-nvidia-tensorrt-toolchain:2.0.0</span>
+</code></pre></div>
+<h3 id="download-links-and-compatibility-matrix">Download links and compatibility matrix</h3>
+<p>Runtime libraries are packaged as <code>library-*.tar.gz</code> and contain <code>libRuntimeLibrary.so</code> (<code>RuntimeLibrary.dll</code> on Windows) with the libraries it needs. Sizes are in brackets. The sha256 of every file is in the <a href="https://github.com/OAAX-standard/nvidia-acceleration/releases/tag/v2.0.0" target="_blank">release notes</a>. <code>uvx oaax-manager list</code> shows every variant (<code>*</code> marks the one for your machine). Use <code>--os windows</code> or <code>--arch aarch64</code> to fetch for another platform. Sizes range from 1 MB (Jetson TensorRT) to 11 GB (TensorRT toolchain).</p>
+<h4 id="oaax-20-onnx-runtime-backend">OAAX 2.0: ONNX Runtime backend</h4>
+<p>Conversion toolchain (any platform): <a href="https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/NVIDIA/oaax-nvidia-onnxruntime-toolchain.tar">Download</a> (967 MB)</p>
+<details class="note">
+<summary>All 10 ONNX Runtime runtime builds</summary>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>CUDA</th>
+<th>Runtime library</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ubuntu, x86_64</td>
+<td>11</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/x86_64/Ubuntu/library-cuda_11.tar.gz">Download</a> (974 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu, x86_64</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/x86_64/Ubuntu/library-cuda_12.tar.gz">Download</a> (1.1 GB)</td>
+</tr>
+<tr>
+<td>Ubuntu, x86_64</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/x86_64/Ubuntu/library-cuda_13.tar.gz">Download</a> (823 MB)</td>
+</tr>
+<tr>
+<td>Jetson, JetPack 5</td>
+<td>11</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/aarch64-jetson/Ubuntu/library-cuda_11.tar.gz">Download</a> (767 MB)</td>
+</tr>
+<tr>
+<td>Jetson, JetPack 6</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/aarch64-jetson/Ubuntu/library-cuda_12.tar.gz">Download</a> (942 MB)</td>
+</tr>
+<tr>
+<td>Jetson, JetPack 7</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/aarch64-jetson/Ubuntu/library-cuda_13.tar.gz">Download</a> (125 MB)</td>
+</tr>
+<tr>
+<td>Ubuntu, aarch64 SBSA (DGX Spark, Grace)</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/aarch64-sbsa/Ubuntu/library-cuda_13.tar.gz">Download</a> (729 MB)</td>
+</tr>
+<tr>
+<td>Windows 10/11, x86_64</td>
+<td>11</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/x86_64/Windows/library-cuda_11.tar.gz">Download</a> (831 MB)</td>
+</tr>
+<tr>
+<td>Windows 10/11, x86_64</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/x86_64/Windows/library-cuda_12.tar.gz">Download</a> (1.7 GB)</td>
+</tr>
+<tr>
+<td>Windows 10/11, x86_64</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_ORT/x86_64/Windows/library-cuda_13.tar.gz">Download</a> (615 MB)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<h4 id="oaax-20-tensorrt-backend">OAAX 2.0: TensorRT backend</h4>
+<p>Conversion toolchain (needs the target GPU): <a href="https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/NVIDIA/oaax-nvidia-tensorrt-toolchain.tar">Docker image</a> (11.0 GB) or <a href="https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/NVIDIA/oaax_nvidia_tensorrt_conversion-2.0.0-py3-none-any.whl">Python wheel</a> (13 KB, needs a local TensorRT)</p>
+<details class="note">
+<summary>All 8 TensorRT runtime builds</summary>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>OS</th>
+<th>TensorRT</th>
+<th>CUDA</th>
+<th>Runtime library</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x86_64</td>
+<td>Ubuntu 22.04</td>
+<td>10</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/x86_64/Ubuntu/22.04/library-trt10-cuda_12.tar.gz">Download</a> (315 MB)</td>
+</tr>
+<tr>
+<td>x86_64</td>
+<td>Ubuntu 22.04</td>
+<td>10</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/x86_64/Ubuntu/22.04/library-trt10-cuda_13.tar.gz">Download</a> (326 MB)</td>
+</tr>
+<tr>
+<td>x86_64</td>
+<td>Ubuntu 22.04</td>
+<td>11</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/x86_64/Ubuntu/22.04/library-trt11-cuda_12.tar.gz">Download</a> (342 MB)</td>
+</tr>
+<tr>
+<td>x86_64</td>
+<td>Ubuntu 22.04</td>
+<td>11</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/x86_64/Ubuntu/22.04/library-trt11-cuda_13.tar.gz">Download</a> (329 MB)</td>
+</tr>
+<tr>
+<td>Jetson, JetPack 6</td>
+<td>Ubuntu 22.04</td>
+<td>10</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/aarch64-jetson/Ubuntu/22.04/library-trt10-cuda_12.tar.gz">Download</a> (1 MB)</td>
+</tr>
+<tr>
+<td>aarch64 SBSA (DGX Spark, Grace)</td>
+<td>Ubuntu 24.04</td>
+<td>10</td>
+<td>12</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/aarch64-sbsa/Ubuntu/24.04/library-trt10-cuda_12.tar.gz">Download</a> (106 MB)</td>
+</tr>
+<tr>
+<td>aarch64 SBSA (DGX Spark, Grace)</td>
+<td>Ubuntu 24.04</td>
+<td>10</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/aarch64-sbsa/Ubuntu/24.04/library-trt10-cuda_13.tar.gz">Download</a> (539 MB)</td>
+</tr>
+<tr>
+<td>aarch64 SBSA (DGX Spark, Grace)</td>
+<td>Ubuntu 24.04</td>
+<td>11</td>
+<td>13</td>
+<td><a href="https://nbg1.your-objectstorage.com/oaax/runtimes/2.0.0/NVIDIA_TRT/aarch64-sbsa/Ubuntu/24.04/library-trt11-cuda_13.tar.gz">Download</a> (547 MB)</td>
+</tr>
+</tbody>
+</table>
+<p>The Jetson TensorRT build only bundles <code>libcudart</code>: JetPack provides TensorRT and the other CUDA libraries.</p>
+</details>
+<h2 id="conversion-toolchain">Conversion toolchain</h2>
+<p>Both toolchains are Docker images started with two positional arguments, <code>&lt;input&gt; &lt;output-directory&gt;</code>. Mount a directory your user can write and pass <code>--user</code> so the output files belong to you.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">ONNX Runtime</label><label for="__tabbed_1_2">TensorRT</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>No GPU needed. The toolchain simplifies the graph with <a href="https://github.com/daquexian/onnx-simplifier" target="_blank">onnxsim</a>.</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/model:/model"</span><span class="w"> </span>oaax-nvidia-toolchain:2.0.0<span class="w"> </span>/model/model.onnx<span class="w"> </span>/model/output
+</code></pre></div>
+<p>The arguments are <code>&lt;onnx-path&gt;</code> (inside the container) and <code>&lt;output-directory&gt;</code> (created if missing; receives <code>model-simplified.onnx</code>, named <code>&lt;input name&gt;-simplified.onnx</code>, and <code>logs.json</code>). There is <strong>no configuration file and no option</strong>. If simplification fails the original model is passed through unchanged and the failure is logged (<code>Failed to simplify ONNX model</code>, with <code>Error</code> and <code>Fallback</code>).</p>
+<p><strong>Mount the directory, not the file:</strong> the simplified model is first written next to the input, then copied to the output directory, so the input directory must be writable. With <code>--user</code> and a single-file mount (<code>-v "$PWD/model.onnx:/input/model.onnx"</code>) it fails with <code>PermissionError: ... '/input/model-simplified.onnx'</code>. The copy left next to your input can be deleted.</p>
+<p><code>logs.json</code> is a list of <code>{"Message": ..., "Data": {...}}</code> entries: <code>Simplifying ONNX model</code> (<code>ONNX Path</code>, <code>MD5</code>), then <code>Simplified ONNX model successfully</code> or the failure above. The final <code>Successful Conversion</code> entry (<code>Output file name</code>, <code>Output file MD5</code>, <code>MIME type</code> = <code>application/x-onnx; device=cpu</code>) is only printed to the console.</p>
+</div>
+<div class="tabbed-block">
+<p>Needs the GPU the model will run on (the engine is tuned for it). Pack the model and a <code>config.json</code> into a zip:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>trt-input<span class="w"> </span>trt-output<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>model.onnx<span class="w"> </span>trt-input/
+<span class="nb">echo</span><span class="w"> </span><span class="s1">'{"precision": "fp16", "workspace_gb": 4}'</span><span class="w"> </span>&gt;<span class="w"> </span>trt-input/config.json
+<span class="o">(</span><span class="nb">cd</span><span class="w"> </span>trt-input<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>zip<span class="w"> </span>bundle.zip<span class="w"> </span>model.onnx<span class="w"> </span>config.json<span class="o">)</span>
+
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/trt-input:/input"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/trt-output:/output"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>oaax-nvidia-tensorrt-toolchain:2.0.0<span class="w"> </span>/input/bundle.zip<span class="w"> </span>/output
+</code></pre></div>
+<details class="note">
+<summary>All <code>config.json</code> options (most users only set <code>precision</code> and <code>workspace_gb</code>)</summary>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Required</th>
+<th>Values</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>precision</code></td>
+<td>yes</td>
+<td><code>fp32</code>, <code>fp16</code>, <code>int8</code></td>
+<td></td>
+<td>Engine precision.</td>
+</tr>
+<tr>
+<td><code>workspace_gb</code></td>
+<td>yes</td>
+<td>positive number</td>
+<td></td>
+<td>Builder workspace limit (<code>trtexec --memPoolSize=workspace:&lt;n&gt;g</code>).</td>
+</tr>
+<tr>
+<td><code>optimization_level</code></td>
+<td>no</td>
+<td>integer <code>1</code>-<code>5</code></td>
+<td><code>3</code> (TensorRT)</td>
+<td>Builder effort (<code>--builderOptimizationLevel</code>): higher is slower to build, can be faster to run.</td>
+</tr>
+<tr>
+<td><code>avg_timing</code></td>
+<td>no</td>
+<td>integer &gt;= 1</td>
+<td><code>8</code> (TensorRT)</td>
+<td>Timing iterations per kernel choice (<code>--avgTiming</code>).</td>
+</tr>
+<tr>
+<td><code>calibration_data</code></td>
+<td>int8 only</td>
+<td>folder in the zip, e.g. <code>"calib/"</code></td>
+<td></td>
+<td>Representative images (jpg, jpeg, png, bmp, webp); 100-500 are recommended.</td>
+</tr>
+<tr>
+<td><code>preprocessing</code></td>
+<td>no</td>
+<td><code>{"mean": [r,g,b], "std": [r,g,b]}</code></td>
+<td>ImageNet mean/std</td>
+<td>int8 only. Images are resized (bilinear) to the model's input size, scaled to 0-1, then normalized. The first model input must be 4-D <code>NCHW</code>.</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p><strong>Outputs</strong> in <code>/output</code>: <code>model.trt</code> and <code>logs.json</code> (plus <code>model.trt.calib</code>, the calibration cache, for int8 on TensorRT 10). <code>logs.json</code> holds the same <code>Message</code>/<code>Data</code> entries as above: the detected GPU (<code>sm_86</code>), the input MD5 and config, the exact <code>trtexec</code> command with the tail of its output, and <code>Successful Conversion</code> with the output MD5 and a MIME type such as <code>application/x-tensorrt; arch=x86_64; sm=86; trt=10</code> (CPU architecture, GPU compute capability, TensorRT major).</p>
+<p>How the engine is built: <code>fp32</code> with <code>trtexec</code>; <code>fp16</code> with <code>trtexec --fp16</code> on TensorRT 10, or on TensorRT 11 (wheel) by first converting the ONNX model to float16 with <code>onnxconverter-common</code>, keeping float32 inputs and outputs; <code>int8</code> on TensorRT 10 by entropy calibration with your images (needs the <code>tensorrt</code> and <code>pycuda</code> Python packages), on TensorRT 11 with Q/DQ nodes inserted by <code>nvidia-modelopt</code>.</p>
+<p><code>optimization_level</code> and <code>avg_timing</code> only apply to builds through <code>trtexec</code> (fp32, fp16, and int8 on TensorRT 11). The int8 build of TensorRT 10 ignores them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Fixed output sizes only</p>
+<p>The TensorRT runtime allocates its buffers from the engine's tensor shapes. A model whose output size depends on the data, typically one with a <code>NonMaxSuppression</code> operator inside the graph, converts without error but the engine has a dynamic output dimension (<code>-1</code>) and fails to load: <code>runtime_load_models failed: cudaMalloc failed for tensor: &lt;name&gt;</code>. Use the ONNX Runtime backend for such models, or move the NMS out of the model, as the YOLOX example does.</p>
+</div>
+<p><strong>Without Docker</strong> (for example where containers cannot see the GPU): install the TensorRT SDK so <code>trtexec</code> is on <code>PATH</code>, then run the <a href="https://nbg1.your-objectstorage.com/oaax/conversion-toolchain/2.0.0/NVIDIA/oaax_nvidia_tensorrt_conversion-2.0.0-py3-none-any.whl">wheel</a>. For int8, install the matching extra: <code>[int8-trt10]</code> or <code>[int8-trt11]</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Check <code>nvidia-smi</code> first</p>
+<p>The wheel runs <code>nvidia-smi</code> before anything else. If it is not installed you get a Python traceback ending in <code>FileNotFoundError: ... 'nvidia-smi'</code>; if it fails (for example after a driver update without a reboot) the traceback ends in <code>RuntimeError: nvidia-smi failed (exit N)</code>. Neither says what to do: install the driver, or reboot, until <code>nvidia-smi</code> prints your GPU, then retry. Only after that does it report missing <code>trtexec</code> or int8 packages (<code>Dependency issues for ...</code>) and warn when the TensorRT major is not 10 or 11.</p>
+</div>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>--from<span class="w"> </span>./oaax_nvidia_tensorrt_conversion-2.0.0-py3-none-any.whl<span class="w"> </span>conversion_toolchain<span class="w"> </span>--input-path<span class="w"> </span>bundle.zip<span class="w"> </span>--output-dir<span class="w"> </span>./trt-output
+</code></pre></div>
+<details class="note">
+<summary>TensorRT toolchain error messages</summary>
+<p>Errors are raised as Python exceptions (non-zero exit status):</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Missing required config key: 'precision'</code> / <code>precision must be one of ['fp32', 'fp16', 'int8']</code> / <code>workspace_gb must be a positive number</code> / <code>optimization_level must be an integer 1-5</code> / <code>avg_timing must be a positive integer</code></td>
+<td>A required key is absent or a value is invalid.</td>
+</tr>
+<tr>
+<td><code>'calibration_data' is required in config.json when precision is 'int8'</code></td>
+<td>int8 without calibration images.</td>
+</tr>
+<tr>
+<td><code>model.onnx not found in zip archive</code> / <code>config.json not found in zip archive</code></td>
+<td>The zip must have both files at its top level.</td>
+</tr>
+<tr>
+<td><code>Dependency issues for &lt;precision&gt; conversion: ...</code></td>
+<td><code>nvidia-smi</code>, <code>trtexec</code> or an int8 package is missing.</td>
+</tr>
+<tr>
+<td><code>Detected GPU compute capability ... is not supported by TensorRT 10 (minimum: sm_75 / Turing)</code></td>
+<td>GPU too old.</td>
+</tr>
+<tr>
+<td><code>trtexec failed (exit N). stderr: ...</code></td>
+<td>TensorRT rejected the model (unsupported operator, not enough workspace...). The full output is in <code>logs.json</code>.</td>
+</tr>
+</tbody>
+</table>
+</details>
+</div>
+</div>
+</div>
+<h2 id="runtime-library">Runtime library</h2>
+<p>The runtime implements the <a href="../Specification/#oaax-runtime-specification">OAAX 2.0 runtime interface</a>. Load <code>libRuntimeLibrary.so</code> from the folder you extracted it to (it finds its bundled libraries next to itself), call <code>runtime_init</code>, then <code>runtime_load_models</code> with the converted model.</p>
+<h3 id="runtime_init-config-keys"><code>runtime_init</code> config keys</h3>
+<p>All keys and values are strings. Unknown keys are ignored with a warning in the log. Not configurable: the GPU (always device 0, see <code>CUDA_VISIBLE_DEVICES</code>), the precision and the graph optimizations (ORT uses all of them, with exhaustive cuDNN algorithm search).</p>
+<details class="note">
+<summary>All <code>runtime_init</code> config keys (most users only set <code>log_level</code>, <code>log_file</code> and <code>perf_mode</code>)</summary>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Backend</th>
+<th>Values</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_level</code></td>
+<td>both</td>
+<td><code>0</code> trace, <code>1</code> debug, <code>2</code> info, <code>3</code> warning, <code>4</code> error, <code>5</code> critical, <code>6</code> off</td>
+<td><code>2</code></td>
+<td>Minimum level, for the log file and the console. An out-of-range number falls back to <code>2</code>; a non-number is an error (TRT: aborts the host).</td>
+</tr>
+<tr>
+<td><code>log_file</code></td>
+<td>both</td>
+<td>path</td>
+<td><code>runtime.log</code></td>
+<td>Log file, rotated at 5 MB, 3 files kept. On Windows the default is a per-process file in the temp directory. If it cannot be created, ORT logs to the console only; <strong>TRT terminates the host process</strong>, so give it a writable path.</td>
+</tr>
+<tr>
+<td><code>log_stdout</code></td>
+<td>both</td>
+<td><code>true</code></td>
+<td>off</td>
+<td>Also log to the console. Only the exact value <code>true</code> enables it.</td>
+</tr>
+<tr>
+<td><code>perf_mode</code></td>
+<td>both</td>
+<td><code>power</code>, <code>eco</code></td>
+<td>unset</td>
+<td>Picks defaults from the hardware; explicit keys below override it. ORT <code>power</code>: threads = CPU cores, no GPU memory cap. ORT <code>eco</code>: half the cores, half the GPU memory. TRT <code>power</code>: <code>max_concurrent</code> = clamp(SM count / 8, 2, 16). TRT <code>eco</code>: half of that. Any other value is ignored with a warning.</td>
+</tr>
+<tr>
+<td><code>num_threads</code> / <code>inter_op_threads</code> / <code>gpu_mem_limit</code></td>
+<td>ORT</td>
+<td><code>1</code>-<code>512</code> (clamped) / <code>0</code>-<code>512</code> (clamped) / bytes</td>
+<td><code>4</code> / <code>0</code> (ONNX Runtime default) / unlimited</td>
+<td>ONNX Runtime intra-op threads (<code>num_threads</code>), inter-op threads (<code>inter_op_threads</code>), and the memory limit of the CUDA execution provider (<code>gpu_mem_limit</code>).</td>
+</tr>
+<tr>
+<td><code>max_concurrent</code></td>
+<td>TRT</td>
+<td><code>1</code>-<code>32</code> (clamped)</td>
+<td><code>1</code></td>
+<td>Inference slots per model. Each slot has its own execution context, CUDA stream and GPU buffers, so requests run in parallel. More slots: more throughput and more GPU memory.</td>
+</tr>
+</tbody>
+</table>
+</details>
+<h3 id="models">Models</h3>
+<p><code>ModelConfig</code> takes either <code>file_path</code> or <code>model_data</code> + <code>model_size</code> (an in-memory buffer; on Windows ORT only supports <code>file_path</code>). <code>ModelConfig.config</code> is <strong>not used</strong> by either backend: every setting is global. A model's id is its index in the array. Calling <code>runtime_load_models</code> again replaces the loaded models.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ONNX Runtime</th>
+<th>TensorRT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model file</td>
+<td><code>model-simplified.onnx</code> (any ONNX file works)</td>
+<td><code>model.trt</code></td>
+</tr>
+<tr>
+<td>Concurrency</td>
+<td>One worker thread per model: requests of a model run in order.</td>
+<td><code>max_concurrent</code> slots per model share one queue: <strong>outputs can come back in any order</strong>, match them with <code>Tensors.id</code>.</td>
+</tr>
+<tr>
+<td>Input tensors</td>
+<td>Matched by name. Dynamic shapes work.</td>
+<td>Matched by <strong>position</strong>; the engine has fixed shapes and each input must hold at least the engine's input size.</td>
+</tr>
+<tr>
+<td>Tensor types</td>
+<td>float, float16, double, int8/16/32/64, uint8/16/32/64, bool</td>
+<td>float, float16, bfloat16, int8, uint8, int32, int64, bool</td>
+</tr>
+<tr>
+<td>Type conversion</td>
+<td>None: send the type the model declares.</td>
+<td>None: send the type the engine declares (an <code>fp16</code> engine keeps <code>float32</code> inputs and outputs).</td>
+</tr>
+</tbody>
+</table>
+<p>If one request fails (wrong tensor count, bad type, CUDA error), the runtime logs <code>Inference error</code> and <strong>returns no output for it</strong>: the host sees a timeout from <code>runtime_retrieve_output</code>, so check the log. <code>runtime_get_info()</code> returns JSON: ORT <code>{"loaded_models":N,"requests_in_flight":M}</code>, TRT also <code>"total_slots"</code>. <code>runtime_get_name()</code> returns <code>OAAX NVIDIA OnnxRuntime</code> or <code>OAAX NVIDIA TensorRT</code>.</p>
+<h3 id="environment-variables">Environment variables</h3>
+<p>The runtime reads none itself. The standard CUDA ones apply: <code>CUDA_VISIBLE_DEVICES</code> selects the GPU (set to an empty string, ORT fails at model load with <code>no CUDA-capable device is detected</code>), and <code>LD_LIBRARY_PATH</code> (Linux) or <code>PATH</code> (Windows) is where the ORT runtime finds the unbundled CUDA libraries.</p>
+<h2 id="end-to-end-example">End-to-end example</h2>
+<p>This takes the official YOLOX-S object detector from ONNX to detections on an NVIDIA GPU, with the <a href="https://github.com/OAAX-standard/examples/tree/main/yolox-example" target="_blank">YOLOX example</a> (a small C host that works with every OAAX 2.0 runtime) and a public-domain photo of a dog and a bicycle.</p>
+<div class="admonition note">
+<p class="admonition-title">Prerequisites</p>
+<ul>
+<li>Linux x86_64 (Ubuntu 22.04+), an NVIDIA GPU with a driver for CUDA 13 (580+; <code>nvidia-smi</code> prints your GPU), Docker, and <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank">uv</a>. Tools: <code>sudo apt-get install -y git curl cmake build-essential libgomp1 zip</code>.</li>
+<li>
+<p>ONNX Runtime only: the CUDA 13 libraries, which the package does not bundle. On Ubuntu 22.04, add NVIDIA's CUDA apt repository, then install them (use <code>ubuntu2404</code> instead of <code>ubuntu2204</code> on 24.04):</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fLO<span class="w"> </span>https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>cuda-keyring_1.1-1_all.deb<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>cuda-cudart-13-0<span class="w"> </span>libcublas-13-0<span class="w"> </span>libcufft-13-0
+ldconfig<span class="w"> </span>-p<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>libcublasLt.so.13<span class="w">      </span><span class="c1"># must print a line</span>
+</code></pre></div>
+</li>
+<li>
+<p>TensorRT only: the <a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" target="_blank">NVIDIA Container Toolkit</a>, checked with <code>docker run --rm --gpus all debian:12 nvidia-smi</code>.</p>
+</li>
+</ul>
+</div>
+<p><strong>1. Get the host application and the model</strong> (both backends)</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/OAAX-standard/examples.git
+<span class="nb">cd</span><span class="w"> </span>examples/yolox-example
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w">      </span><span class="c1"># builds build/yolox_host</span>
+bash<span class="w"> </span>fetch_model.sh<span class="w">                             </span><span class="c1"># models/yolox_s.onnx (36 MB), sha256 checked</span>
+</code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">ONNX Runtime</label><label for="__tabbed_2_2">TensorRT</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># 2. Download the CUDA 13 runtime (823 MB) and the toolchain (967 MB), and load the image</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>nvidia-ort<span class="w"> </span>--variant<span class="w"> </span>cuda13
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>nvidia-ort
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-nvidia-onnxruntime-toolchain-2.0.0.tar
+
+<span class="c1"># 3. Convert (about 4 s)</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>ort<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>ort/model.onnx
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/ort:/model"</span><span class="w"> </span>oaax-nvidia-toolchain:2.0.0<span class="w"> </span>/model/model.onnx<span class="w"> </span>/model/output
+
+<span class="c1"># 4. Run</span>
+./build/yolox_host<span class="w"> </span>runtime-nvidia-ort-2.0.0-linux-x86_64-cuda13/libRuntimeLibrary.so<span class="w"> </span>ort/output/model-simplified.onnx<span class="w"> </span>artifacts/dog-bicycle.jpg
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>Runtime: OAAX NVIDIA OnnxRuntime 2.0.0
+Runtime info: {"loaded_models":1,"requests_in_flight":0}
+Input: 'images' float32 NCHW, 1280x854 image letterboxed to 640
+Output tensor 'output': type 1, shape [1, 8400, 85]
+Detections (score &gt;= 0.30, NMS IoU 0.45): 2
+  bicycle        0.953  ( 616,  210) - (1228,  805)
+  dog            0.934  ( 216,  244) - ( 521,  587)
+Wrote detections.png
+OK: 10 requests, first 314.8 ms (warm-up), then 11.0 ms on average (min 10.5 ms)
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># 2. Download the TensorRT 10 runtime for CUDA 13 (326 MB) and the toolchain (11 GB, a few minutes), and load the image (about 1 min)</span>
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>runtime<span class="w"> </span>nvidia-trt<span class="w"> </span>--variant<span class="w"> </span>ubuntu22.04-trt10-cuda13
+uvx<span class="w"> </span>oaax-manager<span class="w"> </span>fetch<span class="w"> </span>toolchain<span class="w"> </span>nvidia-trt
+docker<span class="w"> </span>load<span class="w"> </span>-i<span class="w"> </span>oaax-nvidia-tensorrt-toolchain-2.0.0.tar
+
+<span class="c1"># 3. Convert on the GPU the model will run on (about 2 min; the engine is 21 MB); configs/tensorrt.json is { "precision": "fp16", "workspace_gb": 4 }</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>trt/input<span class="w"> </span>trt/output<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>models/yolox_s.onnx<span class="w"> </span>trt/input/model.onnx<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>configs/tensorrt.json<span class="w"> </span>trt/input/config.json
+<span class="o">(</span><span class="nb">cd</span><span class="w"> </span>trt/input<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>zip<span class="w"> </span>bundle.zip<span class="w"> </span>model.onnx<span class="w"> </span>config.json<span class="o">)</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--user<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="s2">:</span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="s2">"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/trt/input:/input"</span><span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/trt/output:/output"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>oaax-nvidia-tensorrt-toolchain:2.0.0<span class="w"> </span>/input/bundle.zip<span class="w"> </span>/output
+
+<span class="c1"># 4. Run</span>
+./build/yolox_host<span class="w"> </span>runtime-nvidia-trt-2.0.0-linux-x86_64-ubuntu22.04-trt10-cuda13/libRuntimeLibrary.so<span class="w"> </span>trt/output/model.trt<span class="w"> </span>artifacts/dog-bicycle.jpg
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>Runtime: OAAX NVIDIA TensorRT 2.0.0
+Runtime info: {"loaded_models":1,"total_slots":1,"requests_in_flight":0}
+...                                  (same input, output tensor and detections lines as ONNX Runtime)
+OK: 10 requests, first 28.4 ms (warm-up), then 5.4 ms on average (min 5.3 ms)
+</code></pre></div>
+</div>
+</div>
+</div>
+<p><code>detections.png</code> is the photo with the two boxes drawn. The same host runs both: only the runtime library and the model file change. The first request is slow because CUDA (and cuDNN or the engine) warm up; times depend on the GPU. Pass runtime options with <code>--config KEY=VALUE</code>, for example <code>--config perf_mode=power</code> (see the <a href="#runtime_init-config-keys">config keys</a>). The program exits with a non-zero code if a request fails; the runtime's reason is in <code>runtime.log</code>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Read <code>runtime.log</code> (or run with <code>log_level</code> <code>1</code> and <code>log_stdout</code> <code>true</code>) first: every failure below is logged there. Each <code>runtime_*</code> function also returns a non-zero status and <code>runtime_get_error()</code> returns the message.</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause and fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>runtime_init failed: ... Failed to load library libonnxruntime_providers_cuda.so with error: libcublasLt.so.12: cannot open shared object file</code> (ORT)</td>
+<td>The CUDA libraries of the package's major version are not installed (or not on the library path). Install them, or fetch the package for the CUDA version you have (<code>ldconfig -p \| grep libcublasLt</code>). The same message names <code>libcudart</code>, <code>libcublas</code> or <code>libcufft</code> when one of those is the missing one.</td>
+</tr>
+<tr>
+<td><code>... libcudnn.so.8: cannot open shared object file</code> with the <code>cuda12</code> ORT package on Linux x86_64</td>
+<td>Affects 2.0.0: see the <a href="#software">warning in Requirements</a>. Place cuDNN 8.9.7.29 for CUDA 12 next to <code>libRuntimeLibrary.so</code> with the three commands given there. Copying only <code>libcudnn.so.8</code> is not enough: the host aborts with <code>Could not load library libcudnn_ops_infer.so.8</code>.</td>
+</tr>
+<tr>
+<td><code>CUDA failure 100: no CUDA-capable device is detected</code> at <code>runtime_load_models</code> (ORT); <code>No CUDA driver or GPU detected</code> at init</td>
+<td>The process sees no GPU: driver not loaded, empty <code>CUDA_VISIBLE_DEVICES</code>, or a container started without <code>--gpus all</code>. Check <code>nvidia-smi</code> in the same environment.</td>
+</tr>
+<tr>
+<td><code>CUDA driver version is insufficient for CUDA runtime version</code></td>
+<td>The driver is older than the package's CUDA major (<a href="#software">minimum drivers</a>). Update the driver or use a package for an older CUDA.</td>
+</tr>
+<tr>
+<td><code>nvidia-smi</code> says <code>Failed to initialize NVML: Driver/library version mismatch</code></td>
+<td>The driver was updated but the old kernel module is still loaded. Reboot (or reload the <code>nvidia</code> kernel modules).</td>
+</tr>
+<tr>
+<td><code>runtime_load_models failed: Failed to deserialize TRT engine</code>, with <code>[TRT] ... Serialization assertion ... Trying to load an engine created with incompatible serialization version</code></td>
+<td>The file is not a TensorRT engine (for example the <code>.onnx</code> was passed). Or, with <code>Version tag does not match. Note: Current Version: 243, Serialized Engine Version: 240</code>: the engine was built by another TensorRT version than the runtime's (here a TensorRT 10 engine in a TensorRT 11 runtime); convert again with the toolchain whose TensorRT matches your runtime package.</td>
+</tr>
+<tr>
+<td>The engine loads on one machine, not on another (TRT)</td>
+<td>Engines are tied to the GPU architecture, the CPU platform and the TensorRT version they were built with (<code>MIME type</code> in <code>logs.json</code>). Convert on each target GPU model.</td>
+</tr>
+<tr>
+<td><code>runtime_load_models failed: cudaMalloc failed for tensor: ...</code> (TRT)</td>
+<td>The model has a data-dependent output size (for example a <code>NonMaxSuppression</code> operator): see <a href="#conversion-toolchain">Fixed output sizes only</a>. Models without such outputs, like YOLOX, load fine.</td>
+</tr>
+<tr>
+<td>ORT prints <code>Expected shape from model of {20,6} does not match actual shape of {12,6}</code> on every request</td>
+<td>Harmless: it only appears for models with a dynamic output size, and goes to the terminal, not the log. The YOLOX example prints none.</td>
+</tr>
+<tr>
+<td><code>Cannot open engine file: &lt;path&gt;</code> (TRT, status <code>FILE_NOT_FOUND</code>)</td>
+<td>Wrong path to <code>model.trt</code>.</td>
+</tr>
+<tr>
+<td><code>runtime_retrieve_output</code> times out and <code>runtime.log</code> has <code>Inference error</code></td>
+<td>A request was rejected (for example <code>Input tensor count mismatch</code>, or an input type or size the model does not declare). Failed requests return no output.</td>
+</tr>
+<tr>
+<td>The host exits right after <code>runtime_init</code> with <code>Logger init failed: Failed opening file ...</code> or <code>terminate called ... stoi</code> (TRT)</td>
+<td><code>log_file</code> points to an unwritable path, or a numeric key (<code>log_level</code>) is not a number. Fix the config.</td>
+</tr>
+<tr>
+<td>Toolchain: <code>FileNotFoundError: ... 'nvidia-smi'</code> (TRT)</td>
+<td>The container does not see the GPU. Start it with <code>--gpus all</code> and install the <a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" target="_blank">NVIDIA Container Toolkit</a> (<code>sudo nvidia-ctk runtime configure --runtime=docker &amp;&amp; sudo systemctl restart docker</code>). Docker's own <code>could not select device driver "" with capabilities: [[gpu]]</code> means the toolkit is missing.</td>
+</tr>
+<tr>
+<td>Toolchain: <code>trtexec failed (exit N)</code> (TRT)</td>
+<td>TensorRT cannot convert the model; read the end of <code>stderr</code> in the message and the <code>trtexec</code> output in <code>logs.json</code>. Try a lower <code>optimization_level</code>, a larger <code>workspace_gb</code>, or the ONNX Runtime backend.</td>
+</tr>
+<tr>
+<td>Windows: the DLL does not load</td>
+<td>Load it with <code>LoadLibraryEx(path, NULL, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR \| LOAD_LIBRARY_SEARCH_DEFAULT_DIRS)</code> (plain <code>LoadLibrary</code> does not search the DLL's own folder), and put the CUDA toolkit <code>bin</code> folder on <code>PATH</code>.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.sections", "navigation.top", "toc.integrate", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit", "content.action.view", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
